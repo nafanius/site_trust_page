@@ -87,6 +87,9 @@ const News = (() => {
     if (window.I18n && typeof I18n.localizedUrl === 'function') {
       return I18n.localizedUrl(slugPath, currentLang);
     }
+    if (window.Router && typeof Router.buildUrl === 'function') {
+      return Router.buildUrl(slugPath, currentLang);
+    }
     return currentLang === 'en' ? slugPath : `/${currentLang}${slugPath}`;
   }
 
@@ -107,11 +110,13 @@ const News = (() => {
     }
 
     if (!res.success || !res.data) {
+      const back = (window.I18n && I18n.localizedUrl) ? I18n.localizedUrl('/news', currentLang)
+                   : ((window.Router && Router.buildUrl) ? Router.buildUrl('/news', currentLang) : '/news');
       container.innerHTML = `
         <div class="error">
           <h2>Article not found</h2>
           <p>${escapeHtml(res.error || 'The requested news item could not be found.')}</p>
-          <a href="${I18n ? I18n.localizedUrl('/news', currentLang) : '/news'}">← Back to news</a>
+          <a href="${back}">← Back to news</a>
         </div>
       `;
       return;

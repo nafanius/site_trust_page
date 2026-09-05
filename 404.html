@@ -3,37 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page not found - Trust Site</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <title>Redirecting... - Trust Site</title>
+  <!--
+    SPA fallback for GitHub Pages (and similar static hosts).
+    When a deep link (/about, /news, /ru/about, etc.) is requested directly,
+    the server returns this 404.html. We immediately redirect the browser
+    to index.html (sibling file) while preserving the original path in a
+    query parameter. The JS router then restores the clean URL.
+    
+    This works for both root deployments and project sites (/REPO/...)
+    because 404.html is served from the same directory as index.html.
+  -->
   <script>
-    // GitHub Pages SPA fallback:
-    // Store the original path so the app can route correctly after loading index.html logic.
-    sessionStorage.setItem('redirectPath', location.pathname + location.search + location.hash);
+    (function () {
+      var loc = window.location;
+      // The full path the user originally requested (including search/hash)
+      var intended = (loc.pathname || '/') + (loc.search || '') + (loc.hash || '');
+
+      // Redirect to the index.html that lives next to this 404.html.
+      // Use relative path so it works at any deployment depth.
+      var target = 'index.html?__spa_path=' + encodeURIComponent(intended);
+
+      loc.replace(target);
+    })();
   </script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="logo">
-        <span class="logo-text">Trust Site</span>
-      </a>
-    </div>
-  </header>
-
-  <main class="container" style="padding: 4rem 1rem; text-align: center;">
-    <h1>Page not found</h1>
-    <p id="redirect-notice">Redirecting to the correct page...</p>
-    <p><a href="/">Go to homepage</a></p>
-  </main>
-
-  <script>
-    // Immediately redirect to the root so that index.html + main.js can handle the route.
-    // The original path is preserved in sessionStorage.
-    setTimeout(() => {
-      window.location.replace('/');
-    }, 50);
-  </script>
+  <p style="font-family:sans-serif;padding:2rem;text-align:center;color:#64748b;">Redirecting…</p>
 </body>
 </html>

@@ -45,11 +45,16 @@
     }
   }
 
-  // Update site name in logo if provided
+  // Update site name in logo if provided + fix logo href for subpath deployments
   const logoLink = document.getElementById('logo-link');
-  if (logoLink && settings.site_name) {
-    const logoText = logoLink.querySelector('.logo-text');
-    if (logoText) logoText.textContent = settings.site_name;
+  if (logoLink) {
+    if (window.Router && typeof Router.buildUrl === 'function') {
+      logoLink.setAttribute('href', Router.buildUrl('/', 'en'));
+    }
+    if (settings.site_name) {
+      const logoText = logoLink.querySelector('.logo-text');
+      if (logoText) logoText.textContent = settings.site_name;
+    }
   }
 
   // 4. Render menu (non-blocking).
@@ -138,7 +143,7 @@
       <div class="error">
         <h2>Page not found</h2>
         <p>The page you are looking for does not exist.</p>
-        <p><a href="/">Return to homepage</a></p>
+        <p><a href="${(window.Router && Router.buildUrl) ? Router.buildUrl('/', 'en') : '/'}">Return to homepage</a></p>
       </div>
     `;
   }
@@ -161,7 +166,7 @@
         <p>${escapeHtml(homeDesc)}</p>
         <p>Use the navigation above to explore News and other pages.</p>
         <p style="margin-top:2rem;">
-          <a href="${i18n ? i18n.localizedUrl('/news', currentLang) : '/news'}" class="btn" style="background:#0a66c2;color:white;padding:0.6rem 1.2rem;border-radius:9999px;text-decoration:none;">Browse News</a>
+          <a href="${i18n ? i18n.localizedUrl('/news', currentLang) : ((window.Router && Router.buildUrl) ? Router.buildUrl('/news', currentLang) : '/news')}" class="btn" style="background:#0a66c2;color:white;padding:0.6rem 1.2rem;border-radius:9999px;text-decoration:none;">Browse News</a>
         </p>
       </div>
     `;

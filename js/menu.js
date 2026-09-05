@@ -106,11 +106,16 @@ const Menu = (() => {
 
     // Show fallback immediately. This makes the header usable right away and
     // prevents Menu.render from blocking main content (home/news/page) in main.js.
+    // Use Router.buildUrl so links work on GitHub project sites (subpath) and with languages.
+    const homeUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/', 'en') : '/';
+    const newsUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/news', 'en') : '/news';
+    const aboutUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/about', 'en') : '/about';
+
     nav.innerHTML = `
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/news">News</a></li>
-        <li><a href="/about">About</a></li>
+        <li><a href="${homeUrl}">Home</a></li>
+        <li><a href="${newsUrl}">News</a></li>
+        <li><a href="${aboutUrl}">About</a></li>
       </ul>
     `;
 

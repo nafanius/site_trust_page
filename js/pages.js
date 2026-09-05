@@ -27,11 +27,12 @@ const Pages = (() => {
     const res = await API.page(slug, currentLang);
 
     if (!res.success || !res.data) {
+      const home = (window.Router && Router.buildUrl) ? Router.buildUrl('/', 'en') : '/';
       container.innerHTML = `
         <div class="error">
           <h2>Page not found</h2>
           <p>${escapeHtml(res.error || 'The requested page could not be found.')}</p>
-          <p><a href="/">Go to homepage</a></p>
+          <p><a href="${home}">Go to homepage</a></p>
         </div>
       `;
       return;
