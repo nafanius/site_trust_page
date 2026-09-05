@@ -20,9 +20,37 @@
       // The full path the user originally requested (including search/hash)
       var intended = (loc.pathname || '/') + (loc.search || '') + (loc.hash || '');
 
-      // Redirect to the index.html that lives next to this 404.html.
-      // Use relative path so it works at any deployment depth.
-      var target = 'index.html?__spa_path=' + encodeURIComponent(intended);
+      // Compute the directory that actually contains index.html and 404.html.
+      // We strip language prefixes and known app route segments so that
+      // requests like /ru, /pl/news, /my-repo/ru/about all redirect to the
+      // correct sibling index.html (supports root + GitHub project sites).
+      function getAppBaseDir(pathname) {
+        var p = String(pathname || '/').split('?')[0].split('#')[0];
+        // Treat index.html etc as directory
+        p = p.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        p = p.replace(/\/+/g, '/');
+        if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+        var segs = p.split('/').filter(Boolean);
+
+        // Segments that belong to the application (not deployment base)
+        var knownApp = ['en', 'ru', 'pl', 'news', 'about', 'contact', 'contacts', 'page'];
+        var known = {};
+        for (var k = 0; k < knownApp.length; k++) known[knownApp[k]] = true;
+
+        var i = 0;
+        for (; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) break;
+        }
+        var baseSegs = segs.slice(0, i);
+        if (baseSegs.length === 0) return '/';
+        return '/' + baseSegs.join('/') + '/';
+      }
+
+      var baseDir = getAppBaseDir(loc.pathname || '/');
+      // Always use an origin-absolute path for the redirect target.
+      // This guarantees we load the real index.html regardless of the
+      // language-prefixed (or deep) path that triggered the 404.
+      var target = baseDir + 'index.html?__spa_path=' + encodeURIComponent(intended);
 
       loc.replace(target);
     })();
