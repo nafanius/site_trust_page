@@ -23,8 +23,10 @@
     I18n.initFromRoute(routeInfo);
   }
   let currentLang = (window.I18n && I18n.getCurrentLanguage()) || routeInfo.language || 'en';
+  let lastLang = currentLang;
 
   // 3. Load settings (this also populates window.siteSettings)
+  // Settings are loaded ONLY once at bootstrap. They are not re-fetched on navigation.
   let settings = {};
   if (window.API) {
     console.log('[App] Loading settings from API...');
@@ -36,6 +38,7 @@
       if (window.I18n && typeof I18n.configureFromSettings === 'function') {
         I18n.configureFromSettings(settings);
         currentLang = I18n.getCurrentLanguage();
+        lastLang = currentLang;
       }
     } else {
       console.error('[App] CRITICAL: Failed to load settings from Google Apps Script.');
@@ -57,16 +60,12 @@
     }
   }
 
-  // 4. Render menu (non-blocking).
-  // Menu is header UI only. Do not await it — we must render primary content
-  // (#page-content) even if the menu API call is slow or fails.
+  // 4. Render menu for initial language (full render + API call happens here)
   if (window.Menu) {
-    // Fire-and-forget; the implementation shows a static fallback immediately
-    // and updates the nav when the real data arrives.
     Menu.render(currentLang);
   }
 
-  // 5. Render language switcher
+  // 5. Render language switcher (initial)
   if (window.I18n) {
     I18n.renderLanguageSwitcher('language-switcher');
   }
@@ -75,25 +74,12 @@
   const yearEl = document.getElementById('footer-year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // 7. Route dispatcher
-  async function dispatchRoute() {
-    const info = (window.Router && Router.getCurrentRoute)
-      ? Router.getCurrentRoute()
-      : { language: 'en', route: '/' };
-
-    currentLang = info.language || 'en';
-
-    // Update i18n current language
-    if (window.I18n) {
-      I18n.setCurrentLanguage(currentLang);
-      I18n.renderLanguageSwitcher('language-switcher');
-    }
-
-    // Re-render menu for new language (non-blocking; menu.js shows fallback immediately)
-    if (window.Menu) {
-      Menu.render(currentLang);
-    }
-
+  /**
+   * Render ONLY the main content area for the given route.
+   * This is called on every navigation (same lang or lang change).
+   * The heavy lifting (menu, switcher, cache clear) is done only on language change.
+   */
+  async function renderContentForRoute(info, lang) {
     if (!pageContent) return;
 
     const route = info.route || '/';
@@ -110,7 +96,7 @@
     // News list
     if (route === '/news') {
       if (window.News) {
-        News.setLanguage(currentLang);
+        News.setLanguage(lang);
         await News.renderList();
       }
       return;
@@ -121,18 +107,17 @@
     if (newsMatch) {
       const slugOrId = newsMatch[1];
       if (window.News) {
-        News.setLanguage(currentLang);
+        News.setLanguage(lang);
         await News.renderDetail(slugOrId);
       }
       return;
     }
 
     // Dynamic pages from Sheets (about, contacts, services, etc.)
-    // We treat any other route as a potential page slug
-    const pageSlug = route.replace(/^\//, ''); // "about", "contacts"
+    const pageSlug = route.replace(/^\//, '');
     if (pageSlug && !pageSlug.includes('/')) {
       if (window.Pages) {
-        Pages.setLanguage(currentLang);
+        Pages.setLanguage(lang);
         await Pages.renderPage(pageSlug);
       }
       return;
@@ -147,6 +132,129 @@
       </div>
     `;
   }
+
+  /**
+   * Smart navigation handler.
+   * - On language change: clear API cache, fully re-render menu + language switcher, then content.
+   * - On same-language navigation: only update the page content + lightweight menu active state.
+   * This prevents re-fetching "everything" and full page redraws on every link click.
+   */
+  async function handleNavigation() {
+    const info = (window.Router && Router.getCurrentRoute)
+      ? Router.getCurrentRoute()
+      : { language: 'en', route: '/' };
+
+    const newLang = info.language || 'en';
+    const route = info.route || '/';
+
+    const langChanged = newLang !== lastLang;
+
+    // Always keep currentLang in sync for closures used by renderHome etc.
+    currentLang = newLang;
+
+    if (langChanged) {
+      console.log('[App] Language changed from', lastLang, 'to', newLang, '— performing full re-render + cache clear');
+      if (window.API && typeof API.clearCache === 'function') {
+        API.clearCache();
+      }
+
+      lastLang = newLang;
+
+      if (window.I18n) {
+        I18n.setCurrentLanguage(newLang);
+        I18n.renderLanguageSwitcher('language-switcher');
+      }
+
+      if (window.Menu) {
+        // Full menu re-render (fetches new language data)
+        Menu.render(newLang);
+      }
+    } else {
+      // Same language: minimal work
+      if (window.Menu && typeof Menu.updateActiveState === 'function') {
+        Menu.updateActiveState(route);
+      }
+      // Do not touch language switcher or re-fetch menu
+    }
+
+    // Always render (or replace) only the main content area
+    await renderContentForRoute(info, newLang);
+  }
+
+  // Expose for debugging
+  window.TrustSite = window.TrustSite || {};
+  window.TrustSite.handleNavigation = handleNavigation;
+  window.TrustSite.getCurrentLang = () => currentLang;
+  window.TrustSite.clearApiCache = () => { if (window.API && API.clearCache) API.clearCache(); };
+
+  // Initial route
+  await handleNavigation();
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', async () => {
+    await handleNavigation();
+  });
+
+  /**
+   * Intercept clicks on internal links to enable SPA-like navigation.
+   * This prevents full page reloads (and 404.html roundtrips on GitHub Pages)
+   * when navigating within the same language.
+   * Language changes are still detected inside handleNavigation.
+   */
+  function setupInternalLinkInterception() {
+    document.addEventListener('click', (e) => {
+      // Ignore modified clicks (open in new tab, etc.)
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+        return;
+      }
+
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+
+      const href = a.getAttribute('href') || '';
+      if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+
+      // External protocols
+      if (/^https?:\/\//i.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
+        return;
+      }
+
+      if (a.target && a.target.toLowerCase() === '_blank') return;
+
+      // Resolve against current origin
+      let targetUrl;
+      try {
+        targetUrl = new URL(href, window.location.origin);
+      } catch (_) {
+        return; // malformed
+      }
+
+      if (targetUrl.origin !== window.location.origin) return;
+
+      // Parse with our router to see if it's an app route
+      const parsed = (window.Router && typeof Router.parsePath === 'function')
+        ? Router.parsePath(targetUrl.pathname)
+        : null;
+
+      if (!parsed) return;
+
+      // It's one of our routes — handle with SPA navigation
+      e.preventDefault();
+
+      const targetPath = targetUrl.pathname + targetUrl.search + targetUrl.hash;
+
+      if (window.Router && typeof Router.navigate === 'function') {
+        // Router.navigate will pushState + fire popstate → handleNavigation
+        Router.navigate(parsed.route, parsed.language);
+      } else {
+        // Fallback
+        history.pushState({}, '', targetPath);
+        window.dispatchEvent(new Event('popstate'));
+      }
+    }, { capture: true });
+  }
+
+  setupInternalLinkInterception();
 
   async function renderHome() {
     if (!pageContent) return;
@@ -228,22 +336,6 @@
   // Expose for debugging
   window.showApiErrorBanner = showApiErrorBanner;
 
-
-  // Initial route
-  await dispatchRoute();
-
-  // Handle browser back/forward
-  window.addEventListener('popstate', async () => {
-    await dispatchRoute();
-  });
-
-  // Optional: expose a global for debugging
-  window.TrustSite = {
-    reloadMenu: () => Menu.render(currentLang),
-    getSettings: () => settings,
-    navigate: (route, lang) => Router.navigate(route, lang || currentLang)
-  };
-
   // Log ready state (useful during development)
-  console.log('%c[TrustSite] Application initialized', 'color:#64748b');
+  console.log('%c[TrustSite] Application initialized (optimized navigation)', 'color:#64748b');
 })();

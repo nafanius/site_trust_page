@@ -124,10 +124,13 @@ const I18n = (() => {
       }
 
       a.addEventListener('click', (e) => {
-        // Allow normal navigation for static hosting, but also update state
-        // We let the browser navigate so that router + main.js handle it.
-        // For SPA feel we could preventDefault + Router.navigate, but full navigation is safer for GitHub Pages.
-        // To keep URL correct and trigger proper handling, we do nothing special here.
+        // Use SPA navigation when available. This lets handleNavigation detect language change
+        // and perform the correct full re-render (menu + switcher + content) without a full page reload.
+        if (window.Router && typeof Router.navigate === 'function') {
+          e.preventDefault();
+          Router.navigate(currentRoute, lang);
+        }
+        // Otherwise fall through to normal link navigation (still works).
       });
 
       li.appendChild(a);

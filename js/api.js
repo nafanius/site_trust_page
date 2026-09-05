@@ -15,6 +15,27 @@ const API = (() => {
     ? CONFIG.API_URL
     : '';
 
+  // Simple per-request cache to avoid repeating identical API calls
+  // Keyed by action + lang + (id|slug). Survives same-language navigations.
+  const responseCache = new Map();
+
+  function makeCacheKey(action, params = {}) {
+    const lang = (params.lang || params.language || 'nolang').toString().toLowerCase();
+    const ident = (params.id || params.slug || '').toString();
+    return `${action}:${lang}:${ident}`;
+  }
+
+  function getCached(action, params = {}) {
+    const key = makeCacheKey(action, params);
+    return responseCache.get(key) || null;
+  }
+
+  function setCached(action, params = {}, result) {
+    if (!result || result.success !== true) return;
+    const key = makeCacheKey(action, params);
+    responseCache.set(key, result);
+  }
+
   /**
    * Detect if we are running in a context where normal fetch() is unreliable.
    * Google Apps Script Web Apps have notoriously broken CORS.
@@ -135,88 +156,118 @@ const API = (() => {
   /**
    * Low-level request wrapper.
    * Tries normal fetch first. Falls back to JSONP on CORS errors or localhost.
+   * Uses in-memory cache for same-language navigations to avoid repeated full API calls.
    */
-  async function request(action, params = {}) {
-    console.log('[API] request() called for action=', action, 'params=', params);
+  async function request(action, params = {}, { useCache = true } = {}) {
+   console.log('[API] request() called for action=', action, 'params=', params);
 
-    if (!BASE_URL || BASE_URL.includes('YOUR_SCRIPT_ID')) {
-      return {
-        success: false,
-        error: 'API_URL is not configured. Edit js/config.js and set your deployed Apps Script URL.'
-      };
-    }
+   // Check cache first for read actions (settings, news, page, menu)
+   const cacheableActions = new Set(['settings', 'news', 'page', 'menu']);
+   if (useCache && cacheableActions.has(action)) {
+     const cached = getCached(action, params);
+     if (cached) {
+       console.log('[API] cache hit for', action, params);
+       return cached;
+     }
+   }
 
-    const url = new URL(BASE_URL);
-    url.searchParams.set('action', action);
+   if (!BASE_URL || BASE_URL.includes('YOUR_SCRIPT_ID')) {
+     return {
+       success: false,
+       error: 'API_URL is not configured. Edit js/config.js and set your deployed Apps Script URL.'
+     };
+   }
 
-    Object.keys(params).forEach(key => {
-      if (params[key] !== undefined && params[key] !== null) {
-        url.searchParams.set(key, params[key]);
-      }
-    });
+   const url = new URL(BASE_URL);
+   url.searchParams.set('action', action);
 
-    const useJsonp = shouldUseJsonp();
+   Object.keys(params).forEach(key => {
+     if (params[key] !== undefined && params[key] !== null) {
+       url.searchParams.set(key, params[key]);
+     }
+   });
 
-    console.log('%c[API] ========== DECISION for action="' + action + '" ==========', 'color:#b45309;font-weight:bold;font-size:12px');
-    console.log('[API] BASE_URL =', BASE_URL);
-    console.log('[API] window.location.origin =', (typeof window !== 'undefined' ? window.location.origin : 'no-window'));
-    console.log('[API] forceFetch=1 or window.FORCE_FETCH?', (typeof window !== 'undefined') && (window.FORCE_FETCH === true || (window.location && window.location.search.includes('forceFetch=1'))));
-    console.log('[API] shouldUseJsonp() returned:', useJsonp);
+   const useJsonp = shouldUseJsonp();
 
-    if (useJsonp) {
-      console.log('%c[API] >>> SKIPPING fetch() completely — taking JSONP path for "' + action + '"', 'color:#b45309;font-weight:bold');
-      console.log('%c[API] (This is why your console.log(text) and console.log(json) inside the fetch block NEVER run)', 'color:#b45309');
-      return jsonpRequest(action, params);
-    }
+   console.log('%c[API] ========== DECISION for action="' + action + '" ==========', 'color:#b45309;font-weight:bold;font-size:12px');
+   console.log('[API] BASE_URL =', BASE_URL);
+   console.log('[API] window.location.origin =', (typeof window !== 'undefined' ? window.location.origin : 'no-window'));
+   console.log('[API] forceFetch=1 or window.FORCE_FETCH?', (typeof window !== 'undefined') && (window.FORCE_FETCH === true || (window.location && window.location.search.includes('forceFetch=1'))));
+   console.log('[API] shouldUseJsonp() returned:', useJsonp);
 
-    // Only reached when shouldUseJsonp() returned false
-    console.log('%c[API] >>> TAKING fetch() path for "' + action + '" — your console.log(text/json) can now appear', 'color:#059669;font-weight:bold');
+   let result;
+   if (useJsonp) {
+     console.log('%c[API] >>> SKIPPING fetch() completely — taking JSONP path for "' + action + '"', 'color:#b45309;font-weight:bold');
+     console.log('%c[API] (This is why your console.log(text) and console.log(json) inside the fetch block NEVER run)', 'color:#b45309');
+     result = await jsonpRequest(action, params);
+   } else {
+     // Only reached when shouldUseJsonp() returned false
+     console.log('%c[API] >>> TAKING fetch() path for "' + action + '" — your console.log(text/json) can now appear', 'color:#059669;font-weight:bold');
 
-    // Normal fetch path (production on GitHub Pages, etc.)
-    // Google Apps Script Web Apps are extremely unreliable with CORS.
-    // If we get non-JSON (HTML error page, 403, etc.) we immediately fall back to JSONP.
-    try {
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'omit'
-      });
+     // Normal fetch path (production on GitHub Pages, etc.)
+     // Google Apps Script Web Apps are extremely unreliable with CORS.
+     // If we get non-JSON (HTML error page, 403, etc.) we immediately fall back to JSONP.
+     try {
+       const response = await fetch(url.toString(), {
+         method: 'GET',
+         mode: 'cors',
+         credentials: 'omit'
+       });
 
-      const text = await response.text();
-      
-      console.log(text)
+       const text = await response.text();
+        
+       console.log(text)
 
 
-      // If the response is clearly not JSON (e.g. Google error page, "TypeError: setHeaders", HTML)
-      // then the normal path is broken — fall back to JSONP which is known to work.
-      const trimmed = text.trim();
-      if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
-        console.warn('[API] fetch() returned non-JSON (probably Apps Script error page). Using JSONP fallback.');
-        return jsonpRequest(action, params);
-      }
+       // If the response is clearly not JSON (e.g. Google error page, "TypeError: setHeaders", HTML)
+       // then the normal path is broken — fall back to JSONP which is known to work.
+       const trimmed = text.trim();
+       if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+         console.warn('[API] fetch() returned non-JSON (probably Apps Script error page). Using JSONP fallback.');
+         result = await jsonpRequest(action, params);
+       } else {
+         let json;
+         try {
+           json = JSON.parse(trimmed);
+           console.log(json)
+         } catch (parseErr) {
+           console.warn('[API] fetch() returned invalid JSON. Using JSONP fallback.');
+           result = await jsonpRequest(action, params);
+         }
 
-      let json;
-      try {
-        json = JSON.parse(trimmed);
-        console.log(json)
-      } catch (parseErr) {
-        console.warn('[API] fetch() returned invalid JSON. Using JSONP fallback.');
-        return jsonpRequest(action, params);
-      }
+         if (!result) {
+           if (json && typeof json === 'object') {
+             if (json.success === false) {
+               result = { success: false, error: json.error || 'Unknown API error' };
+             } else {
+               result = { success: true, data: json.data !== undefined ? json.data : json };
+             }
+           } else {
+             result = { success: true, data: json };
+           }
+         }
+       }
+     } catch (err) {
+       // Network / CORS error → JSONP
+       console.warn('[API] fetch() failed, trying JSONP fallback...', err.message);
+       result = await jsonpRequest(action, params);
+     }
+   }
 
-      if (json && typeof json === 'object') {
-        if (json.success === false) {
-          return { success: false, error: json.error || 'Unknown API error' };
-        }
-        return { success: true, data: json.data !== undefined ? json.data : json };
-      }
+   // Store successful cacheable responses
+   if (result && result.success && cacheableActions.has(action)) {
+     setCached(action, params, result);
+   }
 
-      return { success: true, data: json };
-    } catch (err) {
-      // Network / CORS error → JSONP
-      console.warn('[API] fetch() failed, trying JSONP fallback...', err.message);
-      return jsonpRequest(action, params);
-    }
+   return result;
+  }
+
+  /**
+   * Clear all cached responses. Called on language change so that new language data is fetched.
+   */
+  function clearCache() {
+   responseCache.clear();
+   console.log('[API] response cache cleared');
   }
 
   // === Public API methods ===
@@ -268,6 +319,7 @@ const API = (() => {
     page,
     menu,
     getNewsItem,
+    clearCache,
     // Expose raw request for advanced use / debugging
     _request: request
   };

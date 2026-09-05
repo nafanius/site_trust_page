@@ -6,6 +6,8 @@
 
 const Menu = (() => {
   let currentMenuData = null;
+  let lastRenderedLang = null;
+  let hasDynamicMenu = false;
 
   /**
    * Fetch menu for current language.
@@ -96,54 +98,70 @@ const Menu = (() => {
 
   /**
    * Render the full menu into #main-nav.
-   * Provides an immediate fallback so navigation is visible without blocking
-   * the main page content render. The real menu (if available) is loaded in the
-   * background and replaces the fallback when ready.
+   * Called only when language actually changes (or on initial load).
+   * For same-language navigations we only call updateActiveState().
    */
   async function render(language = 'en') {
-    const nav = document.getElementById('main-nav');
-    if (!nav) return;
+   const nav = document.getElementById('main-nav');
+   if (!nav) return;
 
-    // Show fallback immediately. This makes the header usable right away and
-    // prevents Menu.render from blocking main content (home/news/page) in main.js.
-    // Use Router.buildUrl so links work on GitHub project sites (subpath) and with languages.
-    const homeUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/', 'en') : '/';
-    const newsUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/news', 'en') : '/news';
-    const aboutUrl = (window.Router && Router.buildUrl) ? Router.buildUrl('/about', 'en') : '/about';
+   lastRenderedLang = language;
 
-    nav.innerHTML = `
-      <ul>
-      </ul>
-    `;
+   // Show lightweight fallback immediately
+   nav.innerHTML = `<ul></ul>`;
 
-    // Load dynamic menu in the background. Do not await inside this function
-    // so that callers are not blocked from rendering #page-content.
-    (async () => {
-      try {
-        const menuData = await fetchMenu(language);
-        if (!menuData || menuData.length === 0) {
-          // Keep the fallback we already rendered.
-          return;
-        }
+   try {
+     const menuData = await fetchMenu(language);
+     hasDynamicMenu = !!(menuData && menuData.length);
 
-        const ul = document.createElement('ul');
-        const currentRouteInfo = (window.Router && Router.getCurrentRoute) ? Router.getCurrentRoute() : { route: '/' };
+     if (!hasDynamicMenu) {
+       // Keep empty fallback; static links are not critical
+       return;
+     }
 
-        menuData.forEach(item => {
-          const li = renderMenuItem(item, language, currentRouteInfo.route);
-          ul.appendChild(li);
-        });
+     const ul = document.createElement('ul');
+     const currentRouteInfo = (window.Router && Router.getCurrentRoute) ? Router.getCurrentRoute() : { route: '/' };
 
-        nav.innerHTML = '';
-        nav.appendChild(ul);
+     menuData.forEach(item => {
+       const li = renderMenuItem(item, language, currentRouteInfo.route);
+       ul.appendChild(li);
+     });
 
-        // Mobile toggle wiring (once)
-        setupMobileToggle(nav);
-      } catch (err) {
-        // On any error keep the static fallback (already in the DOM).
-        console.error('[Menu] background update failed:', err);
-      }
-    })();
+     nav.innerHTML = '';
+     nav.appendChild(ul);
+
+     setupMobileToggle(nav);
+   } catch (err) {
+     console.error('[Menu] render failed:', err);
+     // leave fallback
+   }
+  }
+
+  /**
+   * Lightweight active-state update for same-language navigation.
+   * Does NOT fetch from API. Just walks existing DOM links and toggles .active.
+   */
+  function updateActiveState(currentRoute = '/') {
+   const nav = document.getElementById('main-nav');
+   if (!nav) return;
+
+   const normalizedCurrent = normalizeRoute(currentRoute);
+
+   // Update top-level and dropdown links
+   const links = nav.querySelectorAll('a[href]');
+   links.forEach(a => {
+     const href = a.getAttribute('href') || '';
+     // Skip external links
+     if (/^https?:\/\//i.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
+       return;
+     }
+     const normalizedItem = normalizeRoute(href);
+     if (normalizedItem === normalizedCurrent) {
+       a.classList.add('active');
+     } else {
+       a.classList.remove('active');
+     }
+   });
   }
 
   function setupMobileToggle(nav) {
@@ -166,7 +184,8 @@ const Menu = (() => {
 
   return {
     render,
-    fetchMenu
+    fetchMenu,
+    updateActiveState
   };
 })();
 
