@@ -16,6 +16,46 @@
   <!-- Canonical will be managed by JS for language variants -->
   <link rel="canonical" href="/">
 
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        if (base && base !== '/') {
+          var b = document.createElement('base');
+          b.setAttribute('href', base);
+          var head = document.head || document.getElementsByTagName('head')[0];
+          if (head.firstChild) {
+            head.insertBefore(b, head.firstChild);
+          } else {
+            head.appendChild(b);
+          }
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/news.css">
