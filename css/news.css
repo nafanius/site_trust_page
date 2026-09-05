@@ -1,0 +1,72 @@
+/* News specific styles */
+
+.news-detail {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.news-detail .news-meta {
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.news-detail .news-image {
+  margin: 1.5rem 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.news-detail .news-image img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+.news-detail .news-body {
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.news-detail .news-body p {
+  margin-bottom: 1.25rem;
+}
+
+.news-detail .back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  color: var(--color-primary);
+}
+
+.news-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.news-list-header h1 {
+  margin: 0;
+}
+
+.news-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--color-text-light);
+  background: var(--color-bg-alt);
+  border-radius: var(--radius);
+}
+
+/* Category badge */
+.category-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  background: var(--color-bg-alt);
+  color: var(--color-text-light);
+  border-radius: 9999px;
+  margin-right: 0.5rem;
+}

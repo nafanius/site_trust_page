@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found - Trust Site</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script>
+    // GitHub Pages SPA fallback:
+    // Store the original path so the app can route correctly after loading index.html logic.
+    sessionStorage.setItem('redirectPath', location.pathname + location.search + location.hash);
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <span class="logo-text">Trust Site</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 4rem 1rem; text-align: center;">
+    <h1>Page not found</h1>
+    <p id="redirect-notice">Redirecting to the correct page...</p>
+    <p><a href="/">Go to homepage</a></p>
+  </main>
+
+  <script>
+    // Immediately redirect to the root so that index.html + main.js can handle the route.
+    // The original path is preserved in sessionStorage.
+    setTimeout(() => {
+      window.location.replace('/');
+    }, 50);
+  </script>
+</body>
+</html>
