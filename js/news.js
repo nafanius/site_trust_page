@@ -144,6 +144,37 @@ const News = (() => {
     if (window.I18n && typeof I18n.setDocumentTitle === 'function') {
       I18n.setDocumentTitle(item.title);
     }
+
+    // SEO: set meta description from news text
+    setNewsMeta(item);
+  }
+
+  function setNewsMeta(item) {
+    if (!item) return;
+
+    const desc = (item.text || item.title || '').slice(0, 160);
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', escapeHtml(desc));
+
+    // Optional OG tags
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', desc);
+
+    if (item.image) {
+      let ogImage = document.querySelector('meta[property="og:image"]');
+      if (!ogImage) {
+        ogImage = document.createElement('meta');
+        ogImage.setAttribute('property', 'og:image');
+        document.head.appendChild(ogImage);
+      }
+      ogImage.setAttribute('content', item.image);
+    }
   }
 
   function formatNewsText(text) {

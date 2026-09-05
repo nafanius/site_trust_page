@@ -6,7 +6,7 @@
 const CONFIG = {
   // Replace with your deployed Google Apps Script Web App URL
   // Example: "https://script.google.com/macros/s/XXXXXXXXXXXXXXXX/exec"
-  API_URL: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
+  API_URL: "https://script.google.com/macros/s/AKfycbws1QCe1ef43fixHcC-nySRsJuA1l56WcJwwsgEFujUuzL2v9NPdNVLbENNLoL1B8z1Mw/exec",
 
   // Default fallback language if a translation is missing
   FALLBACK_LANGUAGE: "en",

@@ -40,22 +40,42 @@ Create a new Google Spreadsheet and create the following sheets with **exact nam
 
 ## 4. `pages`
 
-| id | slug     | template | image | active | sort |
-|----|----------|----------|-------|--------|------|
-| 1  | about    | standard |       | TRUE   | 10   |
-| 2  | contacts | standard |       | TRUE   | 20   |
+| id | slug      | template | image | meta_description                          | og_image | active | sort |
+|----|-----------|----------|-------|-------------------------------------------|----------|--------|------|
+| 1  | about     | standard |       | Learn more about our mission and values.  |          | TRUE   | 10   |
+| 2  | contacts  | contact  |       | Get in touch with our team.               |          | TRUE   | 20   |
+| 3  | home-hero | landing  |       | Welcome to the most trusted multilingual site. |       | TRUE   | 5    |
+| 4  | services  | rich     |       | Explore our full range of professional services. |   | TRUE   | 30   |
+
+**Supported templates** (set in the `template` column):
+
+- `standard` — Classic page with title + image + content (default). Good semantic `<article>` + headings.
+- `landing` — Hero section + lead text + body + CTA. Excellent for high-conversion / SEO landing pages.
+- `contact` — Two-column layout (info + form). Good for contact / about pages.
+- `rich` (or `article`) — Featured image + rich article layout. Best for long-form SEO content.
+
+All templates use:
+- Semantic HTML (`<article>`, `<header>`, `<section>`, proper `h1`–`h2`)
+- Dynamic `<meta name="description">` + Open Graph tags (from `meta_description` / `og_image`)
+- Clean structure for crawlers
+
+**SEO columns** (add these to your `pages` sheet — highly recommended):
+- `meta_description` — Used for `<meta name="description">` and social cards (max ~160 chars)
+- `og_image` — Open Graph / Twitter image URL (falls back to `image` column)
 
 ---
 
 ## 5. `page_translations`
 
-| page_id | lang | title      | content                                      |
-|---------|------|------------|----------------------------------------------|
-| 1       | en   | About Us   | We are a trusted organization...             |
-| 1       | ru   | О нас      | Мы — надежная организация...                 |
-| 1       | pl   | O nas      | Jesteśmy zaufaną organizacją...              |
-| 2       | en   | Contact Us | Reach us at contact@example.com              |
-| 2       | ru   | Контакты   | Напишите нам: contact@example.com            |
+| page_id | lang | title          | content                                      |
+|---------|------|----------------|----------------------------------------------|
+| 1       | en   | About Us       | We are a trusted organization...             |
+| 1       | ru   | О нас          | Мы — надежная организация...                 |
+| 1       | pl   | O nas          | Jesteśmy zaufaną organizacją...              |
+| 2       | en   | Contact Us     | Reach us at contact@example.com              |
+| 2       | ru   | Контакты       | Напишите нам: contact@example.com            |
+| 3       | en   | Welcome        | Discover our multilingual platform...        |
+| 4       | en   | Our Services   | We offer consulting, development and support.|
 
 ---
 
@@ -102,8 +122,20 @@ Create a new Google Spreadsheet and create the following sheets with **exact nam
 
 ## After filling the sheets
 
-1. Deploy `apps-script/Code.gs` as a Web App.
-2. Copy the Web App URL into `js/config.js`.
-3. Push to GitHub and enable GitHub Pages.
+1. Deploy `apps-script/Code.gs` as a Web App (Execute as: Me, Access: Anyone).
+2. Copy the Web App URL into `js/config.js` (`API_URL`).
+3. (Recommended) Update `robots.txt` and `sitemap.xml` with your real GitHub Pages domain.
+4. Push everything to GitHub and enable GitHub Pages.
 
-Content changes in the spreadsheet will appear on the live site after cache expires (usually within 5 minutes) or on a hard refresh.
+**Cache note**: The backend now caches responses for **6 hours** (`CacheService`). Changes in Google Sheets may take up to 6 hours to appear (or force a hard refresh / clear cache manually).
+
+Content changes in the spreadsheet will appear on the live site after cache expires.
+
+## New SEO & Template Features
+
+- Multiple page templates: `standard`, `landing`, `contact`, `rich`
+- Automatic `<meta name="description">` + Open Graph tags from `meta_description` and `og_image` columns
+- Semantic HTML (`<article>`, proper headings, sections)
+- `robots.txt` and `sitemap.xml` included at the root (update the domain!)
+- Cache increased to 6 hours for better performance
+

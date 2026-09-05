@@ -27,14 +27,21 @@
   // 3. Load settings (this also populates window.siteSettings)
   let settings = {};
   if (window.API) {
+    console.log('[App] Loading settings from API...');
     const settingsRes = await API.settings();
+    console.log('[App] Settings response:', settingsRes);
+
     if (settingsRes.success && settingsRes.data) {
       settings = settingsRes.data;
       if (window.I18n && typeof I18n.configureFromSettings === 'function') {
         I18n.configureFromSettings(settings);
-        // Re-sync language in case settings changed available languages
         currentLang = I18n.getCurrentLanguage();
       }
+    } else {
+      console.error('[App] CRITICAL: Failed to load settings from Google Apps Script.');
+      console.error('Error:', settingsRes.error);
+      showApiErrorBanner(settingsRes.error);
+      // Continue with defaults
     }
   }
 
@@ -135,18 +142,43 @@
   async function renderHome() {
     if (!pageContent) return;
 
+    const siteName = settings.site_name || 'Trust Site';
+    const homeDesc = settings.home_description || `Welcome to ${siteName} — multilingual content powered by Google Sheets.`;
+
+    // SEO meta for homepage
+    setHomeMeta(siteName, homeDesc);
+
     pageContent.innerHTML = `
       <div class="page-header">
-        <h1>Welcome to ${escapeHtml(settings.site_name || 'Trust Site')}</h1>
+        <h1>Welcome to ${escapeHtml(siteName)}</h1>
       </div>
       <div class="page-content">
-        <p>This is a multilingual static website powered by Google Sheets as a CMS.</p>
+        <p>${escapeHtml(homeDesc)}</p>
         <p>Use the navigation above to explore News and other pages.</p>
         <p style="margin-top:2rem;">
           <a href="${I18n ? I18n.localizedUrl('/news', currentLang) : '/news'}" class="btn" style="background:#0a66c2;color:white;padding:0.6rem 1.2rem;border-radius:9999px;text-decoration:none;">Browse News</a>
         </p>
       </div>
     `;
+  }
+
+  function setHomeMeta(siteName, description) {
+    document.title = siteName;
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', description.slice(0, 160));
+
+    // Update OG tags
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', siteName);
+
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', description.slice(0, 200));
   }
 
   function escapeHtml(str) {
@@ -158,6 +190,34 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
+
+  /**
+   * Show a visible error banner when the Google Apps Script API cannot be reached.
+   * This is very common due to adblockers blocking script.google.com.
+   */
+  function showApiErrorBanner(errorMsg) {
+    const container = document.getElementById('page-content');
+    if (!container) return;
+
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:#fee2e2;border:1px solid #ef4444;color:#991b1b;padding:12px 16px;margin:12px 0;border-radius:8px;font-family:sans-serif;';
+    banner.innerHTML = `
+      <strong>⚠️ Не удалось загрузить данные с Google Apps Script</strong><br>
+      <small>Ошибка: ${escapeHtml(errorMsg || 'JSONP request failed')}</small>
+      <br><br>
+      <strong>Что делать:</strong><br>
+      1. Откройте консоль (F12) — там будет красная ссылка с полным URL.<br>
+      2. Скопируйте этот URL и откройте его в <strong>новой вкладке</strong> (или в режиме инкогнито).<br>
+      3. Если в новой вкладке вы видите текст вида <code>jsonp_cb_...({"success":true,...})</code> — проблема в блокировщике рекламы / расширениях браузера.<br>
+      <br>
+      <strong>Частые виновники:</strong> uBlock Origin, AdBlock, Brave Shields, Firefox Tracking Protection, расширения приватности.
+    `;
+    container.prepend(banner);
+  }
+
+  // Expose for debugging
+  window.showApiErrorBanner = showApiErrorBanner;
+
 
   // Initial route
   await dispatchRoute();

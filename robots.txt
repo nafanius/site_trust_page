@@ -1,0 +1,16 @@
+# robots.txt for Trust Site
+# Generated for GitHub Pages + Google Sheets CMS
+#
+# IMPORTANT:
+# Replace YOUR_USERNAME and YOUR_REPO below with your actual GitHub Pages URL.
+# Example: https://mycompany.github.io/trust-site/sitemap.xml
+
+User-agent: *
+Allow: /
+
+# Disallow admin or internal paths
+Disallow: /apps-script/
+Disallow: /.git/
+
+Sitemap: https://YOUR_USERNAME.github.io/YOUR_REPO/sitemap.xml
+

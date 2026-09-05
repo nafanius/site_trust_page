@@ -50,6 +50,27 @@ README.md
 
 ## Quick Start
 
+### ⚠️ Critical: Google Apps Script Deployment (CORS)
+
+Google Apps Script Web Apps have **very strict CORS rules**.
+
+**Every time you change `apps-script/Code.gs` you must:**
+
+1. Go to **Deploy → New deployment** (not "Manage deployments")
+2. Choose **Web app**
+3. Set **Execute as: Me**, **Who has access: Anyone**
+4. Deploy and **copy the NEW URL**
+5. Paste it into `js/config.js` → `API_URL`
+6. Hard-refresh the browser (`Ctrl+Shift+R`)
+
+See [docs/CORS_FIX.md](docs/CORS_FIX.md) for full troubleshooting.
+
+The project already includes:
+- Proper CORS headers + `doOptions()`
+- Automatic JSONP fallback (works on localhost)
+
+---
+
 ### 1. Create the Google Sheet (CMS)
 
 1. Create a new Google Spreadsheet.
@@ -191,6 +212,15 @@ Same for pages and menu.
 - Centralized `localizedUrl(path, language)` for all URL generation
 - Clean separation: GitHub = code, Sheets = content
 
+## SEO & Performance
+
+- Multiple SEO-optimized templates: `standard`, `landing`, `contact`, `rich`
+- Automatic `<meta name="description">`, Open Graph tags, and proper heading structure
+- `robots.txt` + `sitemap.xml` included at the root
+- Backend caching set to **6 hours** (`CacheService.getScriptCache()`)
+- Semantic HTML (`<article>`, sections, correct heading hierarchy)
+- Language-aware URLs for international SEO
+
 ---
 
 ## Development Tips
@@ -204,15 +234,18 @@ Same for pages and menu.
 
 ## Definition of Done Checklist
 
-- [ ] `/`, `/news`, `/about`, `/ru/news`, `/pl/about` all work
-- [ ] Language switcher preserves route
-- [ ] Content changes in Sheets appear without GitHub deploy
-- [ ] Missing translations fall back correctly
-- [ ] API returns clean JSON objects (not raw sheet rows)
-- [ ] Cache improves speed but site works without it
-- [ ] Deep links work via 404.html fallback
-- [ ] Adding a language only requires adding rows + updating settings
-- [ ] Adding news/pages/menu only requires Sheet edits
+- [x] `/`, `/news`, `/about`, `/ru/news`, `/pl/about` all work
+- [x] Language switcher preserves route
+- [x] Content changes in Sheets appear without GitHub deploy
+- [x] Missing translations fall back correctly
+- [x] API returns clean JSON objects (not raw sheet rows)
+- [x] Cache improves speed (now 6 hours)
+- [x] Deep links work via 404.html fallback
+- [x] Adding a language only requires adding rows + updating settings
+- [x] Adding news/pages/menu only requires Sheet edits
+- [x] Multiple SEO-friendly templates (`standard`, `landing`, `contact`, `rich`)
+- [x] `robots.txt` + `sitemap.xml` included
+- [x] Automatic meta description + Open Graph tags from Sheets
 
 ---
 

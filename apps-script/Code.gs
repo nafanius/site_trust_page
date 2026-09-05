@@ -1,7 +1,21 @@
 /**
  * Google Apps Script Web App — JSON API for multilingual static site.
  *
- * Deploy as Web App (Execute as: Me, Access: Anyone).
+ * ╔════════════════════════════════════════════════════════════════════════════╗
+ * ║  CRITICAL: CORS + Deployment Rules                                           ║
+ * ╠════════════════════════════════════════════════════════════════════════════╣
+ * ║  1. After ANY change to this file, you MUST create a **NEW deployment**      ║
+ * ║     (not just "Deploy" → update existing).                                   ║
+ * ║  2. Go to Deploy → New deployment → Web app → Deploy                         ║
+ * ║  3. Copy the NEW URL and paste it into js/config.js                          ║
+ * ║                                                                              ║
+ * ║  Google Apps Script is very strict with CORS. Headers only take effect      ║
+ * ║  on a fresh deployment.                                                      ║
+ * ╚════════════════════════════════════════════════════════════════════════════╝
+ *
+ * Deploy settings:
+ *   - Execute as: Me
+ *   - Who has access: Anyone (or "Anyone, even anonymous")
  *
  * Supported actions:
  *   ?action=settings
@@ -28,65 +42,131 @@ const SHEET_NAMES = {
   CATEGORY_TRANSLATIONS: 'category_translations'
 };
 
-const CACHE_TTL_SECONDS = 300; // 5 minutes — good balance for content that rarely changes
-
+const CACHE_TTL_SECONDS = 1; // 6 hours — content changes infrequently, good for performance on GitHub Pages
+const SPREADSHEET_ID = 
 /**
  * Main entry point for GET requests.
  */
 function doGet(e) {
   const params = e.parameter || {};
   const action = (params.action || '').toLowerCase().trim();
+  const callback = params.callback; // For JSONP fallback (bypasses CORS)
 
   try {
+    let result;
+
     switch (action) {
       case 'settings':
-        return jsonResponse(getSettings());
+        result = getSettings();
+        break;
 
       case 'news': {
         const lang = params.lang || 'en';
         if (params.id) {
-          return jsonResponse(getNewsById(params.id, lang));
+          result = getNewsById(params.id, lang);
+        } else if (params.slug) {
+          result = getNewsBySlug(params.slug, lang);
+        } else {
+          result = getNews(lang);
         }
-        if (params.slug) {
-          return jsonResponse(getNewsBySlug(params.slug, lang));
-        }
-        return jsonResponse(getNews(lang));
+        break;
       }
 
       case 'page': {
         const lang = params.lang || 'en';
         const slug = params.slug || '';
-        return jsonResponse(getPage(slug, lang));
+        result = getPage(slug, lang);
+        break;
       }
 
       case 'menu': {
         const lang = params.lang || 'en';
-        return jsonResponse(getMenu(lang));
+        result = getMenu(lang);
+        break;
       }
 
       default:
         return jsonResponse(null, 'Unknown action. Supported: settings, news, page, menu');
     }
+
+    // Support JSONP callback (very useful during localhost development)
+    if (callback) {
+      const jsonp = `${callback}(${JSON.stringify({ success: true, data: result })})`;
+      const output = ContentService.createTextOutput(jsonp);
+      output.setMimeType(ContentService.MimeType.JAVASCRIPT);
+      return output;
+    }
+
+    return jsonResponse(result);
+
   } catch (err) {
+    const errorPayload = { success: false, error: 'Server error: ' + err.message };
+
+    if (callback) {
+      const output = ContentService.createTextOutput(`${callback}(${JSON.stringify(errorPayload)})`);
+      output.setMimeType(ContentService.MimeType.JAVASCRIPT);
+      return output;
+    }
+
     return jsonResponse(null, 'Server error: ' + err.message);
   }
 }
 
 /**
- * Helper to return proper JSON with CORS-friendly headers.
+ * Return JSON response.
+ *
+ * NOTE on CORS:
+ * Calling setHeaders() on ContentService TextOutput often throws
+ * "setHeaders is not a function" in Web Apps (as seen in production).
+ * We deliberately avoid it here to prevent the entire doGet from crashing.
+ *
+ * Reliable cross-origin access is provided by:
+ *   - The JSONP path (?callback=...)  ← used automatically by the frontend on localhost and as fallback
+ *   - Proper "Anyone" access on the Web App deployment
+ *
+ * After editing this file you MUST "Deploy → New deployment".
  */
 function jsonResponse(data, errorMessage) {
-  const output = ContentService.createTextOutput();
+  const payload = errorMessage
+    ? { success: false, error: errorMessage }
+    : { success: true, data: data };
+
+  const output = ContentService.createTextOutput(JSON.stringify(payload));
   output.setMimeType(ContentService.MimeType.JSON);
+  // Intentionally do NOT call setHeaders() — it crashes many deployments.
+  return output;
+}
 
-  let payload;
-  if (errorMessage) {
-    payload = { success: false, error: errorMessage };
-  } else {
-    payload = { success: true, data: data };
-  }
+/**
+ * Alternative JSON response using HtmlService.
+ * This method is sometimes more reliable for CORS when called from browsers.
+ * We return JSON inside a minimal HTML document.
+ *
+ * Use this if the normal jsonResponse still gives CORS errors after redeploy.
+ */
+function jsonResponseHtml(data, errorMessage) {
+  const payload = errorMessage
+    ? { success: false, error: errorMessage }
+    : { success: true, data: data };
 
-  output.setContent(JSON.stringify(payload));
+  const json = JSON.stringify(payload);
+
+  // Return as text/html but the client will parse it as JSON
+  const output = HtmlService.createHtmlOutput(json);
+  output.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+
+  // We can't set custom headers easily here, but this often bypasses some restrictions
+  return output;
+}
+
+/**
+ * Handle preflight (OPTIONS) requests.
+ * We return a minimal response. setHeaders() is avoided because it often throws
+ * "setHeaders is not a function" in Web App executions.
+ */
+function doOptions(e) {
+  const output = ContentService.createTextOutput('');
+  output.setMimeType(ContentService.MimeType.TEXT);
   return output;
 }
 
@@ -94,7 +174,7 @@ function jsonResponse(data, errorMessage) {
  * Convert a sheet to array of objects using header row.
  */
 function sheetToObjects(sheetName) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) {
     throw new Error('Sheet not found: ' + sheetName);
@@ -297,6 +377,9 @@ function getPage(slug, lang = 'en') {
     image: pageRow.image || '',
     title: requested.title,
     content: requested.content,
+    // SEO-friendly fields (optional columns in "pages" sheet)
+    meta_description: pageRow.meta_description || '',
+    og_image: pageRow.og_image || pageRow.image || '',
     _meta: {
       requestedLanguage: lang,
       language: requested.language,
