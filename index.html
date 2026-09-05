@@ -42,15 +42,17 @@
         var baseSegs = segs.slice(0, baseIdx);
         var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
 
-        if (base && base !== '/') {
-          var b = document.createElement('base');
-          b.setAttribute('href', base);
-          var head = document.head || document.getElementsByTagName('head')[0];
-          if (head.firstChild) {
-            head.insertBefore(b, head.firstChild);
-          } else {
-            head.appendChild(b);
-          }
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
         }
       } catch (e) { /* never break page load */ }
     })();
