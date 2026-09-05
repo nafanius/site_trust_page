@@ -160,6 +160,7 @@ const API = (() => {
       });
 
       const text = await response.text();
+      console.log(text)
 
       // If the response is clearly not JSON (e.g. Google error page, "TypeError: setHeaders", HTML)
       // then the normal path is broken — fall back to JSONP which is known to work.
@@ -172,6 +173,7 @@ const API = (() => {
       let json;
       try {
         json = JSON.parse(trimmed);
+        console.log(json)
       } catch (parseErr) {
         console.warn('[API] fetch() returned invalid JSON. Using JSONP fallback.');
         return jsonpRequest(action, params);
@@ -196,6 +198,7 @@ const API = (() => {
 
   async function settings() {
     const res = await request('settings');
+    console.log(res)
     if (res.success && res.data) {
       // Cache globally for convenience (used by i18n, footer, etc.)
       window.siteSettings = res.data;
