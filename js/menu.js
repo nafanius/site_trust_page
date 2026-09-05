@@ -113,9 +113,6 @@ const Menu = (() => {
 
     nav.innerHTML = `
       <ul>
-        <li><a href="${homeUrl}">Home</a></li>
-        <li><a href="${newsUrl}">News</a></li>
-        <li><a href="${aboutUrl}">About</a></li>
       </ul>
     `;
 
