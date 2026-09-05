@@ -23,6 +23,14 @@ const API = (() => {
   function shouldUseJsonp() {
     if (typeof window === 'undefined') return false;
 
+    // Allow forcing the fetch path for debugging (add ?forceFetch=1 to URL or set window.FORCE_FETCH = true)
+    const forceFetch = (typeof window !== 'undefined') &&
+      (window.FORCE_FETCH === true || window.location.search.includes('forceFetch=1'));
+    if (forceFetch) {
+      console.log('[API] forceFetch=1 → using fetch() path for debugging');
+      return false;
+    }
+
     // Always prefer JSONP for Google Apps Script — it is the only reliably working transport.
     if (BASE_URL && BASE_URL.includes('script.google.com/macros')) {
       return true;
@@ -41,6 +49,7 @@ const API = (() => {
    * We log the exact URL so you can test it manually in a new tab if it fails.
    */
   function jsonpRequest(action, params = {}) {
+    console.log('[API][JSONP] entering jsonpRequest for', action);
     return new Promise((resolve) => {
       if (!BASE_URL) {
         resolve({ success: false, error: 'API_URL is not configured.' });
@@ -80,11 +89,14 @@ const API = (() => {
       window[callbackName] = function (response) {
         cleanup();
         console.log('[API] ✓ JSONP callback SUCCESS for', action);
+        console.log('[API][JSONP] raw response for', action, ':', response);
         if (response && typeof response === 'object') {
           if (response.success === false) {
             resolve({ success: false, error: response.error || 'Unknown error' });
           } else {
-            resolve({ success: true, data: response.data !== undefined ? response.data : response });
+            const data = response.data !== undefined ? response.data : response;
+            console.log('[API][JSONP] resolved data for', action, ':', data);
+            resolve({ success: true, data });
           }
         } else {
           resolve({ success: true, data: response });
@@ -125,6 +137,8 @@ const API = (() => {
    * Tries normal fetch first. Falls back to JSONP on CORS errors or localhost.
    */
   async function request(action, params = {}) {
+    console.log('[API] request() called for action=', action, 'params=', params);
+
     if (!BASE_URL || BASE_URL.includes('YOUR_SCRIPT_ID')) {
       return {
         success: false,
@@ -143,11 +157,20 @@ const API = (() => {
 
     const useJsonp = shouldUseJsonp();
 
+    console.log('%c[API] ========== DECISION for action="' + action + '" ==========', 'color:#b45309;font-weight:bold;font-size:12px');
+    console.log('[API] BASE_URL =', BASE_URL);
+    console.log('[API] window.location.origin =', (typeof window !== 'undefined' ? window.location.origin : 'no-window'));
+    console.log('[API] forceFetch=1 or window.FORCE_FETCH?', (typeof window !== 'undefined') && (window.FORCE_FETCH === true || (window.location && window.location.search.includes('forceFetch=1'))));
+    console.log('[API] shouldUseJsonp() returned:', useJsonp);
+
     if (useJsonp) {
-      // Always use JSONP for Google Apps Script (most reliable transport)
-      console.log('[API] Using JSONP for', action, '(Google Apps Script)');
+      console.log('%c[API] >>> SKIPPING fetch() completely — taking JSONP path for "' + action + '"', 'color:#b45309;font-weight:bold');
+      console.log('%c[API] (This is why your console.log(text) and console.log(json) inside the fetch block NEVER run)', 'color:#b45309');
       return jsonpRequest(action, params);
     }
+
+    // Only reached when shouldUseJsonp() returned false
+    console.log('%c[API] >>> TAKING fetch() path for "' + action + '" — your console.log(text/json) can now appear', 'color:#059669;font-weight:bold');
 
     // Normal fetch path (production on GitHub Pages, etc.)
     // Google Apps Script Web Apps are extremely unreliable with CORS.
@@ -160,6 +183,7 @@ const API = (() => {
       });
 
       const text = await response.text();
+      console.log('[API][fetch] raw text for', action, ':', text);
 
       // If the response is clearly not JSON (e.g. Google error page, "TypeError: setHeaders", HTML)
       // then the normal path is broken — fall back to JSONP which is known to work.
@@ -172,6 +196,7 @@ const API = (() => {
       let json;
       try {
         json = JSON.parse(trimmed);
+        console.log('[API][fetch] parsed JSON for', action, ':', json);
       } catch (parseErr) {
         console.warn('[API] fetch() returned invalid JSON. Using JSONP fallback.');
         return jsonpRequest(action, params);
