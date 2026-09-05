@@ -96,38 +96,52 @@ const Menu = (() => {
 
   /**
    * Render the full menu into #main-nav.
+   * Provides an immediate fallback so navigation is visible without blocking
+   * the main page content render. The real menu (if available) is loaded in the
+   * background and replaces the fallback when ready.
    */
   async function render(language = 'en') {
     const nav = document.getElementById('main-nav');
     if (!nav) return;
 
-    nav.innerHTML = '';
+    // Show fallback immediately. This makes the header usable right away and
+    // prevents Menu.render from blocking main content (home/news/page) in main.js.
+    nav.innerHTML = `
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/news">News</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    `;
 
-    const menuData = await fetchMenu(language);
-    if (!menuData || menuData.length === 0) {
-      // Fallback static links if API fails or empty
-      nav.innerHTML = `
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/news">News</a></li>
-          <li><a href="/about">About</a></li>
-        </ul>
-      `;
-      return;
-    }
+    // Load dynamic menu in the background. Do not await inside this function
+    // so that callers are not blocked from rendering #page-content.
+    (async () => {
+      try {
+        const menuData = await fetchMenu(language);
+        if (!menuData || menuData.length === 0) {
+          // Keep the fallback we already rendered.
+          return;
+        }
 
-    const ul = document.createElement('ul');
-    const currentRouteInfo = (window.Router && Router.getCurrentRoute) ? Router.getCurrentRoute() : { route: '/' };
+        const ul = document.createElement('ul');
+        const currentRouteInfo = (window.Router && Router.getCurrentRoute) ? Router.getCurrentRoute() : { route: '/' };
 
-    menuData.forEach(item => {
-      const li = renderMenuItem(item, language, currentRouteInfo.route);
-      ul.appendChild(li);
-    });
+        menuData.forEach(item => {
+          const li = renderMenuItem(item, language, currentRouteInfo.route);
+          ul.appendChild(li);
+        });
 
-    nav.appendChild(ul);
+        nav.innerHTML = '';
+        nav.appendChild(ul);
 
-    // Mobile toggle wiring (once)
-    setupMobileToggle(nav);
+        // Mobile toggle wiring (once)
+        setupMobileToggle(nav);
+      } catch (err) {
+        // On any error keep the static fallback (already in the DOM).
+        console.error('[Menu] background update failed:', err);
+      }
+    })();
   }
 
   function setupMobileToggle(nav) {

@@ -52,9 +52,13 @@
     if (logoText) logoText.textContent = settings.site_name;
   }
 
-  // 4. Render menu (async)
+  // 4. Render menu (non-blocking).
+  // Menu is header UI only. Do not await it — we must render primary content
+  // (#page-content) even if the menu API call is slow or fails.
   if (window.Menu) {
-    await Menu.render(currentLang);
+    // Fire-and-forget; the implementation shows a static fallback immediately
+    // and updates the nav when the real data arrives.
+    Menu.render(currentLang);
   }
 
   // 5. Render language switcher
@@ -80,9 +84,9 @@
       I18n.renderLanguageSwitcher('language-switcher');
     }
 
-    // Re-render menu for new language (cheap because of cache)
+    // Re-render menu for new language (non-blocking; menu.js shows fallback immediately)
     if (window.Menu) {
-      await Menu.render(currentLang);
+      Menu.render(currentLang);
     }
 
     if (!pageContent) return;
@@ -148,6 +152,7 @@
     // SEO meta for homepage
     setHomeMeta(siteName, homeDesc);
 
+    const i18n = window.I18n;
     pageContent.innerHTML = `
       <div class="page-header">
         <h1>Welcome to ${escapeHtml(siteName)}</h1>
@@ -156,7 +161,7 @@
         <p>${escapeHtml(homeDesc)}</p>
         <p>Use the navigation above to explore News and other pages.</p>
         <p style="margin-top:2rem;">
-          <a href="${I18n ? I18n.localizedUrl('/news', currentLang) : '/news'}" class="btn" style="background:#0a66c2;color:white;padding:0.6rem 1.2rem;border-radius:9999px;text-decoration:none;">Browse News</a>
+          <a href="${i18n ? i18n.localizedUrl('/news', currentLang) : '/news'}" class="btn" style="background:#0a66c2;color:white;padding:0.6rem 1.2rem;border-radius:9999px;text-decoration:none;">Browse News</a>
         </p>
       </div>
     `;
