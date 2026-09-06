@@ -44,7 +44,7 @@ Create a new Google Spreadsheet and create the following sheets with **exact nam
 |----|-----------|----------|-------|-------------------------------------------|----------|--------|------|
 | 1  | about     | standard |       | Learn more about our mission and values.  |          | TRUE   | 10   |
 | 2  | contacts  | contact  |       | Get in touch with our team.               |          | TRUE   | 20   |
-| 3  | home-hero | landing  |       | Welcome to the most trusted multilingual site. |       | TRUE   | 5    |
+| 3  | home      | standard |       | Welcome to our multilingual site.         |          | TRUE   | 5    |
 | 4  | services  | rich     |       | Explore our full range of professional services. |   | TRUE   | 30   |
 
 **Supported templates** (set in the `template` column):
@@ -76,6 +76,43 @@ All templates use:
 | 2       | ru   | Контакты       | Напишите нам: contact@example.com            |
 | 3       | en   | Welcome        | Discover our multilingual platform...        |
 | 4       | en   | Our Services   | We offer consulting, development and support.|
+
+---
+
+## Homepage (главная страница) из Google Sheets
+
+Главная страница (`/`, `/ru/`, `/pl/`) теперь тоже может полностью загружаться из листов `pages` + `page_translations`.
+
+### Что нужно поменять в Google Sheets (инструкция)
+
+1. **Лист `pages`** — добавь (или измени) строку со `slug = home`:
+
+   | id | slug | template | image | meta_description             | active | sort |
+   |----|------|----------|-------|------------------------------|--------|------|
+   | 10 | home | standard |       | Welcome to our site          | TRUE   | 1    |
+
+   > Важно: `slug` **должен быть ровно** `home` (не `home-hero`, не `index`).
+
+2. **Лист `page_translations`** — добавь переводы для этой страницы:
+
+   | page_id | lang | title              | content                                           |
+   |---------|------|--------------------|---------------------------------------------------|
+   | 10      | en   | Welcome            | This is the main page. Edit this in Google Sheets.|
+   | 10      | ru   | Добро пожаловать   | Это главная страница. Редактируйте в Google Sheets.|
+   | 10      | pl   | Witamy             | To jest strona główna. Edytuj w Google Sheets.    |
+
+3. (Опционально) Добавь `image`, `meta_description`, `og_image` в лист `pages` для главной страницы.
+
+### Как это работает
+- Сайт при загрузке главной запрашивает `action=page&slug=home&lang=...`
+- Если запись найдена — показывает title + content + image из таблицы (с правильным переводом).
+- Если страницы `home` нет — работает по-старому (из `settings.home_description`).
+
+После изменений в таблице обновления появятся на сайте (с учётом кэша 6 часов или после жёсткого обновления).
+
+---
+
+**Ранее использовался пример `home-hero`** — его можно оставить или удалить. Главная теперь специально использует slug `home`.
 
 ---
 

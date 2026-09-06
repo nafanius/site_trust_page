@@ -48,16 +48,29 @@
     }
   }
 
-  // Update site name in logo if provided + fix logo href for subpath deployments
+  // Update site name in logo if provided.
+  // Set logo href to current language home so clicks never switch language.
   const logoLink = document.getElementById('logo-link');
   if (logoLink) {
     if (window.Router && typeof Router.buildUrl === 'function') {
-      logoLink.setAttribute('href', Router.buildUrl('/', 'en'));
+      logoLink.setAttribute('href', Router.buildUrl('/', currentLang));
     }
     if (settings.site_name) {
       const logoText = logoLink.querySelector('.logo-text');
       if (logoText) logoText.textContent = settings.site_name;
     }
+    // Ensure clicking the logo always goes to home of the CURRENT language (never switches lang)
+    logoLink.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (window.Router && typeof Router.navigate === 'function') {
+        Router.navigate('/', currentLang);
+      } else {
+        // Fallback
+        const target = (window.Router && Router.buildUrl) ? Router.buildUrl('/', currentLang) : '/';
+        window.location.href = target;
+      }
+    });
   }
 
   // 4. Render menu for initial language (full render + API call happens here)
@@ -169,6 +182,12 @@
         // Full menu re-render (fetches new language data)
         Menu.render(newLang);
       }
+
+      // Keep logo pointing to the home of the new language
+      const logo = document.getElementById('logo-link');
+      if (logo && window.Router && typeof Router.buildUrl === 'function') {
+        logo.setAttribute('href', Router.buildUrl('/', newLang));
+      }
     } else {
       // Same language: minimal work
       if (window.Menu && typeof Menu.updateActiveState === 'function') {
@@ -260,9 +279,65 @@
     if (!pageContent) return;
 
     const siteName = settings.site_name || 'Trust Site';
+
+    // Try to load homepage content from Google Sheets (slug = "home")
+    // This allows the main page to be fully managed from the CMS like any other page.
+    let homePage = null;
+    if (window.API) {
+      try {
+        const res = await API.page('home', currentLang);
+        if (res && res.success && res.data) {
+          homePage = res.data;
+        }
+      } catch (e) {
+        // ignore — fall back to settings/default
+      }
+    }
+
+    if (homePage && homePage.title) {
+      // Render using page content from sheet (standard layout)
+      const imgHtml = homePage.image
+        ? `<img src="${escapeHtml(homePage.image)}" alt="${escapeHtml(homePage.title)}" style="max-height:380px;width:100%;object-fit:cover;border-radius:8px;margin:1.5rem 0;">`
+        : '';
+
+      const body = (homePage.content || '')
+        .split(/\n{2,}/)
+        .map(block => {
+          const safe = escapeHtml(block).replace(/\n/g, '<br>');
+          return `<p>${safe}</p>`;
+        })
+        .join('');
+
+      // SEO
+      document.title = homePage.title;
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      const desc = homePage.meta_description || homePage.title || '';
+      metaDesc.setAttribute('content', escapeHtml(desc).slice(0, 160));
+
+      pageContent.innerHTML = `
+        <article class="page-template standard">
+          <header class="page-header">
+            <h1>${escapeHtml(homePage.title)}</h1>
+          </header>
+          <div class="page-content">
+            ${imgHtml}
+            <div class="page-body">
+              ${body || '<p></p>'}
+            </div>
+          </div>
+        </article>
+      `;
+      return;
+    }
+
+    // Fallback: use settings or minimal default (backward compatible)
     const homeDesc = settings.home_description || `Welcome to ${siteName} — multilingual content powered by Google Sheets.`;
 
-    // SEO meta for homepage
     setHomeMeta(siteName, homeDesc);
 
     const i18n = window.I18n;
