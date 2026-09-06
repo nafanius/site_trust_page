@@ -134,15 +134,21 @@ const Pages = (() => {
       ? `<img src="${escapeHtml(page.image)}" alt="${escapeHtml(page.title || '')}" style="max-height:380px;width:100%;object-fit:cover;border-radius:8px;margin:1.5rem 0;">`
       : '';
 
+    // Support rich translatable fields from page_translations
+    const lead = page.lead || page.subtitle || page.meta_description || '';
+    const extra = page.extra_content || page.extra || '';
+
     return `
       <article class="page-template standard">
         <header class="page-header">
           <h1>${escapeHtml(page.title || slug)}</h1>
+          ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
         </header>
         <div class="page-content">
           ${imgHtml}
           <div class="page-body">
             ${formatPageContent(page.content || '')}
+            ${extra ? `<div class="page-extra">${formatPageContent(extra)}</div>` : ''}
           </div>
         </div>
       </article>
@@ -154,15 +160,19 @@ const Pages = (() => {
       ? `<img src="${escapeHtml(page.image)}" alt="${escapeHtml(page.title || '')}" class="landing-hero-image">`
       : '';
 
-    // Split content into sections if it contains double newlines or headings
     const body = formatPageContent(page.content || '');
+    const lead = page.lead || page.subtitle || page.meta_description || '';
+    const ctaTitle = page.cta_title || page.ctaTitle || 'Ready to get started?';
+    const ctaText  = page.cta_text  || page.ctaText  || 'Contact us or explore our latest updates.';
+    const ctaLabel = page.cta_label || page.ctaLabel || page.button || 'Get in touch';
+    const ctaUrl   = page.cta_url   || page.ctaUrl   || (I18n ? I18n.localizedUrl('/contacts', currentLang) : '/contacts');
 
     return `
       <article class="page-template landing">
         <header class="landing-hero">
           <div class="landing-hero-content">
             <h1 class="landing-title">${escapeHtml(page.title || slug)}</h1>
-            ${page.meta_description ? `<p class="landing-lead">${escapeHtml(page.meta_description)}</p>` : ''}
+            ${lead ? `<p class="landing-lead">${escapeHtml(lead)}</p>` : ''}
           </div>
           ${imgHtml}
         </header>
@@ -175,9 +185,9 @@ const Pages = (() => {
 
         <section class="landing-cta">
           <div class="container">
-            <h2>Ready to get started?</h2>
-            <p>Contact us or explore our latest updates.</p>
-            <a href="${I18n ? I18n.localizedUrl('/contacts', currentLang) : '/contacts'}" class="btn btn-primary">Get in touch</a>
+            <h2>${escapeHtml(ctaTitle)}</h2>
+            <p>${escapeHtml(ctaText)}</p>
+            <a href="${escapeHtml(ctaUrl)}" class="btn btn-primary">${escapeHtml(ctaLabel)}</a>
           </div>
         </section>
       </article>
@@ -187,28 +197,41 @@ const Pages = (() => {
   function renderContactTemplate(page, slug) {
     const body = formatPageContent(page.content || '');
 
+    // Rich translatable fields from page_translations (or pages)
+    // Admins can add any of these columns to page_translations for the contacts row.
+    const infoTitle   = page.info_title   || page.infoTitle   || 'Contact Information';
+    const formTitle   = page.form_title   || page.formTitle   || 'Send us a message';
+    const email       = page.contact_email || page.contactEmail || page.email || 'info@trustsite.example';
+    const phone       = page.contact_phone || page.contactPhone || page.phone || '';
+    const address     = page.address      || page.location    || '';
+    const formNote    = page.form_note    || page.formNote    || 'This form is for demonstration. Replace with your real form handler.';
+    const submitLabel = page.submit_label || page.submitLabel || page.button || 'Send Message';
+    const lead        = page.lead         || page.subtitle    || page.meta_description || '';
+
+    const contactDetails = [];
+    if (email) contactDetails.push(`<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>`);
+    if (phone) contactDetails.push(`<p><strong>Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>`);
+    if (address) contactDetails.push(`<p><strong>Address:</strong> ${escapeHtml(address)}</p>`);
+
     return `
       <article class="page-template contact">
         <header class="page-header">
           <h1>${escapeHtml(page.title || 'Contact Us')}</h1>
-          ${page.meta_description ? `<p class="page-lead">${escapeHtml(page.meta_description)}</p>` : ''}
+          ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
         </header>
 
         <div class="contact-grid">
           <section class="contact-info">
-            <h2>Contact Information</h2>
+            <h2>${escapeHtml(infoTitle)}</h2>
             <div class="page-body">
               ${body}
             </div>
 
-            <div class="contact-details">
-              <p><strong>Email:</strong> <a href="mailto:info@trustsite.example">info@trustsite.example</a></p>
-              <p><strong>Phone:</strong> <a href="tel:+10000000000">+1 (000) 000-0000</a></p>
-            </div>
+            ${contactDetails.length ? `<div class="contact-details">${contactDetails.join('')}</div>` : ''}
           </section>
 
           <section class="contact-form">
-            <h2>Send us a message</h2>
+            <h2>${escapeHtml(formTitle)}</h2>
             <form id="contact-form" onsubmit="event.preventDefault(); alert('Thank you! This is a demo form. In production connect to your preferred service.');">
               <div class="form-group">
                 <label for="name">Name</label>
@@ -222,9 +245,9 @@ const Pages = (() => {
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Send Message</button>
+              <button type="submit" class="btn btn-primary">${escapeHtml(submitLabel)}</button>
             </form>
-            <p class="form-note">This form is for demonstration. Replace with your real form handler.</p>
+            ${formNote ? `<p class="form-note">${escapeHtml(formNote)}</p>` : ''}
           </section>
         </div>
       </article>
@@ -239,12 +262,16 @@ const Pages = (() => {
       : '';
 
     const body = formatPageContent(page.content || '');
+    const lead = page.lead || page.subtitle || page.meta_description || '';
+    const footerText = page.footer_text || page.footerText || 'Thank you for reading.';
+    const moreLabel  = page.more_label  || page.moreLabel  || 'Browse more articles';
+    const moreUrl    = page.more_url    || page.moreUrl    || (I18n ? I18n.localizedUrl('/news', currentLang) : '/news');
 
     return `
       <article class="page-template rich">
         <header class="rich-header">
           <h1>${escapeHtml(page.title || slug)}</h1>
-          ${page.meta_description ? `<p class="rich-lead">${escapeHtml(page.meta_description)}</p>` : ''}
+          ${lead ? `<p class="rich-lead">${escapeHtml(lead)}</p>` : ''}
         </header>
 
         ${imgHtml}
@@ -256,7 +283,7 @@ const Pages = (() => {
         </div>
 
         <footer class="rich-footer">
-          <p>Thank you for reading. <a href="${I18n ? I18n.localizedUrl('/news', currentLang) : '/news'}">Browse more articles</a></p>
+          <p>${escapeHtml(footerText)} <a href="${escapeHtml(moreUrl)}">${escapeHtml(moreLabel)}</a></p>
         </footer>
       </article>
     `;

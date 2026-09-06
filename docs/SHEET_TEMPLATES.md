@@ -46,6 +46,9 @@ Create a new Google Spreadsheet and create the following sheets with **exact nam
 | 2  | contacts  | contact  |       | Get in touch with our team.               |          | TRUE   | 20   |
 | 3  | home      | standard |       | Welcome to our multilingual site.         |          | TRUE   | 5    |
 | 4  | services  | rich     |       | Explore our full range of professional services. |   | TRUE   | 30   |
+| 5  | news      | standard |       | Latest company news and updates           |          | TRUE   | 40   |
+
+> The `news` row (slug = `news`) is special: its title + lead/subtitle from `page_translations` become the header of the **News listing page** (`/news`, `/ru/news` etc.).
 
 **Supported templates** (set in the `template` column):
 
@@ -67,6 +70,8 @@ All templates use:
 
 ## 5. `page_translations`
 
+**Core columns** (required for basic pages):
+
 | page_id | lang | title          | content                                      |
 |---------|------|----------------|----------------------------------------------|
 | 1       | en   | About Us       | We are a trusted organization...             |
@@ -76,6 +81,64 @@ All templates use:
 | 2       | ru   | Контакты       | Напишите нам: contact@example.com            |
 | 3       | en   | Welcome        | Discover our multilingual platform...        |
 | 4       | en   | Our Services   | We offer consulting, development and support.|
+
+**Rich translatable columns** (add any of these to `page_translations` — they are passed through automatically and can be used by templates):
+
+These columns are **fully translated** per language row. Add them only to the `page_translations` sheet (not `pages`).
+
+Useful columns you can add right now (examples for contacts page):
+
+- `lead` or `subtitle` — short lead text under the main title
+- `info_title` — heading for the left "Contact Information" block
+- `form_title` — heading for the form block
+- `contact_email`, `contact_phone`, `address` — dynamic contact details
+- `form_note` — small note under the form
+- `submit_label` or `button` — text on the submit button
+- `extra_content` or `extra` — additional translated text block (shown after main content on standard pages)
+
+Example for contacts (page_id = 2):
+
+| page_id | lang | title       | content                        | lead                        | info_title          | form_title       | contact_email          | contact_phone     | address                  | submit_label | form_note                              |
+|---------|------|-------------|--------------------------------|-----------------------------|---------------------|------------------|------------------------|-------------------|--------------------------|--------------|----------------------------------------|
+| 2       | en   | Contact Us  | Our team is here to help...    | We reply within 24 hours    | Contact Information | Send us a message| info@trustsite.example | +1 (000) 000-0000 | 123 Main St, City        | Send Message | This form is a demo. Use your own.   |
+| 2       | ru   | Контакты    | Наша команда готова помочь...  | Отвечаем в течение 24 часов | Контактная информация | Напишите нам     | info@trustsite.example | +7 (000) 000-00-00| ул. Главная 123, Город   | Отправить    | Это демо-форма. Подключите свою.     |
+| 2       | pl   | Kontakt     | Nasz zespół jest gotowy pomóc...| Odpowiadamy w 24h           | Informacje kontaktowe | Wyślij wiadomość | info@trustsite.example | +48 000 000 000   | ul. Główna 123, Miasto   | Wyślij       | To jest formularz demo.                |
+
+### News listing page header (`/news`) from Google Sheets
+
+The header (title + lead text) of the **News listing** (`/news`, `/ru/news`, `/pl/news`) is now loaded from a page with `slug = "news"`.
+
+**What to add in Google Sheets:**
+
+1. In sheet `pages` add (or update) a row:
+
+   | id | slug | template | image | meta_description          | active | sort |
+   |----|------|----------|-------|---------------------------|--------|------|
+   | 5  | news | standard |       | Latest company news       | TRUE   | 40   |
+
+2. In sheet `page_translations` add rows for each language (you can use the rich columns):
+
+   | page_id | lang | title     | content | lead                          | subtitle                     |
+   |---------|------|-----------|---------|-------------------------------|------------------------------|
+   | 5       | en   | News      |         | Latest updates and articles   | Company announcements        |
+   | 5       | ru   | Новости   |         | Последние обновления и статьи | Анонсы компании              |
+   | 5       | pl   | Aktualności |       | Najnowsze aktualizacje        | Ogłoszenia firmy             |
+
+The `title` becomes the `<h1>`, `lead` or `subtitle` becomes the lead paragraph under it.
+
+If the "news" page row does not exist, the site falls back to a static "News" header (backward compatible).
+
+---
+
+### Contacts page (`/contacts`) — rich translatable fields
+
+The contacts page (`slug = "contacts"`, template usually `contact`) supports many additional translatable columns in `page_translations`.
+
+See the example table above in the "Rich translatable columns" section.
+
+All extra columns you add to `page_translations` (for any page) are automatically available in the templates.
+
+All these extra columns are **optional**. The site will gracefully fall back to sensible defaults when they are empty.
 
 ---
 

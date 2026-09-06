@@ -12,15 +12,39 @@ const News = (() => {
 
   /**
    * Render news list into #page-content.
+   * Header (title + optional lead/subtitle) is loaded from pages.slug="news" + page_translations
+   * so that /news page header is fully translatable from Google Sheets.
    */
   async function renderList() {
     const container = document.getElementById('page-content');
     if (!container) return;
 
-    container.innerHTML = `
+    // Default static header (will be replaced if page "news" exists in Sheets)
+    let headerHtml = `
       <div class="page-header">
         <h1>News</h1>w
       </div>
+    `;
+
+    // Try to load dynamic header from pages (slug = "news")
+    try {
+      const pageRes = await API.page('news', currentLang);
+      if (pageRes && pageRes.success && pageRes.data && pageRes.data.title) {
+        const p = pageRes.data;
+        const lead = p.lead || p.subtitle || p.meta_description || '';
+        headerHtml = `
+          <div class="page-header">
+            <h1>${escapeHtml(p.title)}</h1>
+            ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
+          </div>
+        `;
+      }
+    } catch (e) {
+      // keep default header
+    }
+
+    container.innerHTML = `
+      ${headerHtml}
       <div id="news-list" class="news-grid"></div>
     `;
 
