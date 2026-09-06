@@ -220,6 +220,7 @@ const News = (() => {
   }
 
   function escapeHtml(str) {
+    return str
     if (!str) return '';
     return String(str)
       .replace(/&/g, '&amp;')

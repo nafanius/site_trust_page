@@ -163,9 +163,9 @@ const Pages = (() => {
     const body = formatPageContent(page.content || '');
     const lead = page.lead || page.subtitle || page.meta_description || '';
     const ctaTitle = page.cta_title || page.ctaTitle || 'Ready to get started?';
-    const ctaText  = page.cta_text  || page.ctaText  || 'Contact us or explore our latest updates.';
+    const ctaText = page.cta_text || page.ctaText || 'Contact us or explore our latest updates.';
     const ctaLabel = page.cta_label || page.ctaLabel || page.button || 'Get in touch';
-    const ctaUrl   = page.cta_url   || page.ctaUrl   || (I18n ? I18n.localizedUrl('/contacts', currentLang) : '/contacts');
+    const ctaUrl = page.cta_url || page.ctaUrl || (I18n ? I18n.localizedUrl('/contacts', currentLang) : '/contacts');
 
     return `
       <article class="page-template landing">
@@ -199,14 +199,14 @@ const Pages = (() => {
 
     // Rich translatable fields from page_translations (or pages)
     // Admins can add any of these columns to page_translations for the contacts row.
-    const infoTitle   = page.info_title   || page.infoTitle   || 'Contact Information';
-    const formTitle   = page.form_title   || page.formTitle   || 'Send us a message';
-    const email       = page.contact_email || page.contactEmail || page.email || 'info@trustsite.example';
-    const phone       = page.contact_phone || page.contactPhone || page.phone || '';
-    const address     = page.address      || page.location    || '';
-    const formNote    = page.form_note    || page.formNote    || 'This form is for demonstration. Replace with your real form handler.';
+    const infoTitle = page.info_title || page.infoTitle || 'Contact Information';
+    const formTitle = page.form_title || page.formTitle || 'Send us a message';
+    const email = page.contact_email || page.contactEmail || page.email || 'info@trustsite.example';
+    const phone = page.contact_phone || page.contactPhone || page.phone || '';
+    const address = page.address || page.location || '';
+    const formNote = page.form_note || page.formNote || 'This form is for demonstration. Replace with your real form handler.';
     const submitLabel = page.submit_label || page.submitLabel || page.button || 'Send Message';
-    const lead        = page.lead         || page.subtitle    || page.meta_description || '';
+    const lead = page.lead || page.subtitle || page.meta_description || '';
 
     const contactDetails = [];
     if (email) contactDetails.push(`<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>`);
@@ -232,14 +232,14 @@ const Pages = (() => {
 
           <section class="contact-form">
             <h2>${escapeHtml(formTitle)}</h2>
-            <form id="contact-form" onsubmit="event.preventDefault(); alert('Thank you! This is a demo form. In production connect to your preferred service.');">
+            <form id="contact-form" onsubmit="event.preventDefault(); window.Pages.sendForm();">
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required>
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <label for="phone">Phone</label>
+                <input type="phone" id="phone" name="phone" required>
               </div>
               <div class="form-group">
                 <label for="message">Message</label>
@@ -264,8 +264,8 @@ const Pages = (() => {
     const body = formatPageContent(page.content || '');
     const lead = page.lead || page.subtitle || page.meta_description || '';
     const footerText = page.footer_text || page.footerText || 'Thank you for reading.';
-    const moreLabel  = page.more_label  || page.moreLabel  || 'Browse more articles';
-    const moreUrl    = page.more_url    || page.moreUrl    || (I18n ? I18n.localizedUrl('/news', currentLang) : '/news');
+    const moreLabel = page.more_label || page.moreLabel || 'Browse more articles';
+    const moreUrl = page.more_url || page.moreUrl || (I18n ? I18n.localizedUrl('/news', currentLang) : '/news');
 
     return `
       <article class="page-template rich">
@@ -289,7 +289,47 @@ const Pages = (() => {
     `;
   }
 
+  async function sendForm() {
+    const form = document.querySelector("#contact-form");
+    const FORM_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_URL)
+      ? CONFIG.API_URL
+      : '';
+
+
+
+    const data = {
+      name: form.name.value,
+      phone: form.phone.value,
+      message: form.message.value
+    };
+
+    await fetch(FORM_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(data)
+    });
+    // await fetch(FORM_URL, {
+    //   method: "POST",
+    //   mode: "no-cors",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(data)
+    // });
+    // await fetch(
+    //   FORM_URL,
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify(data)
+    //   }
+    // );
+
+    form.reset();
+
+    alert("Заявка отправлена!");
+
+  }
+
   function escapeHtml(str) {
+    return str
     if (!str) return '';
     return String(str)
       .replace(/&/g, '&amp;')
@@ -301,7 +341,8 @@ const Pages = (() => {
 
   return {
     renderPage,
-    setLanguage
+    setLanguage,
+    sendForm,
   };
 })();
 
