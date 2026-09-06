@@ -175,7 +175,7 @@ Edit `js/config.js` and set your `API_URL`.
 4. Save.
 
 The site will be available at `https://<user>.github.io/<repo>/`.
-
+https://nafanius.github.io/site_trust_page/
 ### 5. Test the Routes
 
 Visit:
