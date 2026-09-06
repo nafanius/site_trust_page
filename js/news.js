@@ -22,7 +22,6 @@ const News = (() => {
     // Default static header (will be replaced if page "news" exists in Sheets)
     let headerHtml = `
       <div class="page-header">
-        <h1>News</h1>w
       </div>
     `;
 
