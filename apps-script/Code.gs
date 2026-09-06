@@ -352,10 +352,17 @@ function getPage(slug, lang = 'en') {
     const l = String(t.lang || '').toLowerCase().trim();
     if (!pid || !l) return;
     if (!transMap[pid]) transMap[pid] = {};
-    transMap[pid][l] = {
-      title: t.title || '',
-      content: t.content || ''
-    };
+    // Capture ALL columns from the translation row (except identifiers) so that
+    // admins can add arbitrary translatable fields (subtitle, lead, info_title, contact_email, etc.)
+    // without changing backend code.
+    const transObj = {};
+    Object.keys(t).forEach(k => {
+      const key = String(k).trim();
+      const lower = key.toLowerCase();
+      if (lower === 'page_id' || lower === 'lang') return;
+      transObj[key] = (t[k] === '' || t[k] === null || t[k] === undefined) ? '' : t[k];
+    });
+    transMap[pid][l] = transObj;
   });
 
   const pageRow = pageRows.find(p => {
@@ -370,20 +377,25 @@ function getPage(slug, lang = 'en') {
   const pid = String(pageRow.id || '').trim();
   const requested = pickTranslation(transMap[pid], lang, fallback);
 
+  // requested may now contain many keys (title, content, subtitle, lead, contact_email, etc.)
+  // We keep explicit top-level fields for backward compatibility with existing templates.
   const result = {
     id: Number(pageRow.id) || pid,
     slug: pageRow.slug || slug,
     template: pageRow.template || 'standard',
     image: pageRow.image || '',
-    title: requested.title,
-    content: requested.content,
+    title: requested.title || requested.Title || '',
+    content: requested.content || requested.Content || '',
     // SEO-friendly fields (optional columns in "pages" sheet)
     meta_description: pageRow.meta_description || '',
     og_image: pageRow.og_image || pageRow.image || '',
+    // Pass through ALL translation fields so templates can use rich translatable data
+    // e.g. page.subtitle, page.lead, page.contact_email, page.address, page.info_title etc.
+    ...requested,
     _meta: {
       requestedLanguage: lang,
-      language: requested.language,
-      fallback: requested.fallback
+      language: requested.language || lang,
+      fallback: requested.fallback || false
     }
   };
 
