@@ -19,7 +19,7 @@ const News = (() => {
 
     container.innerHTML = `
       <div class="page-header">
-        <h1>News</h1>
+        <h1>News</h1>w
       </div>
       <div id="news-list" class="news-grid"></div>
     `;
