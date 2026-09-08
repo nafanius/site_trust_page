@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisaPlace • US &amp; Canadian Immigration Attorneys</title>
+  <meta name="description" content="Professional US and Canadian immigration attorneys. Expert visa, green card, and citizenship services.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+</head>
+<body class="bg-white text-[#45464d] font-sans antialiased">
+  <!-- HEADER / NAV -->
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="flex items-center justify-between h-16 px-4 md:px-6 lg:px-8">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-x-2.5 group">
+          <div class="w-9 h-9 bg-[#055a96] rounded flex items-center justify-center">
+            <span class="text-white font-bold text-xl tracking-[-1px]">VP</span>
+          </div>
+          <div>
+            <span class="font-semibold text-xl tracking-[-0.5px] text-[#243E58]">VisaPlace</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-x-1 text-sm font-medium">
+          <a href="#about" class="px-3 py-2 text-[#45464d] hover:text-[#055a96] transition-colors">About Us</a>
+          
+          <!-- US Immigration Dropdown -->
+          <div class="relative group" data-dropdown>
+            <button class="px-3 py-2 text-[#45464d] hover:text-[#055a96] flex items-center gap-x-1 transition-colors" aria-haspopup="true" aria-expanded="false">
+              US Immigration
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="absolute left-0 top-full mt-1 w-64 bg-white border border-gray-200 shadow-lg rounded-md py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <a href="#" class="block px-4 py-2 text-sm text-[#45464d] hover:bg-gray-50 hover:text-[#055a96]">Green Cards</a>
+              <a href="#" class="block px-4 py-2 text-sm text-[#45464d] hover:bg-gray-50 hover:text-[#055a96]">Work Visas (H-1B, L-1, O-1)</a>
+              <a href="#" class="block px-4 py-2 text-sm text-[#45464d] hover:bg-gray-50 hover:text-[#055a96]">Family-Based Immigration</a>
+              <a href="#" class="block px-4 py-2 text-sm text-[#45464d] hover:bg-gray-50 hover:text-[#055a96]">Citizenship &amp; Naturalization</a>
+              <a href="#" class="block px-4 py-2 text-sm text-[#45464d] hover:bg-gray-50 hover:text-[#055a96]">Deportation Defense</a>
+              <div class="border-t my-1"></div>
+              <a href="#" class="block px-4 py-2 text-sm font-medium text-[#055a96]">All US Services →</a>
+            </div>
+          </div>
+
+          <!-- Canadian Immigration Mega Menu -->
+          <div class="relative group" data-dropdown>
+            <button class="px-3 py-2 text-[#45464d] hover:text-[#055a96] flex items-center gap-x-1 transition-colors" aria-haspopup="true" aria-expanded="false">
+              Canadian Immigration
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="absolute left-0 top-full mt-1 w-[520px] bg-white border border-gray-200 shadow-xl rounded-md p-6 grid grid-cols-2 gap-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <div>
+                <div class="text-xs font-semibold tracking-widest text-[#939598] mb-2">PERMANENT RESIDENCE</div>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Express Entry</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Provincial Nominee Programs</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Family Sponsorship</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Start-Up Visa</a>
+              </div>
+              <div>
+                <div class="text-xs font-semibold tracking-widest text-[#939598] mb-2">TEMPORARY RESIDENCE</div>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Study Permits</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Work Permits</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Visitor Visas</a>
+                <a href="#" class="block py-1 text-sm hover:text-[#055a96]">Super Visa</a>
+                <div class="mt-3 pt-3 border-t">
+                  <a href="#" class="text-sm font-medium text-[#f9794c] hover:underline">CRS Calculator →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#reviews" class="px-3 py-2 text-[#45464d] hover:text-[#055a96] transition-colors">Reviews</a>
+          <a href="#resources" class="px-3 py-2 text-[#45464d] hover:text-[#055a96] transition-colors">Resources</a>
+          <a href="#contact" class="px-3 py-2 text-[#45464d] hover:text-[#055a96] transition-colors">Contact</a>
+        </nav>
+
+        <!-- Right side actions -->
+        <div class="hidden lg:flex items-center gap-x-4">
+          <a href="tel:8669347447" class="flex items-center gap-x-2 text-sm font-medium text-[#45464d] hover:text-[#055a96]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2 3 3 0 013 3v1m0 0v1m0-1h.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01M12 12v.01" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2 3 3 0 013 3v1m0 0v1m0-1h.01M12 12v.01" />
+            </svg>
+            <span class="font-semibold">866-934-7447</span>
+          </a>
+          <a href="#contact" 
+             class="button-new inline-flex items-center justify-center px-5 py-2 text-sm font-semibold rounded-md bg-[#f9794c] text-white hover:bg-[#e56a3f] active:bg-[#d45f36] transition-all shadow-sm">
+            Book Consultation
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn"
+                class="lg:hidden p-2 text-[#45464d] hover:text-[#055a96]"
+                aria-label="Open menu"
+                aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="hidden lg:hidden fixed inset-0 z-[60] bg-black/40" aria-hidden="true">
+      <div class="absolute right-0 top-0 h-full w-80 max-w-[85%] bg-white shadow-xl p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+          <span class="font-semibold text-xl text-[#243E58]">VisaPlace</span>
+          <button id="mobile-close-btn" class="p-2 text-[#45464d]" aria-label="Close menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6h12v12"/></svg>
+          </button>
+        </div>
+
+        <nav class="space-y-1 text-base">
+          <a href="#about" class="block py-2.5 text-[#45464d]">About Us</a>
+          <details class="group">
+            <summary class="flex justify-between py-2.5 text-[#45464d] cursor-pointer list-none">US Immigration <span class="text-xs">▾</span></summary>
+            <div class="pl-4 space-y-1 text-sm text-[#45464d]">
+              <a href="#" class="block py-1">Green Cards</a>
+              <a href="#" class="block py-1">Work Visas</a>
+              <a href="#" class="block py-1">Family Immigration</a>
+              <a href="#" class="block py-1">Citizenship</a>
+            </div>
+          </details>
+          <details class="group">
+            <summary class="flex justify-between py-2.5 text-[#45464d] cursor-pointer list-none">Canadian Immigration <span class="text-xs">▾</span></summary>
+            <div class="pl-4 space-y-1 text-sm text-[#45464d]">
+              <a href="#" class="block py-1">Express Entry</a>
+              <a href="#" class="block py-1">Provincial Nominee</a>
+              <a href="#" class="block py-1">Study &amp; Work Permits</a>
+              <a href="#" class="block py-1">CRS Calculator</a>
+            </div>
+          </details>
+          <a href="#reviews" class="block py-2.5 text-[#45464d]">Reviews</a>
+          <a href="#resources" class="block py-2.5 text-[#45464d]">Resources</a>
+          <a href="#contact" class="block py-2.5 text-[#45464d]">Contact</a>
+        </nav>
+
+        <div class="mt-8 pt-6 border-t">
+          <a href="tel:8669347447" class="flex items-center gap-2 text-[#055a96] font-semibold">
+            <span>📞</span> 866-934-7447
+          </a>
+          <a href="#contact" class="mt-4 button-new block text-center w-full py-2.5 rounded-md bg-[#f9794c] text-white font-semibold">Book Free Consultation</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative bg-[#243E58] text-white overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff10_0.8px,transparent_1px)] bg-[length:4px_4px]"></div>
+    
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 pt-16 pb-20 md:pt-20 md:pb-24 relative">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-white/10 text-xs tracking-[1px] font-medium mb-6">
+          <span class="w-1.5 h-1.5 bg-[#f9794c] rounded-full"></span>
+          TRUSTED SINCE 2002
+        </div>
+
+        <h1 class="text-[42px] md:text-[56px] lg:text-[62px] leading-[1.05] font-semibold tracking-[-1.5px] mb-6">
+          US &amp; Canadian<br>Immigration Attorneys
+        </h1>
+        
+        <p class="max-w-md text-lg md:text-xl text-white/80 mb-8">
+          Expert legal representation for visas, green cards, permanent residence, and citizenship. 
+          Over 25,000 successful cases.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="#contact" 
+             class="button-new inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] transition-all shadow-sm">
+            Schedule a Consultation
+          </a>
+          <a href="tel:8669347447" 
+             class="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold rounded-md border border-white/30 hover:bg-white/10 transition-colors">
+            Call 866-934-7447
+          </a>
+        </div>
+
+        <div class="mt-8 flex items-center gap-x-6 text-sm">
+          <div class="flex -space-x-2">
+            <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden"><img src="https://picsum.photos/id/1005/28/28" alt=""></div>
+            <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden"><img src="https://picsum.photos/id/1011/28/28" alt=""></div>
+            <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden"><img src="https://picsum.photos/id/1009/28/28" alt=""></div>
+          </div>
+          <div class="text-white/70 text-sm">Rated 4.9/5 from 2,400+ clients</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country selector strip -->
+    <div class="border-t border-white/20 bg-white/5">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-3 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm">
+        <span class="text-white/70 font-medium">Choose your destination:</span>
+        <div class="flex gap-x-2">
+          <a href="#" class="flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-white text-[#243E58] text-sm font-medium hover:bg-[#f9f9f9]">
+            <span>🇺🇸</span> United States
+          </a>
+          <a href="#" class="flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors">
+            <span>🇨🇦</span> Canada
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="border-b bg-[#f9f9f9]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-5">
+      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-xs tracking-widest text-[#939598] font-medium">
+        <div>AMERICAN IMMIGRATION LAWYERS ASSOCIATION</div>
+        <div>CANADIAN BAR ASSOCIATION</div>
+        <div>IRCC LICENSED CONSULTANTS</div>
+        <div>AVVO 10.0 SUPERB RATING</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT / INTRO -->
+  <section id="about" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
+    <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 items-center">
+      <div class="md:col-span-7">
+        <div class="uppercase tracking-[2px] text-xs font-semibold text-[#f9794c] mb-3">EST. 2002 • TORONTO &amp; NEW YORK</div>
+        <h2 class="text-4xl md:text-[42px] leading-none font-semibold tracking-[-1.2px] text-[#243E58] mb-6">
+          We help people move forward with their lives.
+        </h2>
+        <div class="prose prose-lg text-[#45464d] max-w-prose">
+          <p>VisaPlace is a full-service immigration law firm with offices in Canada and the United States. Our team of licensed attorneys and regulated consultants has helped thousands of individuals and families successfully navigate complex immigration processes.</p>
+        </div>
+        <div class="mt-6 flex gap-4">
+          <a href="#" class="text-sm font-semibold text-[#055a96] hover:underline inline-flex items-center gap-1">Meet our team →</a>
+          <a href="#" class="text-sm font-semibold text-[#055a96] hover:underline inline-flex items-center gap-1">Why clients choose us →</a>
+        </div>
+      </div>
+      <div class="md:col-span-5">
+        <div class="bg-[#f9f9f9] rounded-xl p-7 text-sm leading-relaxed border border-gray-100">
+          <div class="font-semibold text-[#243E58] mb-3">Our Promise</div>
+          <ul class="space-y-2 text-[#45464d]">
+            <li class="flex gap-2"><span class="text-[#f9794c]">•</span> Transparent pricing with no hidden fees</li>
+            <li class="flex gap-2"><span class="text-[#f9794c]">•</span> Direct access to your dedicated attorney</li>
+            <li class="flex gap-2"><span class="text-[#f9794c]">•</span> 98% success rate on submitted applications</li>
+            <li class="flex gap-2"><span class="text-[#f9794c]">•</span> Free initial case assessment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES / SERVICE CARDS -->
+  <section class="bg-[#f9f9f9] py-16 md:py-20">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">WHAT WE DO</div>
+          <h3 class="text-3xl md:text-4xl font-semibold tracking-[-1px] text-[#243E58]">Immigration Services</h3>
+        </div>
+        <a href="#" class="hidden md:inline text-sm font-medium text-[#055a96] hover:underline">View all services →</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Service Card -->
+        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-[#055a96]/30 hover:shadow-sm transition-all">
+          <div class="w-9 h-9 rounded-lg bg-[#055a96]/10 flex items-center justify-center mb-5">
+            <span class="text-[#055a96] text-xl">🛂</span>
+          </div>
+          <h4 class="font-semibold text-xl tracking-[-0.3px] mb-2 text-[#243E58]">Green Card &amp; Permanent Residence</h4>
+          <p class="text-sm text-[#45464d] mb-4">Family-based, employment-based, and investment green cards. EB-1, EB-2, EB-5, and adjustment of status.</p>
+          <div class="flex items-center text-xs font-medium text-[#f9794c] group-hover:underline">Explore options →</div>
+        </div>
+
+        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-[#055a96]/30 hover:shadow-sm transition-all">
+          <div class="w-9 h-9 rounded-lg bg-[#055a96]/10 flex items-center justify-center mb-5">
+            <span class="text-[#055a96] text-xl">💼</span>
+          </div>
+          <h4 class="font-semibold text-xl tracking-[-0.3px] mb-2 text-[#243E58]">Work Visas &amp; Permits</h4>
+          <p class="text-sm text-[#45464d] mb-4">H-1B, L-1, O-1, TN, E-2, and intra-company transfers. Canadian work permits and LMIA applications.</p>
+          <div class="flex items-center text-xs font-medium text-[#f9794c] group-hover:underline">Explore options →</div>
+        </div>
+
+        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-[#055a96]/30 hover:shadow-sm transition-all">
+          <div class="w-9 h-9 rounded-lg bg-[#055a96]/10 flex items-center justify-center mb-5">
+            <span class="text-[#055a96] text-xl">🎓</span>
+          </div>
+          <h4 class="font-semibold text-xl tracking-[-0.3px] mb-2 text-[#243E58]">Study &amp; Student Visas</h4>
+          <p class="text-sm text-[#45464d] mb-4">F-1, M-1, J-1 visas and Canadian study permits. Post-graduation work permits and OPT guidance.</p>
+          <div class="flex items-center text-xs font-medium text-[#f9794c] group-hover:underline">Explore options →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="reviews" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
+    <div class="mb-8">
+      <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">REAL CLIENT STORIES</div>
+      <h3 class="text-3xl md:text-4xl font-semibold tracking-[-1px] text-[#243E58]">What our clients say</h3>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-white border border-gray-200 rounded-xl p-6">
+        <div class="flex gap-0.5 text-[#f9794c] mb-4">★★★★★</div>
+        <blockquote class="text-[#45464d] text-[15px] leading-relaxed">"The team at VisaPlace handled my EB-2 NIW petition with incredible professionalism. My green card was approved in under 11 months."</blockquote>
+        <div class="mt-5 pt-4 border-t text-sm">
+          <div class="font-semibold">Dr. Priya Sharma</div>
+          <div class="text-[#939598]">Research Scientist, California • EB-2 NIW</div>
+        </div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-6">
+        <div class="flex gap-0.5 text-[#f9794c] mb-4">★★★★★</div>
+        <blockquote class="text-[#45464d] text-[15px] leading-relaxed">"They guided us through the entire Express Entry process. We received our ITA within 4 months and landed in Toronto last year."</blockquote>
+        <div class="mt-5 pt-4 border-t text-sm">
+          <div class="font-semibold">Michael &amp; Sarah Chen</div>
+          <div class="text-[#939598]">Software Engineers • Express Entry</div>
+        </div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-6">
+        <div class="flex gap-0.5 text-[#f9794c] mb-4">★★★★★</div>
+        <blockquote class="text-[#45464d] text-[15px] leading-relaxed">"After a complicated denial, VisaPlace successfully reopened my case and got my family-based petition approved. Highly recommended."</blockquote>
+        <div class="mt-5 pt-4 border-t text-sm">
+          <div class="font-semibold">Luis Rodriguez</div>
+          <div class="text-[#939598]">Mexico City → Miami • Family Petition</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABS + ACCORDION SHOWCASE -->
+  <section class="bg-[#f9f9f9] py-16 md:py-20">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-x-12 gap-y-12">
+        
+        <!-- Tabs -->
+        <div>
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c] mb-2">EXPLORE BY CATEGORY</div>
+          <h4 class="text-2xl font-semibold tracking-[-0.5px] mb-5 text-[#243E58]">Popular Immigration Pathways</h4>
+          
+          <div class="border-b border-gray-200">
+            <div class="flex gap-x-6 text-sm font-medium" role="tablist">
+              <button data-tab="us" class="tab-button active pb-3 border-b-2 border-[#055a96] text-[#055a96]">United States</button>
+              <button data-tab="ca" class="tab-button pb-3 text-[#45464d] hover:text-[#055a96]">Canada</button>
+            </div>
+          </div>
+
+          <div id="tab-us" class="tab-panel pt-5">
+            <ul class="space-y-3 text-sm">
+              <li class="flex justify-between py-1 border-b"><span>EB-1 Extraordinary Ability</span><span class="text-[#939598]">12–18 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>H-1B Specialty Occupation</span><span class="text-[#939598]">3–6 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Family-Based Green Card</span><span class="text-[#939598]">12–24 mo</span></li>
+              <li class="flex justify-between py-1"><span>Citizenship (Naturalization)</span><span class="text-[#939598]">6–12 mo</span></li>
+            </ul>
+          </div>
+          <div id="tab-ca" class="tab-panel pt-5 hidden">
+            <ul class="space-y-3 text-sm">
+              <li class="flex justify-between py-1 border-b"><span>Express Entry (FSW / CEC)</span><span class="text-[#939598]">6 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Ontario Immigrant Nominee</span><span class="text-[#939598]">4–8 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Spousal Sponsorship</span><span class="text-[#939598]">12 mo</span></li>
+              <li class="flex justify-between py-1"><span>Start-Up Visa</span><span class="text-[#939598]">12–16 mo</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Accordion -->
+        <div>
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c] mb-2">FREQUENTLY ASKED</div>
+          <h4 class="text-2xl font-semibold tracking-[-0.5px] mb-5 text-[#243E58]">Common Questions</h4>
+          
+          <div class="space-y-2">
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">How long does the green card process take?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Processing times vary by category. Family-based petitions can take 12–30 months. Employment-based categories range from 6 months (premium processing) to several years depending on priority date.</div>
+            </details>
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">Do you offer free consultations?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Yes. We provide a complimentary 30-minute case assessment for all new clients. You can book directly through our website or by calling our office.</div>
+            </details>
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">Can you help if my application was previously refused?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Absolutely. We regularly succeed with cases that were previously denied. We conduct a full review and develop a new strategy tailored to your situation.</div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCE / ARTICLE CARDS -->
+  <section id="resources" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">KNOWLEDGE CENTER</div>
+        <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Latest Immigration Updates</h3>
+      </div>
+      <a href="#" class="text-sm font-medium text-[#055a96] hover:underline hidden md:block">View all articles →</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="group border border-gray-200 rounded-xl overflow-hidden bg-white">
+        <div class="h-40 bg-[#243E58] relative">
+          <img src="https://picsum.photos/id/1015/600/320" alt="Express Entry draw" class="w-full h-full object-cover opacity-80 group-hover:scale-[1.03] transition-transform">
+          <div class="absolute top-3 left-3 px-2.5 py-0.5 text-[10px] font-medium tracking-wider bg-white text-[#243E58] rounded">CANADA</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs text-[#939598] mb-1">September 4, 2026 • Express Entry</div>
+          <h4 class="font-semibold leading-tight mb-2 group-hover:text-[#055a96]">Latest Express Entry Draw: 3,200 ITAs Issued</h4>
+          <p class="text-sm text-[#45464d] line-clamp-2">Category-based selection continues with a focus on STEM occupations. Minimum CRS score drops to 481.</p>
+        </div>
+      </article>
+
+      <article class="group border border-gray-200 rounded-xl overflow-hidden bg-white">
+        <div class="h-40 bg-[#243E58] relative">
+          <img src="https://picsum.photos/id/160/600/320" alt="H1B visa" class="w-full h-full object-cover opacity-80 group-hover:scale-[1.03] transition-transform">
+          <div class="absolute top-3 left-3 px-2.5 py-0.5 text-[10px] font-medium tracking-wider bg-white text-[#243E58] rounded">UNITED STATES</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs text-[#939598] mb-1">August 28, 2026 • H-1B</div>
+          <h4 class="font-semibold leading-tight mb-2 group-hover:text-[#055a96]">H-1B Cap Registration Opens March 2027</h4>
+          <p class="text-sm text-[#45464d] line-clamp-2">USCIS announces key changes to the H-1B registration process and increased scrutiny on specialty occupation roles.</p>
+        </div>
+      </article>
+
+      <article class="group border border-gray-200 rounded-xl overflow-hidden bg-white">
+        <div class="h-40 bg-[#243E58] relative">
+          <img src="https://picsum.photos/id/201/600/320" alt="Citizenship" class="w-full h-full object-cover opacity-80 group-hover:scale-[1.03] transition-transform">
+          <div class="absolute top-3 left-3 px-2.5 py-0.5 text-[10px] font-medium tracking-wider bg-white text-[#243E58] rounded">CITIZENSHIP</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs text-[#939598] mb-1">August 19, 2026 • Naturalization</div>
+          <h4 class="font-semibold leading-tight mb-2 group-hover:text-[#055a96]">New N-400 Processing Times Published</h4>
+          <p class="text-sm text-[#45464d] line-clamp-2">Average naturalization processing time now 6–9 months. Premium processing available for certain military applicants.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FORM + INPUTS SHOWCASE -->
+  <section id="contact" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
+    <div class="grid lg:grid-cols-5 gap-x-12 gap-y-10">
+      <div class="lg:col-span-2">
+        <div class="sticky top-20">
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">START YOUR JOURNEY</div>
+          <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] mt-1 mb-3">Book a free consultation</h3>
+          <p class="text-[#45464d]">Speak with a licensed immigration attorney or regulated consultant. Most initial assessments are completed within 24 hours.</p>
+          
+          <div class="mt-6 text-sm">
+            <div class="flex items-center gap-2 text-[#055a96]">
+              <span>📍</span> <span>Toronto • New York • Vancouver</span>
+            </div>
+            <div class="mt-1 text-[#939598]">Available Mon–Fri, 9am–6pm ET</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-3">
+        <form id="consultation-form" class="space-y-5" novalidate>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">FIRST NAME</label>
+              <input type="text" id="firstName" required class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]" placeholder="Alex">
+              <p class="error-text hidden text-xs text-red-600 mt-1">Please enter your first name.</p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">LAST NAME</label>
+              <input type="text" id="lastName" required class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]" placeholder="Rivera">
+              <p class="error-text hidden text-xs text-red-600 mt-1">Please enter your last name.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">EMAIL ADDRESS</label>
+              <input type="email" id="email" required class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]" placeholder="you@domain.com">
+              <p class="error-text hidden text-xs text-red-600 mt-1">Please enter a valid email.</p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">PHONE NUMBER</label>
+              <input type="tel" id="phone" class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]" placeholder="(416) 555-0192">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">COUNTRY OF INTEREST</label>
+              <select id="country" required class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm bg-white">
+                <option value="">Select destination</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="both">Both / Unsure</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">TYPE OF SERVICE</label>
+              <select id="service" class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm bg-white">
+                <option value="">Select service</option>
+                <option>Green Card / Permanent Residence</option>
+                <option>Work Visa / Permit</option>
+                <option>Study Permit / Student Visa</option>
+                <option>Family Sponsorship</option>
+                <option>Citizenship</option>
+                <option>Other / Consultation</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">TELL US ABOUT YOUR SITUATION</label>
+            <textarea id="message" rows="4" class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-3 text-sm placeholder:text-[#939598]" placeholder="Briefly describe your immigration goals or current status..."></textarea>
+          </div>
+
+          <div class="flex items-start gap-2 pt-1">
+            <input type="checkbox" id="consent" required class="mt-1 accent-[#f9794c]">
+            <label for="consent" class="text-xs text-[#45464d]">I consent to being contacted by VisaPlace regarding my immigration matter. I understand this does not create an attorney-client relationship.</label>
+          </div>
+
+          <button type="submit" 
+                  class="button-new w-full sm:w-auto mt-2 px-10 py-3 rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
+            <span id="submit-text">REQUEST CONSULTATION</span>
+            <span id="submit-spinner" class="hidden">⏳</span>
+          </button>
+          <p id="form-success" class="hidden text-sm text-emerald-600 font-medium">Thank you. A consultant will contact you within 24 hours.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="bg-[#243E58] text-white py-14">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 text-center">
+      <div class="max-w-lg mx-auto">
+        <h3 class="text-2xl md:text-3xl font-semibold tracking-[-0.8px]">Ready to take the next step?</h3>
+        <p class="mt-3 text-white/70">Speak with an experienced immigration professional today. Most consultations are free.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#contact" class="button-new inline-flex justify-center px-8 py-3 rounded-md bg-[#f9794c] font-semibold hover:bg-[#e56a3f]">Book Free Consultation</a>
+          <a href="tel:8669347447" class="inline-flex justify-center px-8 py-3 rounded-md border border-white/30 font-semibold hover:bg-white/10">Call 866-934-7447</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#f9f9f9] border-t text-sm">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-12 grid grid-cols-2 md:grid-cols-5 gap-y-10">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-x-2 mb-3">
+          <div class="w-7 h-7 bg-[#055a96] rounded flex items-center justify-center">
+            <span class="text-white text-sm font-bold">VP</span>
+          </div>
+          <span class="font-semibold text-[#243E58]">VisaPlace</span>
+        </div>
+        <div class="text-[#939598] text-xs">Licensed in Canada &amp; the United States</div>
+      </div>
+
+      <div>
+        <div class="font-semibold mb-3 text-[#243E58]">United States</div>
+        <div class="space-y-1 text-[#45464d]">
+          <div>Green Cards</div>
+          <div>Work Visas</div>
+          <div>Family Immigration</div>
+          <div>Citizenship</div>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-3 text-[#243E58]">Canada</div>
+        <div class="space-y-1 text-[#45464d]">
+          <div>Express Entry</div>
+          <div>PNP Programs</div>
+          <div>Study &amp; Work</div>
+          <div>Family Sponsorship</div>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-3 text-[#243E58]">Company</div>
+        <div class="space-y-1 text-[#45464d]">
+          <a href="#" class="block hover:text-[#055a96]">About Us</a>
+          <a href="#" class="block hover:text-[#055a96]">Our Team</a>
+          <a href="#" class="block hover:text-[#055a96]">Reviews</a>
+          <a href="#" class="block hover:text-[#055a96]">Press</a>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-3 text-[#243E58]">Contact</div>
+        <div class="space-y-1 text-[#45464d]">
+          <a href="tel:8669347447" class="block hover:text-[#055a96]">866-934-7447</a>
+          <a href="#" class="block hover:text-[#055a96]">info@visaplace.com</a>
+          <div class="pt-2 text-xs">Toronto • New York • Vancouver</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t py-5 text-xs text-[#939598]">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+        <div>© 2026 VisaPlace Law Professional Corporation. All rights reserved.</div>
+        <div class="flex gap-x-4">
+          <a href="#" class="hover:text-[#055a96]">Privacy</a>
+          <a href="#" class="hover:text-[#055a96]">Terms</a>
+          <a href="#" class="hover:text-[#055a96]">Accessibility</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div id="modal" class="hidden fixed inset-0 z-[70] items-center justify-center bg-black/60 p-4">
+    <div class="bg-white rounded-xl w-full max-w-md shadow-xl overflow-hidden">
+      <div class="px-6 pt-5 pb-4 flex justify-between items-center border-b">
+        <div>
+          <div class="font-semibold text-lg">Thank you</div>
+          <div class="text-sm text-[#939598]">Your request has been received</div>
+        </div>
+        <button id="modal-close" class="text-2xl leading-none text-[#939598] hover:text-black">×</button>
+      </div>
+      <div class="p-6 text-sm text-[#45464d]">
+        A member of our intake team will contact you within one business day to schedule your consultation. 
+        In the meantime, you may review our <a href="#" class="text-[#055a96] underline">preparation checklist</a>.
+      </div>
+      <div class="px-6 py-4 bg-[#f9f9f9] flex justify-end">
+        <button id="modal-ok" class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Return to homepage</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>

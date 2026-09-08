@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   VisaPlace Design Tokens (Tailwind v4 compatible)
+   ============================================ */
+
+:root {
+  /* Brand Colors */
+  --vp-primary: #055a96;
+  --vp-primary-dark: #044a7a;
+  --vp-navy: #243E58;
+  --vp-accent: #f9794c;
+  --vp-accent-hover: #e56a3f;
+  --vp-accent-active: #d45f36;
+
+  /* Text */
+  --vp-text: #45464d;
+  --vp-text-muted: #939598;
+  --vp-text-light: #79839d;
+
+  /* Backgrounds */
+  --vp-bg-light: #f9f9f9;
+  --vp-bg-subtle: #ecf0f1;
+
+  /* Borders & Shadows */
+  --vp-border: #e5e7eb;
+  --vp-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --vp-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Base typography overrides for fidelity */
+body {
+  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "tnum";
+}
+
+/* Button component matching reference */
+.button-new {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.button-new:hover {
+  transform: translateY(-1px);
+}
+
+.button-new:active {
+  transform: translateY(0);
+}
+
+/* Form inputs */
+input, select, textarea {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--vp-primary);
+  box-shadow: 0 0 0 1px var(--vp-primary);
+}
+
+/* Tab styles */
+.tab-button {
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.tab-button.active {
+  color: var(--vp-primary);
+  border-bottom-color: var(--vp-primary);
+  font-weight: 600;
+}
+
+/* Card hover fidelity */
+.group:hover .group-hover\:scale-\[1\.03\] {
+  transform: scale(1.03);
+}
+
+/* Dropdown / Mega menu */
+[data-dropdown] .group-hover\:visible {
+  animation: dropdownPop 0.12s ease-out forwards;
+}
+
+@keyframes dropdownPop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile drawer */
+#mobile-drawer {
+  animation: fadeIn 0.2s ease;
+}
+
+#mobile-drawer > div {
+  animation: slideIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Accordion */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary span {
+  transform: rotate(45deg);
+}
+
+/* Modal */
+#modal {
+  animation: modalEnter 0.2s ease;
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive typography scaling */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 36px !important;
+    line-height: 1.1 !important;
+  }
+}
+
+/* No horizontal overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Focus visible for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--vp-primary);
+  outline-offset: 2px;
+}
+
+/* Error state */
+.error-text {
+  color: #b91c1c;
+}
+
+/* Success state */
+#form-success {
+  color: #166534;
+}
+
+/* Article cards */
+article img {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Footer links */
+footer a {
+  transition: color 0.1s ease;
+}
