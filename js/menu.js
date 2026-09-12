@@ -32,6 +32,7 @@ const Menu = (() => {
     const a = document.createElement('a');
     const url = getMenuItemUrl(item, currentLang);
     a.href = url;
+    a.classList.add('text-lg');
     // Robust title: use translation, fallback to url slug or type
     const fallbackTitle = item.url && item.url !== '#' ? item.url.replace(/^\//, '') : (item.type || 'Link');
     a.textContent = item.title || fallbackTitle || 'Menu';

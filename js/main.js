@@ -320,17 +320,11 @@
       metaDesc.setAttribute('content', escapeHtml(desc).slice(0, 160));
 
       pageContent.innerHTML = `
-        <article class="page-template standard">
           <header class="page-header">
             <h1>${escapeHtml(homePage.title)}</h1>
           </header>
-          <div class="page-content">
-            ${imgHtml}
-            <div class="page-body">
-              ${body || '<p></p>'}
-            </div>
-          </div>
-        </article>
+          ${body}
+        
       `;
       return;
     }

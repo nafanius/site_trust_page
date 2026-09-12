@@ -12,9 +12,9 @@ const I18n = (() => {
   let availableLanguages = ['en', 'ru', 'pl'];
   let fallbackLanguage = 'en';
   let languageNames = {
-    en: 'English',
-    ru: 'Русский',
-    pl: 'Polski'
+    en: 'EN',
+    ru: 'RU',
+    pl: 'PL'
   };
 
   /**
@@ -110,7 +110,7 @@ const I18n = (() => {
       : (window.location.pathname || '/');
 
     const ul = document.createElement('ul');
-    ul.className = 'lang-list';
+    ul.className = 'lang-list text-base font-semibold';
 
     availableLanguages.forEach(lang => {
       const li = document.createElement('li');

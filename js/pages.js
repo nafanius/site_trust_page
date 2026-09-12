@@ -139,20 +139,26 @@ const Pages = (() => {
     const extra = page.extra_content || page.extra || '';
 
     return `
-      <article class="page-template standard">
-        <header class="page-header">
+        <header class="page-header px-3">
           <h1>${escapeHtml(page.title || slug)}</h1>
-          ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
         </header>
-        <div class="page-content">
-          ${imgHtml}
-          <div class="page-body">
-            ${formatPageContent(page.content || '')}
-            ${extra ? `<div class="page-extra">${formatPageContent(extra)}</div>` : ''}
-          </div>
-        </div>
-      </article>
+        ${lead}
     `;
+    // return `
+    //   <article class="page-template standard">
+    //     <header class="page-header">
+    //       <h1>${escapeHtml(page.title || slug)}</h1>
+    //       ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
+    //     </header>
+    //     <div class="page-content">
+    //       ${imgHtml}
+    //       <div class="page-body">
+    //         ${formatPageContent(page.content || '')}
+    //         ${extra ? `<div class="page-extra">${formatPageContent(extra)}</div>` : ''}
+    //       </div>
+    //     </div>
+    //   </article>
+    // `;
   }
 
   function renderLandingTemplate(page, slug) {
