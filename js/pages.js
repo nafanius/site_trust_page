@@ -83,7 +83,7 @@ const Pages = (() => {
     return content
       .split(/\n{2,}/)
       .map(block => {
-        const safe = escapeHtml(block).replace(/\n/g, '<br>');
+        const safe = escapeHtml(block).replace(/\n/g, '');
         return `<p>${safe}</p>`;
       })
       .join('');

@@ -105,9 +105,9 @@ const I18n = (() => {
     container.innerHTML = '';
     container.className = 'language-switcher';
 
-    const currentRoute = (window.Router && Router.getCurrentRoute)
-      ? Router.getCurrentRoute().route
-      : (window.location.pathname || '/');
+    // On language switch we always navigate to the home page of the target language
+    // (as requested). The switcher links and clicks target '/'.
+    const homeRoute = '/';
 
     const ul = document.createElement('ul');
     ul.className = 'lang-list text-base font-semibold';
@@ -115,7 +115,7 @@ const I18n = (() => {
     availableLanguages.forEach(lang => {
       const li = document.createElement('li');
       const a = document.createElement('a');
-      a.href = localizedUrl(currentRoute, lang);
+      a.href = localizedUrl(homeRoute, lang);
       a.textContent = getLanguageName(lang);
       a.className = 'lang-link';
       if (lang === currentLanguage) {
@@ -124,13 +124,10 @@ const I18n = (() => {
       }
 
       a.addEventListener('click', (e) => {
-        // Use SPA navigation when available. This lets handleNavigation detect language change
-        // and perform the correct full re-render (menu + switcher + content) without a full page reload.
         if (window.Router && typeof Router.navigate === 'function') {
           e.preventDefault();
-          Router.navigate(currentRoute, lang);
+          Router.navigate(homeRoute, lang);
         }
-        // Otherwise fall through to normal link navigation (still works).
       });
 
       li.appendChild(a);

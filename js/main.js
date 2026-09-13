@@ -75,7 +75,7 @@
 
   // 4. Render menu for initial language (full render + API call happens here)
   if (window.Menu) {
-    Menu.render(currentLang);
+    await Menu.render(currentLang);
   }
 
   // 5. Render language switcher (initial)
@@ -179,8 +179,8 @@
       }
 
       if (window.Menu) {
-        // Full menu re-render (fetches new language data)
-        Menu.render(newLang);
+        // Full menu re-render for new language. The render() itself ends with updateActiveState.
+        await Menu.render(newLang);
       }
 
       // Keep logo pointing to the home of the new language
@@ -188,16 +188,20 @@
       if (logo && window.Router && typeof Router.buildUrl === 'function') {
         logo.setAttribute('href', Router.buildUrl('/', newLang));
       }
-    } else {
-      // Same language: minimal work
-      if (window.Menu && typeof Menu.updateActiveState === 'function') {
-        Menu.updateActiveState(route);
-      }
-      // Do not touch language switcher or re-fetch menu
     }
+    // NOTE: no early updateActiveState here for same-lang.
+    // We always do a final authoritative call below using live Router state.
 
     // Always render (or replace) only the main content area
     await renderContentForRoute(info, newLang);
+
+    // ALWAYS run updateActiveState after any navigation (lang change or same-lang click).
+    // Do NOT pass route — updateActiveState now always reads the live Router.getCurrentRoute()
+    // (or parses window.location). This guarantees the newly selected item gets .active
+    // even after language switches or when clicking menu items.
+    if (window.Menu && typeof Menu.updateActiveState === 'function') {
+      Menu.updateActiveState();
+    }
   }
 
   // Expose for debugging

@@ -24,8 +24,9 @@ const Menu = (() => {
 
   /**
    * Render a single menu item (li).
+   * Active state is applied afterwards by updateActiveState() (single source of truth).
    */
-  function renderMenuItem(item, currentLang, currentRoute) {
+  function renderMenuItem(item, currentLang) {
     const li = document.createElement('li');
     li.className = item.type === 'dropdown' ? 'dropdown' : '';
 
@@ -37,12 +38,10 @@ const Menu = (() => {
     const fallbackTitle = item.url && item.url !== '#' ? item.url.replace(/^\//, '') : (item.type || 'Link');
     a.textContent = item.title || fallbackTitle || 'Menu';
 
-    // Mark active
-    const normalizedCurrent = normalizeRoute(currentRoute);
-    const normalizedItem = normalizeRoute(item.url || '');
-    if (normalizedCurrent === normalizedItem && item.type !== 'dropdown') {
-      a.classList.add('active');
-    }
+    // Store the logical (language-independent) route for reliable active matching
+    // after language switches and on clicks. updateActiveState() will use this.
+    const logicalItem = normalizeRoute(item.url || '/');
+    a.dataset.route = logicalItem;
 
     li.appendChild(a);
 
@@ -57,10 +56,9 @@ const Menu = (() => {
         childA.href = getMenuItemUrl(child, currentLang);
         childA.textContent = child.title || 'Item';
 
-        const childNorm = normalizeRoute(child.url || '');
-        if (normalizedCurrent === childNorm) {
-          childA.classList.add('active');
-        }
+        // Store logical route for reliable active-state updates
+        const childLogical = normalizeRoute(child.url || '/');
+        childA.dataset.route = childLogical;
 
         childLi.appendChild(childA);
         ul.appendChild(childLi);
@@ -74,9 +72,25 @@ const Menu = (() => {
 
   function normalizeRoute(route) {
     if (!route) return '/';
-    let r = route.split('?')[0];
+    let r = String(route).split('?')[0].split('#')[0];
+    r = r.replace(/\/+/g, '/').trim();
+    if (!r.startsWith('/')) r = '/' + r;
     if (r.length > 1 && r.endsWith('/')) r = r.slice(0, -1);
     return r || '/';
+  }
+
+  /**
+   * Returns true if the menu item's logical route should be considered active
+   * for the given current logical route.
+   * - Exact match for everything
+   * - For non-root items, also match when current is a sub-route (e.g. /news active for /news/slug)
+   */
+  function isRouteActive(menuLogical, currentLogical) {
+    const m = normalizeRoute(menuLogical);
+    const c = normalizeRoute(currentLogical);
+    if (m === c) return true;
+    if (m === '/' || c === '/') return false;
+    return c === m || c.startsWith(m + '/');
   }
 
   function getMenuItemUrl(item, currentLang) {
@@ -121,10 +135,9 @@ const Menu = (() => {
      }
 
      const ul = document.createElement('ul');
-     const currentRouteInfo = (window.Router && Router.getCurrentRoute) ? Router.getCurrentRoute() : { route: '/' };
 
      menuData.forEach(item => {
-       const li = renderMenuItem(item, language, currentRouteInfo.route);
+       const li = renderMenuItem(item, language);
        ul.appendChild(li);
      });
 
@@ -132,6 +145,12 @@ const Menu = (() => {
      nav.appendChild(ul);
 
      setupMobileToggle(nav);
+
+     // Always run a final robust active-state pass after (re)render.
+     // This ensures .active is set correctly even after language switches
+     // (menu links have localized hrefs like /ru/about while current route is logical).
+     // We call without args — updateActiveState always reads live Router state.
+     updateActiveState();
    } catch (err) {
      console.error('[Menu] render failed:', err);
      // leave fallback
@@ -141,26 +160,67 @@ const Menu = (() => {
   /**
    * Lightweight active-state update for same-language navigation.
    * Does NOT fetch from API. Just walks existing DOM links and toggles .active.
+   * Always derives the current logical route from Router (live source of truth).
+   * Prefers data-route (set at render from the CMS logical .url) for matching,
+   * falls back to parsing the (possibly localized) href via Router.parsePath.
+   * Explicitly clears all then sets the matching one(s) so clicks reliably activate.
    */
-  function updateActiveState(currentRoute = '/') {
+  function updateActiveState() {
    const nav = document.getElementById('main-nav');
    if (!nav) return;
 
-   const normalizedCurrent = normalizeRoute(currentRoute);
-
-   // Update top-level and dropdown links
+   // Live current logical route (language and base stripped by Router)
+   let currentLogical = '/';
+   if (window.Router && typeof Router.getCurrentRoute === 'function') {
+     try {
+       const info = Router.getCurrentRoute();
+       if (info && info.route != null) currentLogical = info.route;
+     } catch (_) {}
+   } else if (window.Router && typeof Router.parsePath === 'function') {
+     try {
+       const p = Router.parsePath(window.location.pathname);
+       if (p && p.route != null) currentLogical = p.route;
+     } catch (_) {}
+   }
    const links = nav.querySelectorAll('a[href]');
+
+   // 1) Explicitly remove .active from every internal menu link.
+   //    This guarantees that after a click the old item loses the class.
    links.forEach(a => {
      const href = a.getAttribute('href') || '';
-     // Skip external links
      if (/^https?:\/\//i.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
        return;
      }
-     const normalizedItem = normalizeRoute(href);
-     if (normalizedItem === normalizedCurrent) {
+     a.classList.remove('active');
+   });
+
+   // 2) Add .active to the link(s) whose logical route matches the live current route.
+   //    Using data-route (preferred, language-independent, from item.url in CMS)
+   //    or falling back to Router.parsePath on the href makes this survive
+   //    language switches and ensures the newly chosen item receives .active.
+   links.forEach(a => {
+     const href = a.getAttribute('href') || '';
+     if (/^https?:\/\//i.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
+       return;
+     }
+
+     let itemLogical = a.dataset.route || '';
+     if (!itemLogical && window.Router && typeof Router.parsePath === 'function') {
+       try {
+         const parsed = Router.parsePath(href);
+         if (parsed && parsed.route != null) {
+           itemLogical = parsed.route;
+         }
+       } catch (_) {}
+     }
+     if (!itemLogical) {
+       itemLogical = href;
+     }
+
+     // Use isRouteActive so that parent items like /news stay active
+     // when the user is on a sub-route like /news/some-slug.
+     if (isRouteActive(itemLogical, currentLogical)) {
        a.classList.add('active');
-     } else {
-       a.classList.remove('active');
      }
    });
   }
