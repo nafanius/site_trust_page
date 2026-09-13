@@ -335,14 +335,15 @@ const Pages = (() => {
   }
 
   function escapeHtml(str) {
-    return str
     if (!str) return '';
     return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(/\n/g, '')
+      .replace(/\r?\n/g, '')
+      // .replace(/&/g, '&amp;')
+      // .replace(/</g, '&lt;')
+      // .replace(/>/g, '&gt;')
+      // .replace(/"/g, '&quot;')
+      // .replace(/'/g, '&#039;');
   }
 
   return {

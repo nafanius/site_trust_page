@@ -323,7 +323,7 @@
           <header class="page-header">
             <h1>${escapeHtml(homePage.title)}</h1>
           </header>
-          ${body}
+          ${escapeHtml(body)}
         
       `;
       return;
@@ -371,8 +371,8 @@
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
-      // .replace(/&/g, '&amp;')
-      // .replace(/</g, '&lt;')
+      .replace(/\n/g, '')
+      .replace(/\r?\n/g, '')
       // .replace(/>/g, '&gt;')
       // .replace(/"/g, '&quot;')
       // .replace(/'/g, '&#039;');
