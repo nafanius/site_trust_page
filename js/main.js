@@ -307,7 +307,7 @@
       const body = (homePage.content || '')
         .split(/\n{2,}/)
         .map(block => {
-          const safe = escapeHtml(block).replace(/\n/g, '<br>');
+          const safe = escapeHtml(block).replace(/\n/g, '');
           return `<p>${safe}</p>`;
         })
         .join('');
@@ -324,12 +324,16 @@
       metaDesc.setAttribute('content', escapeHtml(desc).slice(0, 160));
 
       pageContent.innerHTML = `
-          <header class="page-header">
-            <h1>${escapeHtml(homePage.title)}</h1>
-          </header>
           ${escapeHtml(body)}
         
       `;
+      // pageContent.innerHTML = `
+      //     <header class="page-header">
+      //       <h1>${escapeHtml(homePage.title)}</h1>
+      //     </header>
+      //     ${escapeHtml(body)}
+        
+      // `;
       return;
     }
 

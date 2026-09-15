@@ -250,11 +250,17 @@ const Router = (() => {
     window.dispatchEvent(new Event('popstate'));
   }
 
+
+  function buildCurrentUrl(route) {
+    const current = getCurrentRoute();
+    return buildUrl(route, current.language);
+  }
   // Expose minimal API
   return {
     parsePath,
     getCurrentRoute,
     buildUrl,
+    buildCurrentUrl,
     navigate,
     setSupportedLanguages,
     getSupportedLanguages,

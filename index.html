@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trust Site</title>
+  <title>TrustInPoland legal</title>
   <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
-  
+
   <!-- SEO & Social -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Trust Site">
@@ -60,10 +61,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 <body>
   <header class="site-header">
     <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
@@ -91,13 +95,13 @@
     <!-- Dynamic content injected by JS -->
     <div id="page-content" class="">
       <!-- Router renders here -->
+      <div class="loading">Loading page...</div>
     </div>
   </main>
 
-  <footer class="px-3 site-footer">
-    <div class="container">
-      <p>&copy; <span id="footer-year"></span> Trust Site. All rights reserved.</p>
-      <p class="footer-note">Content managed via Google Sheets.</p>
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.</p>
     </div>
   </footer>
 
@@ -111,4 +115,5 @@
   <script src="js/pages.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
