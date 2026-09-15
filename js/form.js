@@ -4,7 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initModal();
+  // initModal();
   setupDynamicFormObserver();
 });
 
@@ -64,6 +64,7 @@ function setupDynamicFormObserver() {
     const form = document.getElementById('contact-form');
     if (form) {
       initFormValidation();
+      initModal();
       observer.disconnect();
     }
   });
@@ -91,7 +92,7 @@ function initFormValidation() {
     let isValid = true;
 
     // Validate required fields
-    const requiredFields = ['firstName', 'message', 'phone',];
+    const requiredFields = ['name', 'message', 'phone',];
 
     requiredFields.forEach(id => {
       const field = document.getElementById(id);
@@ -148,7 +149,7 @@ function initFormValidation() {
 
 function getErrorMessage(fieldId) {
   const messages = {
-    firstName: 'Please enter your name.',
+    name: 'Please enter your name.',
     phone: 'Please enter a valid phone number.',
   };
   return messages[fieldId] || 'This field is required.';
@@ -257,8 +258,7 @@ async function sendForm() {
   //   }
   // );
 
-  form.reset();
+  // form.reset();
 
-  alert("Заявка отправлена!");
 
 }
