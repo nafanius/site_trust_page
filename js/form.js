@@ -140,7 +140,7 @@ function initFormValidation() {
   // Real-time validation on blur
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('blur', () => {
-      if (field.hasAttribute('required') || field.id === 'email') {
+      if (field.hasAttribute('required') || field.id === 'phone') {
         validateSingleField(field);
       }
     });
@@ -198,9 +198,9 @@ function validateSingleField(field) {
   if (field.hasAttribute('required') && !field.value.trim()) {
     valid = false;
     msg = getErrorMessage(field.id);
-  } else if (field.id === 'email' && field.value && !isValidEmail(field.value)) {
+  } else if (field.id === 'phone' && field.value && !isValidPhone(field.value)) {
     valid = false;
-    msg = 'Please enter a valid email address.';
+    msg = 'Please enter a valid phone.';
   }
 
   if (!valid) {
