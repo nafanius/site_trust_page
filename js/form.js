@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDynamicFormObserver();
 });
 
+// Важно для bfcache (загрузка из кэша)
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    setupDynamicFormObserver();
+  }
+});
 
 /* ============================================
    MODAL
@@ -78,6 +84,10 @@ function setupDynamicFormObserver() {
 function initFormValidation() {
   const form = document.getElementById('contact-form');
   if (!form) return;
+
+  // Защита от повторного вызова (важно при кэше)
+  if (form.dataset.initialized === 'true') return;
+  form.dataset.initialized = 'true';
 
   const submitText = document.getElementById('submit-text');
   const submitSpinner = document.getElementById('submit-spinner');
