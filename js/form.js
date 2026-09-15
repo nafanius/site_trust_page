@@ -5,26 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initModal();
-  initFormValidation();
-  initKeyboardAccessibility();
+  setupDynamicFormObserver();
 });
 
-function setupDynamicFormObserver() {
-  if (document.getElementById('contact-form')) {
-    initFormValidation();
-    return;
-  }
-
-  const observer = new MutationObserver(() => {
-    const form = document.getElementById('contact-form');
-    if (form) {
-      initFormValidation();
-      observer.disconnect();
-    }
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
-}
 
 /* ============================================
    MODAL
@@ -69,6 +52,23 @@ function showModal() {
   // Focus trap - focus first focusable
   const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
   if (focusable) focusable.focus();
+}
+
+function setupDynamicFormObserver() {
+  if (document.getElementById('contact-form')) {
+    initFormValidation();
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    const form = document.getElementById('contact-form');
+    if (form) {
+      initFormValidation();
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 }
 
 /* ============================================
