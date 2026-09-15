@@ -137,12 +137,10 @@ const Pages = (() => {
     // Support rich translatable fields from page_translations
     const lead = page.lead || page.subtitle || page.meta_description || '';
     const extra = page.extra_content || page.extra || '';
+    const body = formatPageContent(page.content || '');
 
     return `
-        <header class="page-header px-3">
-          <h1>${escapeHtml(page.title || slug)}</h1>
-        </header>
-        ${lead}
+        ${body}
     `;
     // return `
     //   <article class="page-template standard">
