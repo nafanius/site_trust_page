@@ -293,44 +293,44 @@ const Pages = (() => {
     `;
   }
 
-  async function sendForm() {
-    const form = document.querySelector("#contact-form");
-    const FORM_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_URL)
-      ? CONFIG.API_URL
-      : '';
+  // async function sendForm() {
+  //   const form = document.querySelector("#contact-form");
+  //   const FORM_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_URL)
+  //     ? CONFIG.API_URL
+  //     : '';
 
 
 
-    const data = {
-      name: form.name.value,
-      phone: form.phone.value,
-      message: form.message.value
-    };
+  //   const data = {
+  //     name: form.name.value,
+  //     phone: form.phone.value,
+  //     message: form.message.value
+  //   };
 
-    await fetch(FORM_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(data)
-    });
-    // await fetch(FORM_URL, {
-    //   method: "POST",
-    //   mode: "no-cors",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(data)
-    // });
-    // await fetch(
-    //   FORM_URL,
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify(data)
-    //   }
-    // );
+  //   await fetch(FORM_URL, {
+  //     method: "POST",
+  //     mode: "no-cors",
+  //     body: JSON.stringify(data)
+  //   });
+  //   // await fetch(FORM_URL, {
+  //   //   method: "POST",
+  //   //   mode: "no-cors",
+  //   //   headers: { "Content-Type": "application/json" },
+  //   //   body: JSON.stringify(data)
+  //   // });
+  //   // await fetch(
+  //   //   FORM_URL,
+  //   //   {
+  //   //     method: "POST",
+  //   //     body: JSON.stringify(data)
+  //   //   }
+  //   // );
 
-    form.reset();
+  //   form.reset();
 
-    alert("Заявка отправлена!");
+  //   alert("Заявка отправлена!");
 
-  }
+  // }
 
   function escapeHtml(str) {
     if (!str) return '';

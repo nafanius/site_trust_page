@@ -9,6 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initKeyboardAccessibility();
 });
 
+function setupDynamicFormObserver() {
+  if (document.getElementById('contact-form')) {
+    initFormValidation();
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    const form = document.getElementById('contact-form');
+    if (form) {
+      initFormValidation();
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
 
 /* ============================================
    MODAL
@@ -75,8 +91,8 @@ function initFormValidation() {
     let isValid = true;
 
     // Validate required fields
-    const requiredFields = ['firstName', 'message', 'phone', ];
-    
+    const requiredFields = ['firstName', 'message', 'phone',];
+
     requiredFields.forEach(id => {
       const field = document.getElementById(id);
       if (!field) return;
@@ -103,8 +119,8 @@ function initFormValidation() {
     const submitBtn = form.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
 
-    // Simulate network request
-    await new Promise(resolve => setTimeout(resolve, 850));
+    // Send the form                                                                                                                                                                                                                                                                                                        
+    await sendForm();
 
     // Success
     form.reset();
@@ -206,3 +222,43 @@ window.VisaPlaceDemo = {
     if (form) form.reset();
   }
 };
+
+
+async function sendForm() {
+  const form = document.querySelector("#contact-form");
+  const FORM_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_URL)
+    ? CONFIG.API_URL
+    : '';
+
+
+
+  const data = {
+    name: form.name.value,
+    phone: form.phone.value,
+    message: form.message.value
+  };
+
+  await fetch(FORM_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data)
+  });
+  // await fetch(FORM_URL, {
+  //   method: "POST",
+  //   mode: "no-cors",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify(data)
+  // });
+  // await fetch(
+  //   FORM_URL,
+  //   {
+  //     method: "POST",
+  //     body: JSON.stringify(data)
+  //   }
+  // );
+
+  form.reset();
+
+  alert("Заявка отправлена!");
+
+}
