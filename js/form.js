@@ -7,13 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // initModal();
   setupDynamicFormObserver();
 });
-
 // Важно для bfcache (загрузка из кэша)
 window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
+    const form = document.getElementById('contact-form');
+    if (form) {
+      form.dataset.initialized = 'false';
+      if (form._submitHandler) {
+        form.removeEventListener('submit', form._submitHandler);
+        delete form._submitHandler;
+      }
+    }
     setupDynamicFormObserver();
   }
 });
+
 
 /* ============================================
    MODAL
@@ -60,24 +68,28 @@ function showModal() {
   if (focusable) focusable.focus();
 }
 
+let formObserverSet = false;
+
 function setupDynamicFormObserver() {
-  if (document.getElementById('contact-form')) {
+  const form = document.getElementById('contact-form');
+  if (form && form.dataset.initialized !== 'true') {
     initFormValidation();
-    return;
+    initModal();
   }
 
+  if (formObserverSet) return;
+  formObserverSet = true;
+
   const observer = new MutationObserver(() => {
-    const form = document.getElementById('contact-form');
-    if (form) {
+    const currentForm = document.getElementById('contact-form');
+    if (currentForm && currentForm.dataset.initialized !== 'true') {
       initFormValidation();
       initModal();
-      observer.disconnect();
     }
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
 }
-
 /* ============================================
    FORM VALIDATION + SUBMISSION
    ============================================ */
@@ -93,16 +105,17 @@ function initFormValidation() {
   const submitSpinner = document.getElementById('submit-spinner');
   const successMsg = document.getElementById('form-success');
 
-  form.addEventListener('submit', async (e) => {
+  if (form._submitHandler) {
+    form.removeEventListener('submit', form._submitHandler);
+  }
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    // Clear previous errors
     clearFormErrors(form);
 
     let isValid = true;
-
-    // Validate required fields
-    const requiredFields = ['name', 'message', 'phone',];
+    const requiredFields = ['name', 'message', 'phone'];
 
     requiredFields.forEach(id => {
       const field = document.getElementById(id);
@@ -124,30 +137,29 @@ function initFormValidation() {
 
     if (!isValid) return;
 
-    // Show loading state
     if (submitText) submitText.textContent = 'SENDING...';
     if (submitSpinner) submitSpinner.classList.remove('hidden');
     const submitBtn = form.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
 
-    // Send the form                                                                                                                                                                                                                                                                                                        
     await sendForm();
 
-    // Success
     form.reset();
     if (submitText) submitText.textContent = 'REQUEST CONSULTATION';
     if (submitSpinner) submitSpinner.classList.add('hidden');
     if (submitBtn) submitBtn.disabled = false;
     if (successMsg) successMsg.classList.remove('hidden');
 
-    // Show thank you modal after short delay
     setTimeout(() => {
       if (successMsg) successMsg.classList.add('hidden');
       showModal();
     }, 1200);
-  });
+  };
 
-  // Real-time validation on blur
+  form._submitHandler = submitHandler;
+  form.addEventListener('submit', submitHandler);
+
+  // blur-валидация (дубликаты не критичны)
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('blur', () => {
       if (field.hasAttribute('required') || field.id === 'phone') {
@@ -155,7 +167,8 @@ function initFormValidation() {
       }
     });
   });
-}
+} 
+
 
 function getErrorMessage(fieldId) {
   const messages = {
