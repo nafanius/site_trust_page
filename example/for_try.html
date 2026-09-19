@@ -101,91 +101,70 @@
 
   <main id="main-content" class="w-full min-h-screen">
     <div id="page-content" class="">
-      <!-- Router renders here -->
-<!-- FORM + INPUTS SHOWCASE -->
-<section id="contact" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
-  <div class="grid lg:grid-cols-5 gap-x-12 gap-y-10">
-    <div class="lg:col-span-2">
-      <div class="sticky top-20">
-        <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">START YOUR JOURNEY</div>
-        <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] mt-1 mb-3">Book a free consultation</h3>
-        <p class="text-[#45464d]">Speak with a licensed immigration attorney or regulated consultant. Most initial
-          assessments are completed within 24 hours.</p>
+<!-- Router renders here -->
 
-        <div class="mt-6 text-sm">
-          <div class="flex items-center gap-2 text-[#055a96]">
-            <span>📍</span> <span>Toronto • New York • Vancouver</span>
+
+<section class="bg-[#f9f9f9] py-16 md:py-20">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-x-12 gap-y-12">
+        
+        <!-- Tabs -->
+        <div>
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c] mb-2">EXPLORE BY CATEGORY</div>
+          <h4 class="text-2xl font-semibold tracking-[-0.5px] mb-5 text-[#243E58]">Popular Immigration Pathways</h4>
+          
+          <div class="border-b border-gray-200">
+            <div class="flex gap-x-6 text-sm font-medium" role="tablist">
+              <button data-tab="us" class="tab-button pb-3 active border-b-2 border-[#055a96] text-[#055a96]">United States</button>
+              <button data-tab="ca" class="tab-button pb-3 hover:text-[#055a96] text-[#45464d]">Canada</button>
+            </div>
           </div>
-          <div class="mt-1 text-[#939598]">Available Mon–Fri, 9am–6pm ET</div>
+
+          <div id="tab-us" class="tab-panel pt-5">
+            <ul class="space-y-3 text-sm">
+              <li class="flex justify-between py-1 border-b"><span>EB-1 Extraordinary Ability</span><span class="text-[#939598]">12–18 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>H-1B Specialty Occupation</span><span class="text-[#939598]">3–6 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Family-Based Green Card</span><span class="text-[#939598]">12–24 mo</span></li>
+              <li class="flex justify-between py-1"><span>Citizenship (Naturalization)</span><span class="text-[#939598]">6–12 mo</span></li>
+            </ul>
+          </div>
+          <div id="tab-ca" class="tab-panel pt-5 hidden">
+            <ul class="space-y-3 text-sm">
+              <li class="flex justify-between py-1 border-b"><span>Express Entry (FSW / CEC)</span><span class="text-[#939598]">6 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Ontario Immigrant Nominee</span><span class="text-[#939598]">4–8 mo</span></li>
+              <li class="flex justify-between py-1 border-b"><span>Spousal Sponsorship</span><span class="text-[#939598]">12 mo</span></li>
+              <li class="flex justify-between py-1"><span>Start-Up Visa</span><span class="text-[#939598]">12–16 mo</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Accordion -->
+        <div>
+          <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c] mb-2">FREQUENTLY ASKED</div>
+          <h4 class="text-2xl font-semibold tracking-[-0.5px] mb-5 text-[#243E58]">Common Questions</h4>
+          
+          <div class="space-y-2">
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">How long does the green card process take?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Processing times vary by category. Family-based petitions can take 12–30 months. Employment-based categories range from 6 months (premium processing) to several years depending on priority date.</div>
+            </details>
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">Do you offer free consultations?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Yes. We provide a complimentary 30-minute case assessment for all new clients. You can book directly through our website or by calling our office.</div>
+            </details>
+            <details class="group border border-gray-200 rounded-lg bg-white open:border-[#055a96]/40">
+              <summary class="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium text-[#243E58]">Can you help if my application was previously refused?<span class="text-lg leading-none group-open:rotate-45 transition">＋</span></summary>
+              <div class="px-5 pb-4 text-sm text-[#45464d]">Absolutely. We regularly succeed with cases that were previously denied. We conduct a full review and develop a new strategy tailored to your situation.</div>
+            </details>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Form -->
-    <div class="lg:col-span-3">
-      <form id="contact-form" class="space-y-5" novalidate>
-        <div>
-          <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">FIRST NAME</label>
-          <input type="text" id="firstName" required
-            class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
-            placeholder="Alex">
-          <p class="error-text hidden text-xs text-red-600 mt-1">Please enter your first name.</p>
-        </div>
-
-  
-        <div>
-          <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">PHONE NUMBER</label>
-          <input type="tel" id="phone"
-            class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
-            placeholder="(416) 555-0192">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">TELL US ABOUT YOUR
-            SITUATION</label>
-          <textarea id="message" rows="4"
-            class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-3 text-sm placeholder:text-[#939598]"
-            placeholder="Briefly describe your immigration goals or current status..."></textarea>
-        </div>
-
-        <button type="submit"
-          class="button-new w-full sm:w-auto mt-2 px-10 py-3 rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
-          <span id="submit-text">REQUEST CONSULTATION</span>
-          <span id="submit-spinner" class="hidden">⏳</span>
-        </button>
-        <p id="form-success" class="hidden text-sm text-emerald-600 font-medium">Thank you. A consultant will
-          contact you within 24 hours.</p>
-      </form>
-    </div>
-  </div>
-</section>
+  </section>
 
 
+<!-- конец рендвринга -->
 
-
-
-
-    <!-- MODAL -->
-    <div id="modal" class="hidden fixed inset-0 z-[70] items-center justify-center bg-black/60 p-4">
-      <div class="bg-white rounded-xl w-full max-w-md shadow-xl overflow-hidden">
-        <div class="px-6 pt-5 pb-4 flex justify-between items-center border-b">
-          <div>
-            <div class="font-semibold text-lg">Thank you</div>
-            <div class="text-sm text-[#939598]">Your request has been received</div>
-          </div>
-          <button id="modal-close" class="text-2xl leading-none text-[#939598] hover:text-black">×</button>
-        </div>
-        <div class="p-6 text-sm text-[#45464d]">
-          A member of our intake team will contact you within one business day to schedule your consultation.
-          In the meantime, you may review our <a href="#" class="text-[#055a96] underline">preparation checklist</a>.
-        </div>
-        <div class="px-6 py-4 bg-[#f9f9f9] flex justify-end">
-          <button id="modal-ok"
-            class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Return to
-            homepage</button>
-        </div>
-      </div>
-    </div>
   </div>
 </main>
 
