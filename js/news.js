@@ -30,11 +30,13 @@ const News = (() => {
       const pageRes = await API.page('news', currentLang);
       if (pageRes && pageRes.success && pageRes.data && pageRes.data.title) {
         const p = pageRes.data;
-        const lead = p.lead || p.subtitle || p.meta_description || '';
+        const lead = p.lead || p.content || p.meta_description || '';
         headerHtml = `
-          <div class="page-header">
-            <h1>${escapeHtml(p.title)}</h1>
-            ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
+          <div class="flex items-end justify-between mb-8 mx-3">
+          <div>
+              <div class="tracking-[1.5px] font-semibold text-[#f9794c]">${escapeHtml(p.title)}</div>
+              ${lead ? `<h1  class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">${escapeHtml(lead)}</h1>` : ''}
+          </div>
           </div>
         `;
       }
@@ -44,7 +46,7 @@ const News = (() => {
 
     container.innerHTML = `
       ${headerHtml}
-      <div id="news-list" class="news-grid"></div>
+      <div id="news-list" class="grid grid-cols-1 md:grid-cols-3 gap-5 mx-4"></div>
     `;
 
     const listEl = document.getElementById('news-list');
@@ -72,25 +74,29 @@ const News = (() => {
 
   function createNewsCard(item) {
     const card = document.createElement('article');
-    card.className = 'news-card';
+    card.className = 'block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all';
 
     const imgHtml = item.image
-      ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" loading="lazy">`
+      ? ` <img src="${escapeHtml(item.image)}" alt="IRCC issues record ITAs" 
+            class="w-full aspect-video object-cover group-hover:scale-[1.03]" />`
       : `<div style="height:160px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:0.9rem;">No image</div>`;
 
     const dateStr = item.date ? new Date(item.date).toLocaleDateString() : '';
-    const category = item.category ? `<span class="category-badge">${escapeHtml(item.category)}</span>` : '';
+    const category = item.category ? item.category : '';
 
     const link = getLocalizedNewsLink(item);
 
     card.innerHTML = `
+      <a href="${link}" class="overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all">
       ${imgHtml}
-      <div class="news-card-content">
-        <div class="news-card-meta">${category}${dateStr ? ' ' + escapeHtml(dateStr) : ''}</div>
-        <h3>${escapeHtml(item.title || 'Untitled')}</h3>
-        <p>${escapeHtml(truncate(item.text || '', 140))}</p>
-        <a href="${link}" class="btn">${escapeHtml(item.button || 'Read more')}</a>
-      </div>
+       <div class="p-4">
+         <div class="uppercase text-[10px] tracking-widest text-[#f9794c] mb-1">${category}</div>
+          <h4 class="font-semibold text-lg leading-tight mb-2">${escapeHtml(item.title || 'Untitled')}</h4>
+          <p class="text-sm text-[#45464d] mb-3">${escapeHtml(truncate(item.text || '', 140))}</p>
+          <div class="text-xs text-[#939598]">${escapeHtml(dateStr)}</div>
+       </div>
+      </a>
+
     `;
 
     // Make whole card clickable except the button (better UX)
@@ -134,7 +140,7 @@ const News = (() => {
 
     if (!res.success || !res.data) {
       const back = (window.I18n && I18n.localizedUrl) ? I18n.localizedUrl('/news', currentLang)
-                   : ((window.Router && Router.buildUrl) ? Router.buildUrl('/news', currentLang) : '/news');
+        : ((window.Router && Router.buildUrl) ? Router.buildUrl('/news', currentLang) : '/news');
       container.innerHTML = `
         <div class="error">
           <h2>Article not found</h2>
@@ -147,24 +153,29 @@ const News = (() => {
 
     const item = res.data;
     const dateStr = item.date ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-    const category = item.category ? `<span class="category-badge">${escapeHtml(item.category)}</span>` : '';
+    const category = item.category ? item.category : '';
 
     const imgHtml = item.image
       ? `<div class="news-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}"></div>`
       : '';
 
     const backUrl = I18n ? I18n.localizedUrl('/news', currentLang) : (currentLang === 'en' ? '/news' : `/${currentLang}/news`);
+    const contactsUrl = I18n ? I18n.localizedUrl('/contacts', currentLang) : (currentLang === 'en' ? '/contacts' : `/${currentLang}/contacts`);
 
     container.innerHTML = `
-      <article class="news-detail">
-        <a href="${backUrl}" class="back-link">← Back to news</a>
-        <h1>${escapeHtml(item.title || 'Untitled')}</h1>
-        <div class="news-meta">${category} ${dateStr ? escapeHtml(dateStr) : ''}</div>
+      <article class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
+       <div class="mb-6"> 
+       <a href="${backUrl}" class="inline-flex items-center text-sm font-medium text-[#055a96] hover:underline">← Back to all news</a>
+      </div>
+      <div class="uppercase text-[10px] tracking-[1.5px] font-semibold text-[#f9794c] mb-2">${category}</div>
+      <h1 class="text-4xl md:text-[42px] font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mb-4">${escapeHtml(item.title || 'Untitled')}</h1>
         ${imgHtml}
-        <div class="news-body">
+      <div class="max-w-3xl space-y-6 text-[15px] leading-relaxed text-[#45464d]">
           ${formatNewsText(item.text || '')}
-        </div>
-        ${item.button && item.link ? `<p style="margin-top:2rem;"><a href="${escapeHtml(getLocalizedNewsLink(item))}" class="btn">${escapeHtml(item.button)}</a></p>` : ''}
+      </div>
+      <div class="mt-10 pt-8 border-t">
+          <a href="${contactsUrl}" class="inline-flex items-center text-sm font-semibold text-[#f9794c] hover:underline">${escapeHtml(item.button)} →</a>
+      </div>
       </article>
     `;
 
