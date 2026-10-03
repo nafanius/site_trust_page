@@ -45,8 +45,10 @@ const News = (() => {
     }
 
     container.innerHTML = `
+    <section id="news" class="max-w-[1280px] mx-auto px-3 md:px-4 lg:px-6 py-8 md:py-10">
       ${headerHtml}
       <div id="news-list" class="grid grid-cols-1 md:grid-cols-3 gap-5 mx-4"></div>
+    </section>
     `;
 
     const listEl = document.getElementById('news-list');
@@ -156,7 +158,7 @@ const News = (() => {
     const category = item.category ? item.category : '';
 
     const imgHtml = item.image
-      ? `<div class="group relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden rounded-2xl shadow mb-8 bg-gray-100">
+      ? `<div class="group relative w-full md:w-80 lg:w-96 aspect-[16/9] md:aspect-video overflow-hidden rounded-2xl shadow mb-6 md:mb-2 md:float-right md:ml-6 md:mr-0 bg-gray-100">
            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" 
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy">
          </div>`
@@ -175,11 +177,12 @@ const News = (() => {
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#939598] mb-8">
       <span>${dateStr}</span>
       </div>
-        ${imgHtml}
-      <div class="max-w-3xl space-y-6 text-[15px] leading-relaxed text-[#45464d]">
+      <div class="max-w-6xl text-[15px] leading-relaxed text-[#45464d] overflow-hidden">
+          ${imgHtml}
           ${formatNewsText(item.text || '')}
+          <div class="clear-both"></div>
       </div>
-      <div class="mt-10 pt-8 border-t">
+      <div class="mt-10 pt-8 border-t clear-both">
           <a href="${contactsUrl}" class="inline-flex items-center text-sm font-semibold text-[#f9794c] hover:underline">${escapeHtml(item.button)} →</a>
       </div>
       </article>
@@ -237,7 +240,6 @@ const News = (() => {
   }
 
   function escapeHtml(str) {
-    return str
     if (!str) return '';
     return String(str)
       .replace(/&/g, '&amp;')
