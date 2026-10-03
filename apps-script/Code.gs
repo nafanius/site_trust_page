@@ -282,10 +282,18 @@ function getNews(lang = 'en') {
 
     const requested = pickTranslation(transMap[nid], lang, fallback);
 
+    // Normalize date: Sheets may return Date objects; ensure string for consumers + sort
+    let dateVal = n.date || '';
+    if (dateVal instanceof Date) {
+      dateVal = dateVal.toISOString().split('T')[0]; // YYYY-MM-DD
+    } else {
+      dateVal = String(dateVal).trim();
+    }
+
     result.push({
       id: Number(n.id) || nid,
       slug: n.slug || '',
-      date: n.date || '',
+      date: dateVal,
       category: n.category || '',
       image: n.image || '',
       link: n.link || '',
@@ -301,12 +309,14 @@ function getNews(lang = 'en') {
     });
   });
 
-  // Sort by sort (desc) then date (desc)
+  // Sort by sort (desc) then date (desc) — use timestamps for robust comparison
   result.sort((a, b) => {
     const sa = Number(newsRows.find(r => String(r.id) === String(a.id))?.sort) || 0;
     const sb = Number(newsRows.find(r => String(r.id) === String(b.id))?.sort) || 0;
     if (sb !== sa) return sb - sa;
-    return (b.date || '').localeCompare(a.date || '');
+    const ta = a.date ? new Date(a.date).getTime() : 0;
+    const tb = b.date ? new Date(b.date).getTime() : 0;
+    return tb - ta;
   });
 
   cache.put(cacheKey, JSON.stringify(result), CACHE_TTL_SECONDS);

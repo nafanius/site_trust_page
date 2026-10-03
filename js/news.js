@@ -74,24 +74,24 @@ const News = (() => {
 
   function createNewsCard(item) {
     const card = document.createElement('article');
-    card.className = 'block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all';
+    card.className = 'group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all';
 
     const imgHtml = item.image
-      ? ` <img src="${escapeHtml(item.image)}" alt="IRCC issues record ITAs" 
-            class="w-full aspect-video object-cover group-hover:scale-[1.03]" />`
+      ? ` <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || 'News')}" 
+            class="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-[1.03]" />`
       : `<div style="height:160px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:0.9rem;">No image</div>`;
-
-    const dateStr = item.date ? new Date(item.date).toLocaleDateString() : '';
+      
+    const dateStr = item.date ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
     const category = item.category ? item.category : '';
 
     const link = getLocalizedNewsLink(item);
 
     card.innerHTML = `
-      <a href="${link}" class="overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all">
+      <a href="${link}" style="text-decoration: none;" class="overflow-hidden hover:border-[#055a96]/30 hover:shadow-sm transition-all">
       ${imgHtml}
        <div class="p-4">
          <div class="uppercase text-[10px] tracking-widest text-[#f9794c] mb-1">${category}</div>
-          <h4 class="font-semibold text-lg leading-tight mb-2">${escapeHtml(item.title || 'Untitled')}</h4>
+          <h4 class="font-semibold text-lg leading-tight group-hover:text-[#055a96] mb-2">${escapeHtml(item.title || 'Untitled')}</h4>
           <p class="text-sm text-[#45464d] mb-3">${escapeHtml(truncate(item.text || '', 140))}</p>
           <div class="text-xs text-[#939598]">${escapeHtml(dateStr)}</div>
        </div>
@@ -156,7 +156,10 @@ const News = (() => {
     const category = item.category ? item.category : '';
 
     const imgHtml = item.image
-      ? `<div class="news-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}"></div>`
+      ? `<div class="group relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden rounded-2xl shadow mb-8 bg-gray-100">
+           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" 
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy">
+         </div>`
       : '';
 
     const backUrl = I18n ? I18n.localizedUrl('/news', currentLang) : (currentLang === 'en' ? '/news' : `/${currentLang}/news`);
@@ -169,6 +172,9 @@ const News = (() => {
       </div>
       <div class="uppercase text-[10px] tracking-[1.5px] font-semibold text-[#f9794c] mb-2">${category}</div>
       <h1 class="text-4xl md:text-[42px] font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mb-4">${escapeHtml(item.title || 'Untitled')}</h1>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#939598] mb-8">
+      <span>${dateStr}</span>
+      </div>
         ${imgHtml}
       <div class="max-w-3xl space-y-6 text-[15px] leading-relaxed text-[#45464d]">
           ${formatNewsText(item.text || '')}

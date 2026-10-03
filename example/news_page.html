@@ -127,11 +127,11 @@
 
     <!-- Responsive news hero image: adapts to any image size/aspect using fixed aspect ratio + object-cover -->
     <div class="w-full mb-8 md:mb-10">
-      <div class="relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden rounded-2xl bg-[#f1f5f9] border border-gray-200 shadow-sm">
+      <div class="group relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden rounded-2xl bg-[#f1f5f9] border border-gray-200 shadow-sm">
         <img 
           src="https://picsum.photos/id/1018/1200/600" 
           alt="USCIS extends premium processing for additional employment-based immigration categories" 
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           loading="lazy"
         >
       </div>

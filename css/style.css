@@ -49,6 +49,12 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  font-family: 'Montserrat', var(--font-sans);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', var(--font-sans);
+  font-weight: 600;
 }
 
 a {
