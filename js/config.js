@@ -6,10 +6,10 @@
 const CONFIG = {
   // Replace with your deployed Google Apps Script Web App URL
   // Example: "https://script.google.com/macros/s/XXXXXXXXXXXXXXXX/exec"
-  API_URL: "https://script.google.com/macros/s/AKfycbzBDQUkwwF3Ab13xJoUD0Lrc_x_owcOVshkXpyom-MxlhGEFpegXGfOtW5wlBhK2bellg/exec",
+  API_URL: "https://script.google.com/macros/s/AKfycbzfd1LKEN-JPXoHC3dbWNyqsgWT10NwoQbC9FBU42sq4Zqrq5pn9UL1qCO7c5fPsi4TsQ/exec",
 
   //api for form
-  API_FORM: "https://script.google.com/macros/s/AKfycbzBDQUkwwF3Ab13xJoUD0Lrc_x_owcOVshkXpyom-MxlhGEFpegXGfOtW5wlBhK2bellg/exec",
+  API_FORM: "https://script.google.com/macros/s/AKfycbzfd1LKEN-JPXoHC3dbWNyqsgWT10NwoQbC9FBU42sq4Zqrq5pn9UL1qCO7c5fPsi4TsQ/exec",
 
   // Default fallback language if a translation is missing
   FALLBACK_LANGUAGE: "en",
