@@ -282,7 +282,7 @@
   async function renderHome() {
     if (!pageContent) return;
 
-    const siteName = settings.site_name || 'Trust Site';
+    const siteName = 'Trust In Poland Legal';
 
     // Try to load homepage content from Google Sheets (slug = "home")
     // This allows the main page to be fully managed from the CMS like any other page.
@@ -313,34 +313,18 @@
         .join('');
 
       // SEO
-      document.title = homePage.title;
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      const desc = homePage.meta_description || homePage.title || '';
-      metaDesc.setAttribute('content', escapeHtml(desc).slice(0, 160));
+      homePage.title = siteName;
+      Pages.setPageMeta(homePage);
 
       pageContent.innerHTML = `
           ${escapeHtml(body)}
         
       `;
-      // pageContent.innerHTML = `
-      //     <header class="page-header">
-      //       <h1>${escapeHtml(homePage.title)}</h1>
-      //     </header>
-      //     ${escapeHtml(body)}
-        
-      // `;
       return;
     }
 
     // Fallback: use settings or minimal default (backward compatible)
     const homeDesc = settings.home_description || `Welcome to ${siteName} — multilingual content powered by Google Sheets.`;
-
-    setHomeMeta(siteName, homeDesc);
 
     const i18n = window.I18n;
     pageContent.innerHTML = `
@@ -355,25 +339,6 @@
         </p>
       </div>
     `;
-  }
-
-  function setHomeMeta(siteName, description) {
-    document.title = siteName;
-
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', description.slice(0, 160));
-
-    // Update OG tags
-    let ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute('content', siteName);
-
-    let ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.setAttribute('content', description.slice(0, 200));
   }
 
   function escapeHtml(str) {

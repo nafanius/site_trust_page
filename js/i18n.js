@@ -153,7 +153,7 @@ const I18n = (() => {
    * Update document title with optional page title.
    */
   function setDocumentTitle(pageTitle) {
-    const siteName = (window.siteSettings && window.siteSettings.site_name) || 'Trust Site';
+    const siteName = ((CONFIG.SITE_NAME) || 'Trust In Poland Legal').slice(0, 80);
     if (pageTitle) {
       document.title = `${pageTitle} — ${siteName}`;
     } else {

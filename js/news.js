@@ -39,6 +39,19 @@ const News = (() => {
           </div>
           </div>
         `;
+
+        // Update document title
+        if (window.I18n && typeof I18n.setDocumentTitle === 'function') {
+          I18n.setDocumentTitle(p.title);
+        }
+       
+        // SEO: set meta description from news text
+        p.slug='news';
+        p.title=lead;
+        p.language_link = getLocalizedNewsLink(p);
+        setNewsMeta(p);
+
+
       }
     } catch (e) {
       // keep default header
@@ -114,6 +127,12 @@ const News = (() => {
     if (item.link && /^https?:\/\//i.test(item.link)) {
       return item.link;
     }
+
+    if (item.slug === '/news' || item.slug === 'news') {
+      return window.I18n && typeof I18n.localizedUrl === 'function' ? I18n.localizedUrl('/news', currentLang)
+        : (window.Router && typeof Router.buildUrl === 'function' ? Router.buildUrl('/news', currentLang) : '/news');
+    }
+
     const slugPath = item.slug ? `/news/${item.slug}` : `/news/${item.id}`;
     if (window.I18n && typeof I18n.localizedUrl === 'function') {
       return I18n.localizedUrl(slugPath, currentLang);
@@ -154,6 +173,9 @@ const News = (() => {
     }
 
     const item = res.data;
+
+    item.language_link = getLocalizedNewsLink(item)
+
     const dateStr = item.date ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
     const category = item.category ? item.category : '';
 
@@ -200,8 +222,12 @@ const News = (() => {
   function setNewsMeta(item) {
     if (!item) return;
 
+    const domainName  = (typeof CONFIG !== 'undefined' && CONFIG.DOMAIN_NAME)
+    ? CONFIG.DOMAIN_NAME
+    : '';
+    
     const desc = (item.text || item.title || '').slice(0, 160);
-
+    
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -209,19 +235,31 @@ const News = (() => {
       document.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', escapeHtml(desc));
+    
+    const canonicalLink = `${domainName}${item.language_link}`;
+    let LinkCan = document.querySelector('link[name="canonical"]');
+    LinkCan.setAttribute('href',canonicalLink);
+
+    // OG title
+    let title = (item.title || '').slice(0, 160);
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
 
     // Optional OG tags
     let ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', desc);
 
-    if (item.image) {
+    // og image
+    const imageOg = (item.image|| domainName+'/assets/1.png' || '')
+
+    if (imageOg) {
       let ogImage = document.querySelector('meta[property="og:image"]');
       if (!ogImage) {
         ogImage = document.createElement('meta');
         ogImage.setAttribute('property', 'og:image');
         document.head.appendChild(ogImage);
       }
-      ogImage.setAttribute('content', item.image);
+      ogImage.setAttribute('content',imageOg);
     }
   }
 
@@ -241,6 +279,7 @@ const News = (() => {
 
   function escapeHtml(str) {
     if (!str) return '';
+    return String(str);
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')

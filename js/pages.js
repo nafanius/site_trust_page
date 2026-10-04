@@ -97,6 +97,10 @@ const Pages = (() => {
     // Title is handled by I18n.setDocumentTitle in caller
     if (!page) return;
 
+    const domainName = (typeof CONFIG !== 'undefined' && CONFIG.DOMAIN_NAME)
+      ? CONFIG.DOMAIN_NAME
+      : '';
+
     const description = page.meta_description || page.title || '';
 
     // Update or create meta description
@@ -113,18 +117,34 @@ const Pages = (() => {
     if (ogTitle && page.title) ogTitle.setAttribute('content', page.title);
 
     let ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc && description) ogDesc.setAttribute('content', description.slice(0, 200));
+    if (ogDesc) ogDesc.setAttribute('content', description.slice(0, 200));
 
     // og:image if provided
+    let ogImage = document.querySelector('meta[property="og:image"]');
     if (page.og_image) {
-      let ogImage = document.querySelector('meta[property="og:image"]');
       if (!ogImage) {
         ogImage = document.createElement('meta');
         ogImage.setAttribute('property', 'og:image');
         document.head.appendChild(ogImage);
       }
       ogImage.setAttribute('content', page.og_image);
+    } else {
+      if (!ogImage) {
+        ogImage = document.createElement('meta');
+        ogImage.setAttribute('property', 'og:image');
+        document.head.appendChild(ogImage);
+      }
+      ogImage.setAttribute('content', domainName + '/assets/1.png');
     }
+
+    if (page.slug) {
+      const canonicalLink = `${domainName}/${page.slug}`;
+      let LinkCan = document.querySelector('link[name="canonical"]');
+      if (LinkCan) {
+        LinkCan.setAttribute('href', canonicalLink);
+      }
+    }
+
   }
 
   // === SEO-FRIENDLY TEMPLATE RENDERERS ===
@@ -337,16 +357,17 @@ const Pages = (() => {
     return String(str)
       .replace(/\n/g, '')
       .replace(/\r?\n/g, '')
-      // .replace(/&/g, '&amp;')
-      // .replace(/</g, '&lt;')
-      // .replace(/>/g, '&gt;')
-      // .replace(/"/g, '&quot;')
-      // .replace(/'/g, '&#039;');
+    // .replace(/&/g, '&amp;')
+    // .replace(/</g, '&lt;')
+    // .replace(/>/g, '&gt;')
+    // .replace(/"/g, '&quot;')
+    // .replace(/'/g, '&#039;');
   }
 
   return {
     renderPage,
     setLanguage,
+    setPageMeta,
     // sendForm,
   };
 })();

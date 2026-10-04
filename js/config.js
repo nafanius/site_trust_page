@@ -15,7 +15,14 @@ const CONFIG = {
   FALLBACK_LANGUAGE: "en",
 
   // Number of news items to show per page (used by news.js)
-  NEWS_PER_PAGE: 12
+  NEWS_PER_PAGE: 12,
+
+  // Number of news items to show per page (used by news.js)
+  DOMAIN_NAME: 'https://example.com',
+
+  // Site name for SEO and page title
+  SITE_NAME: 'Trust In Poland Legal'
+
 };
 
 // Freeze to prevent accidental mutation in client code
