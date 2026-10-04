@@ -18,7 +18,7 @@ const CONFIG = {
   NEWS_PER_PAGE: 12,
 
   // Number of news items to show per page (used by news.js)
-  DOMAIN_NAME: 'https://example.com',
+  DOMAIN_NAME: 'https://nafanius.github.io/site_trust_page',
 
   // Site name for SEO and page title
   SITE_NAME: 'Trust In Poland Legal'
