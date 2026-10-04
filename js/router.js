@@ -230,6 +230,8 @@ const Router = (() => {
       appUrl = `/${lang}${cleanRoute}`;
     }
 
+    return appUrl;
+    // TODO fix it if you need base  
     // Prefix deployment base (if any)
     if (!base) return appUrl;
     if (appUrl === '/') return base + '/';

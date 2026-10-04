@@ -12,6 +12,7 @@
   <meta property="og:title" content="Trust Site">
   <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
   <meta property="og:image" content="">
+  <meta property="og:url" content="">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Canonical will be managed by JS for language variants -->
@@ -47,6 +48,7 @@
         // (css/, js/, assets/) resolve from the site root instead of the current
         // directory. This fixes 404s for CSS/JS/assets when the URL contains a
         // language prefix such as /ru/news or /pl/about.
+
         var b = document.createElement('base');
         b.setAttribute('href', base);
         var head = document.head || document.getElementsByTagName('head')[0];

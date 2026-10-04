@@ -239,6 +239,10 @@ const News = (() => {
     const canonicalLink = `${domainName}${item.language_link}`;
     let LinkCan = document.querySelector('link[name="canonical"]');
     LinkCan.setAttribute('href',canonicalLink);
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', canonicalLink);
+    }
 
     // OG title
     let title = (item.title || '').slice(0, 160);

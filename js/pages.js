@@ -144,6 +144,10 @@ const Pages = (() => {
       if (LinkCan) {
         LinkCan.setAttribute('href', canonicalLink);
       }
+      let ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) {
+        ogUrl.setAttribute('content', canonicalLink);
+      }
     }
 
   }
