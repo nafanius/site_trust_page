@@ -138,7 +138,8 @@ const Pages = (() => {
     }
 
     if (page.slug) {
-      const canonicalLink = `${domainName}/${page.slug}`;
+      langSlug = I18n.localizedUrl(page.slug, currentLang);
+      const canonicalLink = `${domainName}${langSlug}`;
       let LinkCan = document.querySelector('link[name="canonical"]');
       if (LinkCan) {
         LinkCan.setAttribute('href', canonicalLink);
