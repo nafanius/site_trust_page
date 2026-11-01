@@ -103,7 +103,7 @@
     <div id="page-content" class="">
       <!-- Router renders here -->
 
-      <!-- FORM + INPUTS SHOWCASE -->
+<!-- FORM + INPUTS SHOWCASE -->
       <section id="contact" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
         <div class="grid lg:grid-cols-5 gap-x-12 gap-y-10">
           <div class="lg:col-span-2">
@@ -126,24 +126,27 @@
           <div class="lg:col-span-3">
             <form id="contact-form" class="space-y-5" novalidate>
               <div>
-                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">ИМЯ</label>
-                <input type="text" id="name" required
+                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">ИМЯ <input type="text" id="name" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
                   placeholder="Алекс">
+                </label>
+               
                 <p class="error-text hidden text-xs text-red-600 mt-1">Пожалуйста, введите ваше имя.</p>
               </div>
               <div>
-                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">НОМЕР ТЕЛЕФОНА</label>
-                <input type="tel" id="phone" required
+                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">НОМЕР ТЕЛЕФОНА<input type="tel" id="phone" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
                   placeholder="(416) 555-0192">
+                </label>
+                
               </div>
               <div>
                 <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">РАССКАЖИТЕ О ВАШЕЙ
-                  СИТУАЦИИ</label>
-                <textarea id="message" rows="4" required
+                  СИТУАЦИИ<textarea id="message" rows="4" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-3 text-sm placeholder:text-[#939598]"
                   placeholder="Кратко расскажите о ваших иммиграционных целях или текущем статусе..."></textarea>
+                </label>
+                
               </div>
               <button type="submit"
                 class="button-new w-full sm:w-auto mt-2 px-10 py-3 rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
@@ -171,8 +174,8 @@
             назначить консультацию.
           </div>
           <div class="px-6 py-4 bg-[#f9f9f9] flex justify-end">
-            <button id="modal-ok"
-              class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Закрыть</button>
+            <a href="/ru/"  id="modal-ok"
+              class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Закрыть</a>
           </div>
         </div>
       </div>

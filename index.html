@@ -26,7 +26,8 @@
   -->
   <script>
     (function () {
-      tr var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
         pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
         pathname = pathname.replace(/\/+/g, '/');
         if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
@@ -47,7 +48,6 @@
         // (css/, js/, assets/) resolve from the site root instead of the current
         // directory. This fixes 404s for CSS/JS/assets when the URL contains a
         // language prefix such as /ru/news or /pl/about.
-
         var b = document.createElement('base');
         b.setAttribute('href', base);
         var head = document.head || document.getElementsByTagName('head')[0];
@@ -73,7 +73,9 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
 </head>

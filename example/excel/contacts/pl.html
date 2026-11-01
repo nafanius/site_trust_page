@@ -128,24 +128,27 @@
           <div class="lg:col-span-3">
             <form id="contact-form" class="space-y-5" novalidate>
               <div>
-                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">IMIĘ</label>
-                <input type="text" id="name" required
+                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">IMIĘ<input type="text" id="name" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
                   placeholder="Aleks">
+                </label>
+                
                 <p class="error-text hidden text-xs text-red-600 mt-1">Proszę podać swoje imię.</p>
               </div>
               <div>
-                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">NUMER TELEFONU</label>
-                <input type="tel" id="phone" required
+                <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">NUMER TELEFONU<input type="tel" id="phone" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
                   placeholder="+48 123 456 789">
+                </label>
+                
               </div>
               <div>
                 <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">OPISZ SWOJĄ
-                  SYTUACJĘ</label>
-                <textarea id="message" rows="4" required
+                  SYTUACJĘ<textarea id="message" rows="4" required
                   class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-3 text-sm placeholder:text-[#939598]"
                   placeholder="Krótko opisz swoje cele imigracyjne lub aktualny status pobytowy..."></textarea>
+                </label>
+                
               </div>
               <button type="submit"
                 class="button-new w-full sm:w-auto mt-2 px-10 py-3 rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
@@ -172,8 +175,8 @@
             Pracownik naszego działu obsługi zgłoszeń skontaktuje się z Tobą w ciągu jednego dnia roboczego, aby umówić konsultację.
           </div>
           <div class="px-6 py-4 bg-[#f9f9f9] flex justify-end">
-            <button id="modal-ok"
-              class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Zamknij</button>
+            <a href="/pl/" id="modal-ok"
+              class="button-new px-6 py-2 text-sm font-semibold rounded-md bg-[#055a96] text-white">Zamknij</a>
           </div>
         </div>
       </div>
