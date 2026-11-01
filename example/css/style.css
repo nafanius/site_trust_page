@@ -935,7 +935,7 @@ details summary::-webkit-details-marker {
   display: none;
 }
 
-details[open] summary span {
+details[open] summary .accordion-toggle {
   transform: rotate(45deg);
 }
 

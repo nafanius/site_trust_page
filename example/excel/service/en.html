@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust Site</title>
+  <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
+
+  <!-- SEO & Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trust Site">
+  <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Canonical will be managed by JS for language variants -->
+  <link rel="canonical" href="/">
+
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
+      <a href="/site_trust_page/" class="pl-3 logo pr-8" id="logo-link" data-route="/">
+        <img src="../../assets/1.png" alt="Trust Site" height="28" width="200" style="vertical-align:middle;">
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li class=""><a href="/site_trust_page/about" class="text-lg" data-route="/about">About</a></li>
+          <li class=""><a href="/site_trust_page/news" class="text-lg" data-route="/news">News</a></li>
+          <li class=""><a href="/site_trust_page/contacts" class="text-lg" data-route="/contacts">Contacts</a></li>
+        </ul>
+      </nav>
+
+      <div class="language-switcher" id="language-switcher">
+        <ul class="lang-list text-base font-semibold">
+          <li><a href="/site_trust_page/" class="lang-link active" aria-current="page">EN</a></li>
+          <li><a href="/site_trust_page/ru/" class="lang-link">RU</a></li>
+          <li><a href="/site_trust_page/pl/" class="lang-link">PL</a></li>
+        </ul>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" data-bound="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="w-full min-h-screen">
+    <div id="page-content" class="">
+      <!-- Router renders here -->
+
+
+
+<section class="bg-[#243E58] text-white overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(#ffffff10_0.8px,transparent_1px)] bg-[length:4px_4px]"></div>
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 pt-7 pb-7 relative">
+    <div class="max-w-2xl">
+      <div
+        class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-white/10 text-xs tracking-[1px] font-medium mb-6">
+        <span class="w-1.5 h-1.5 bg-[#f9794c] rounded-full"></span>
+        PREMIUM BUSINESS SUPPORT IN POLAND
+      </div>
+      <h1 class="text-[42px] md:text-[56px] lg:text-[62px] leading-[1.05] font-semibold tracking-[-1.5px]">
+        Legalization Services for Foreign Nationals in Poland. Comprehensive Business Support.<br>
+      </h1>
+      <div class="text-white/70 text-sm mb-6">
+        Personalized attention to every client.
+      </div>
+      <p class="max-w-md text-lg md:text-xl text-white/80 mb-8">
+        Professional support for foreign nationals and businesses in Poland.
+        Residence legalization, business formation and management — from the first steps to resolving ongoing matters.
+      </p>
+      <div class="mt-8 flex items-center gap-x-6 text-sm">
+        <div class="flex -space-x-2">
+          <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden">
+            <img src="https://picsum.photos/id/1005/28/28" alt="">
+          </div>
+          <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden">
+            <img src="https://picsum.photos/id/1011/28/28" alt="">
+          </div>
+          <div class="w-7 h-7 rounded-full bg-white/90 ring-2 ring-[#243E58] overflow-hidden">
+            <img src="https://picsum.photos/id/1009/28/28" alt="">
+          </div>
+        </div>
+        <div class="text-white/70 text-sm">
+          Personalized support for entrepreneurs
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service selector strip -->
+  <div class="border-t border-white/20 bg-white/5">
+    <div
+      class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-3 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm ">
+      <span class="text-white/70 font-medium">
+        How we can help:
+      </span>
+      <div class="flex flex-wrap gap-x-2 gap-y-2">
+        <a href="/en/legalization" style="text-decoration: none;"
+          class="flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-white/10 hover:hover:bg-[#f9f9f9] hover:text-[#243E58] text-white text-sm font-medium transition-colors">
+          Legalization
+        </a>
+        <a href="/en/business" style="text-decoration: none;"
+          class="flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-white/10 hover:hover:bg-[#f9f9f9] hover:text-[#243E58] text-white text-sm font-medium transition-colors">
+          Business
+        </a>
+        <a href="/en/accounting" style="text-decoration: none;"
+          class="flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-white/10 hover:hover:bg-[#f9f9f9] hover:text-[#243E58] text-white text-sm font-medium transition-colors">
+          Accounting
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="max-w-[1280px] mx-auto px-3 py-10">
+  <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 items-center">
+    <div class="md:col-span-7">
+      <div class="uppercase tracking-[2px] text-xs font-semibold text-[#f9794c] mb-3">
+        PERSONALIZED APPROACH • POLAND
+      </div>
+      <h2 class="text-4xl md:text-[42px] leading-none font-semibold tracking-[-1.2px] text-[#243E58] mb-6">
+        About Us.
+      </h2>
+      <div class="prose prose-lg text-[#45464d] max-w-prose">
+        <p>
+          <span class="font-semibold">Over 6 years of experience in residence legalization for foreign nationals in Poland.</span>
+          We handle complex and non-standard cases, offering a personalized approach and in-depth knowledge of legal procedures.<br>
+          <span class="font-semibold">Over 2,500 successfully completed cases and satisfied clients.</span><br>
+          <span class="font-semibold">You are more than just another case in the system.</span>
+          Our team is here to ensure that every client understands what is happening with their documents and what steps come next.<br>
+          <span class="font-semibold">We take the bureaucracy off your hands.</span>
+          We guide you through the legalization process, handle administrative matters, and help you navigate every stage with confidence and peace of mind.<br>
+          <span class="font-semibold">Temporary residence, permanent residence, citizenship, and other legalization matters in Poland — clear guidance, a structured process, and attention to your individual circumstances.</span>
+        </p>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-4">
+        <a href="/en/contacts"
+          class="text-sm font-semibold text-[#055a96] hover:underline inline-flex items-center gap-1">
+          Contact Us →
+        </a>
+      </div>
+    </div>
+    <div class="md:col-span-5">
+      <div class="bg-[#f9f9f9] rounded-xl p-7 text-sm leading-relaxed border border-gray-100">
+        <div class="font-semibold text-[#243E58] mb-3">
+          Our Approach
+        </div>
+        <ul class="space-y-2 text-[#45464d]">
+          <li class="flex gap-2">
+            <span class="text-[#f9794c]">•</span>
+            Personalized support for every project
+          </li>
+          <li class="flex gap-2">
+            <span class="text-[#f9794c]">•</span>
+            We handle as much as possible — you only provide what's necessary
+          </li>
+          <li class="flex gap-2">
+            <span class="text-[#f9794c]">•</span>
+            Attention to detail and transparent communication
+          </li>
+          <li class="flex gap-2">
+            <span class="text-[#f9794c]">•</span>
+            A limited number of clients to ensure quality
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+  <div class="w-full">
+    <!-- Header -->
+    <div class="mb-8 flex items-end justify-between">
+      <div>
+        <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+          WHAT WE DO
+        </div>
+        <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+          Comprehensive Support
+        </h3>
+      </div>
+      <a href="/en/services" class="hidden text-sm font-medium text-[#055a96] hover:underline md:block">
+        All Services →
+      </a>
+    </div>
+
+    <!-- Cards -->
+    <div class="flex w-full flex-col gap-5 md:flex-row">
+
+      <!-- Card 1 -->
+      <div
+        class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+        <a href="/en/contacts" style="text-decoration: none;">
+          <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+            <span class="text-xl">🇵🇱</span>
+          </div>
+          <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+            Residence Legalization
+          </h4>
+          <p class="mb-4 text-sm leading-6 text-[#45464d]">
+            We help foreign nationals legalize their stay in Poland at every stage of the process.
+            We handle all major types of temporary and permanent residence permits, as well as Polish citizenship applications.
+            We advise you on requirements and documentation and provide support throughout the entire process.
+          </p>
+          <div class="text-xs font-medium text-[#f9794c] group-hover:underline">
+            Request a Consultation →
+          </div>
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div
+        class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+        <a href="/en/contacts" style="text-decoration: none;">
+          <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+            <span class="text-xl">💼</span>
+          </div>
+          <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+            Business Setup and Management
+          </h4>
+          <p class="mb-4 text-sm leading-6 text-[#45464d]">
+            We help you establish a sole proprietorship (JDG) in Poland and navigate all the necessary formalities.
+            We support entrepreneurs during registration and throughout the ongoing operation of their businesses.
+          </p>
+          <div class="text-xs font-medium text-[#f9794c] group-hover:underline">
+            Request a Consultation →
+          </div>
+        </a>
+      </div>
+
+      <!-- Card 3 -->
+      <div
+        class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+        <a href="/en/contacts" style="text-decoration: none;">
+          <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+            <span class="text-xl">📊</span>
+          </div>
+          <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+            Accounting and Business Support
+          </h4>
+          <p class="mb-4 text-sm leading-6 text-[#45464d]">
+            We take care of accounting and tax support for your business.
+            We help with tax returns, documentation, taxes, and other regulatory obligations.
+            You get a dedicated specialist who helps keep your accounts in order and resolves any issues that arise.
+          </p>
+          <div class="text-xs font-medium text-[#f9794c] group-hover:underline">
+            Request a Consultation →
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile View All -->
+    <div class="mt-6 md:hidden">
+      <a href="/en/services" class="text-sm font-medium text-[#055a96] hover:underline">
+        All Services →
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#243E58] text-white py-14">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 text-center">
+    <div class="max-w-lg mx-auto">
+      <h3 class="text-2xl md:text-3xl font-semibold tracking-[-0.8px]">
+        Need Help with Legalization in Poland?
+      </h3>
+      <p class="mt-3 text-white/70">
+        Tell us about your situation — we'll assess your needs and recommend the most suitable support plan.
+      </p>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/en/contacts"
+          class="button-new inline-flex justify-center px-8 py-3 rounded-md bg-[#f9794c] font-semibold hover:bg-[#e56a3f]">
+          Get a Consultation
+        </a>
+        <!-- <a href="/en/contacts"
+          class="inline-flex justify-center px-8 py-3 rounded-md border border-white/30 font-semibold hover:bg-white/10">
+          Get a Consultation
+        </a> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+    </div>
+  </main>
+
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts - load in order -->
+  <script src="../../js/config.js"></script>
+  <script src="../../js/router.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/menu.js"></script>
+  <script src="../../js/news.js"></script>
+  <script src="../../js/pages.js"></script>
+  <script src="../../js/form.js"></script>
+</body>
+
+</html>
