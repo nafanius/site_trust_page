@@ -379,5 +379,5 @@
   window.showApiErrorBanner = showApiErrorBanner;
 
   // Log ready state (useful during development)
-  console.log('%c[TrustSite] Application initialized (optimized navigation)', 'color:#64748b');
+  // console.log('%c[TrustSite] Application initialized (optimized navigation)', 'color:#64748b');
 })();

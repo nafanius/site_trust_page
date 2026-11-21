@@ -254,8 +254,6 @@ async function sendForm() {
     ? CONFIG.API_URL
     : '';
 
-
-
   const data = {
     name: form.name.value,
     phone: form.phone.value,
@@ -267,21 +265,5 @@ async function sendForm() {
     mode: "no-cors",
     body: JSON.stringify(data)
   });
-  // await fetch(FORM_URL, {
-  //   method: "POST",
-  //   mode: "no-cors",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(data)
-  // });
-  // await fetch(
-  //   FORM_URL,
-  //   {
-  //     method: "POST",
-  //     body: JSON.stringify(data)
-  //   }
-  // );
-
-  // form.reset();
-
 
 }

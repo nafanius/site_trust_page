@@ -177,3 +177,47 @@ article img {
 footer a {
   transition: color 0.1s ease;
 }
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.75rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  text-decoration: none;
+  filter: brightness(0.92);
+}
+
+.social-instagram { background: #e1306c; }
+.social-telegram { background: #229ed9; }
+.social-whatsapp { background: #25d366; }
+.social-linkedin { background: #0a66c2; }
+.social-viber { background: #7360f2; }
+
+@media (max-width: 768px) {
+  .social-links {
+    margin-left: 0.35rem;
+    gap: 0.2rem;
+  }
+
+  .social-link {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}

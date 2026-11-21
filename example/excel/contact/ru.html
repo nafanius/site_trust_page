@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust Site</title>
+  <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
+
+  <!-- SEO & Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trust Site">
+  <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Canonical will be managed by JS for language variants -->
+  <link rel="canonical" href="/">
+
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+  <header class="site-header">
+
+    <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
+      <a href="/site_trust_page/" class="pl-3 logo pr-8" id="logo-link" data-route="/">
+        <img src="../../assets/1.png" alt="Trust Site" height="28" width="200" style="vertical-align:middle;">
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li class=""><a href="/site_trust_page/about" class="text-lg" data-route="/about">About</a></li>
+          <li class=""><a href="/site_trust_page/news" class="text-lg" data-route="/news">News</a></li>
+          <li class=""><a href="/site_trust_page/contacts" class="text-lg" data-route="/contacts">Contacts</a></li>
+        </ul>
+      </nav>
+
+
+      <div class="language-switcher" id="language-switcher">
+        <ul class="lang-list text-base font-semibold">
+          <li><a href="/site_trust_page/" class="lang-link active" aria-current="page">EN</a></li>
+          <li><a href="/site_trust_page/ru/" class="lang-link">RU</a></li>
+          <li><a href="/site_trust_page/pl/" class="lang-link">PL</a></li>
+        </ul>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" data-bound="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="w-full min-h-screen">
+    <div id="page-content" class="">
+
+
+
+      <section id="contact" class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-20">
+
+        <div class="grid lg:grid-cols-5 gap-x-12 gap-y-10">
+          <div class="lg:col-span-2">
+            <div class="sticky top-20">
+              <div class="text-xs tracking-[1.5px] font-semibold text-[#f9794c]">START YOUR JOURNEY</div>
+              <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] mt-1 mb-3">Book a free consultation</h3>
+              <p class="text-[#45464d]">Consult with our legalization specialist. After just one phone conversation, we
+                will be able to make a preliminary assessment of your situation and identify possible solutions. </p>
+              <div class="mt-6 text-sm">
+                <div class="flex items-center gap-2 text-[#055a96]"> <span>📍</span> <span>Poland</span> </div>
+                <div class="mt-1 text-[#939598]">Mon–Fri, 9:00 AM–5:00 PM</div>
+              </div>
+            </div>
+            <nav class="social-links ms-0 mt-3" aria-label="Social media">
+        <a class="social-link social-instagram" href="https://instagram.com/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-telegram" href="https://t.me/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-whatsapp" href="https://wa.me/48000000000" target="_blank"
+          rel="noopener noreferrer" aria-label="WhatsApp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-linkedin" href="https://www.linkedin.com/company/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-viber" href="viber://chat?number=%2B48000000000" target="_blank"
+          rel="noopener noreferrer" aria-label="Viber">
+          <i class="fa-brands fa-viber" aria-hidden="true"></i>
+        </a>
+      </nav>
+          </div> <!-- Form -->
+          <div class="lg:col-span-3">
+                    
+            <form id="contact-form" class="space-y-5 " novalidate="" data-initialized="true">
+              <div> <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">NAME<input
+                    type="text" id="name" required=""
+                    class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
+                    placeholder="Alex"> </label>
+                <p class="error-text hidden text-xs text-red-600 mt-1">Please enter your name.</p>
+              </div>
+              <div> <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">PHONE NUMBER<input
+                    type="tel" id="phone" required=""
+                    class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-2.5 text-sm placeholder:text-[#939598]"
+                    placeholder="+48 123 456 789"></label> </div>
+              <div> <label class="block text-xs font-semibold tracking-wider mb-1.5 text-[#45464d]">TELL US ABOUT YOUR
+                  SITUATION<textarea id="message" rows="4" required=""
+                    class="w-full border border-gray-300 focus:border-[#055a96] focus:ring-1 focus:ring-[#055a96] rounded-md px-4 py-3 text-sm placeholder:text-[#939598]"
+                    placeholder="Briefly describe your immigration goals or current residency status..."></textarea>
+                </label> </div> <button type="submit"
+                class="button-new w-full sm:w-auto mt-2 px-10 py-3 rounded-md bg-[#f9794c] hover:bg-[#e56a3f] active:bg-[#d45f36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                <span id="submit-text">BOOK A CONSULTATION</span> <span id="submit-spinner" class="hidden">⏳</span>
+              </button>
+              <p id="form-success" class="hidden text-sm text-emerald-600 font-medium">Thank you. Our consultant will
+                contact you within 24 hours.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.
+      <nav class="social-links" aria-label="Social media">
+        <a class="social-link social-instagram" href="https://instagram.com/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-telegram" href="https://t.me/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-whatsapp" href="https://wa.me/48000000000" target="_blank"
+          rel="noopener noreferrer" aria-label="WhatsApp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-linkedin" href="https://www.linkedin.com/company/YOUR_ACCOUNT" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+        </a>
+        <a class="social-link social-viber" href="viber://chat?number=%2B48000000000" target="_blank"
+          rel="noopener noreferrer" aria-label="Viber">
+          <i class="fa-brands fa-viber" aria-hidden="true"></i>
+        </a>
+      </nav>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts - load in order -->
+  <script src="../../js/config.js"></script>
+  <script src="../../js/router.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/menu.js"></script>
+  <script src="../../js/news.js"></script>
+  <script src="../../js/pages.js"></script>
+  <script src="../../js/form.js"></script>
+</body>
+
+</html>
