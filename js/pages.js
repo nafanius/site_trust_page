@@ -137,20 +137,20 @@ const Pages = (() => {
       ogImage.setAttribute('content', domainName + '/assets/1.png');
     }
 
-    langSlug = I18n.localizedUrl(page.slug, currentLang);
-    if (langSlug.endsWith('home')) {
-      langSlug = langSlug.slice(0, -4);
-    }
-    const canonicalLink = `${domainName}${langSlug}`;
-    let LinkCan = document.querySelector('link[name="canonical"]');
-    if (LinkCan) {
-      LinkCan.setAttribute('href', canonicalLink);
-    }
-    let ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', canonicalLink);
-    }
-
+    
+      langSlug = I18n.localizedUrl(page.slug, currentLang);
+      if (langSlug.endsWith('home')) {
+        langSlug = langSlug.slice(0, -4);
+      }
+      const canonicalLink = `${domainName}${langSlug}`;
+      let LinkCan = document.querySelector('link[name="canonical"]');
+      if (LinkCan) {
+        LinkCan.setAttribute('href', canonicalLink);
+      }
+      let ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) {
+        ogUrl.setAttribute('content', canonicalLink);
+      }
   }
 
   // === SEO-FRIENDLY TEMPLATE RENDERERS ===
@@ -168,21 +168,7 @@ const Pages = (() => {
     return `
         ${body}
     `;
-    // return `
-    //   <article class="page-template standard">
-    //     <header class="page-header">
-    //       <h1>${escapeHtml(page.title || slug)}</h1>
-    //       ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
-    //     </header>
-    //     <div class="page-content">
-    //       ${imgHtml}
-    //       <div class="page-body">
-    //         ${formatPageContent(page.content || '')}
-    //         ${extra ? `<div class="page-extra">${formatPageContent(extra)}</div>` : ''}
-    //       </div>
-    //     </div>
-    //   </article>
-    // `;
+
   }
 
   function renderLandingTemplate(page, slug) {
@@ -242,6 +228,8 @@ const Pages = (() => {
     if (email) contactDetails.push(`<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>`);
     if (phone) contactDetails.push(`<p><strong>Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>`);
     if (address) contactDetails.push(`<p><strong>Address:</strong> ${escapeHtml(address)}</p>`);
+
+
   }
 
   function renderRichTemplate(page, slug) {
