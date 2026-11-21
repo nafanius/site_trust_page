@@ -139,6 +139,9 @@ const Pages = (() => {
 
     if (page.slug) {
       langSlug = I18n.localizedUrl(page.slug, currentLang);
+      if (langSlug.endsWith('home')) {
+        langSlug = langSlug.slice(0, -4);
+      }
       const canonicalLink = `${domainName}${langSlug}`;
       let LinkCan = document.querySelector('link[name="canonical"]');
       if (LinkCan) {
