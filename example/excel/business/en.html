@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust Site</title>
+  <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
+
+  <!-- SEO & Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trust Site">
+  <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Canonical will be managed by JS for language variants -->
+  <link rel="canonical" href="/">
+
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
+      <a href="/site_trust_page/" class="pl-3 logo pr-8" id="logo-link" data-route="/">
+        <img src="../../assets/1.png" alt="Trust Site" height="28" width="200" style="vertical-align:middle;">
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li class=""><a href="/site_trust_page/about" class="text-lg" data-route="/about">About</a></li>
+          <li class=""><a href="/site_trust_page/news" class="text-lg" data-route="/news">News</a></li>
+          <li class=""><a href="/site_trust_page/contacts" class="text-lg" data-route="/contacts">Contacts</a></li>
+        </ul>
+      </nav>
+
+      <div class="language-switcher" id="language-switcher">
+        <ul class="lang-list text-base font-semibold">
+          <li><a href="/site_trust_page/" class="lang-link active" aria-current="page">EN</a></li>
+          <li><a href="/site_trust_page/ru/" class="lang-link">RU</a></li>
+          <li><a href="/site_trust_page/pl/" class="lang-link">PL</a></li>
+        </ul>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" data-bound="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="w-full min-h-screen">
+    <div id="page-content" class="">
+      <!-- Router renders here -->
+
+
+<!-- services -->
+      <section>
+        <div class="bg-[#f9f9f9] h-full">
+          <!-- Temporary residence -->
+          <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+            <div class="w-full">
+              <!-- Header -->
+              <div class="mb-8 flex items-end justify-between">
+                <div>
+                  <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                    TEMPORARY RESIDENCE LEGALIZATION
+                  </div>
+                  <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                    Temporary Residence Permit (Temporary Residence Card) 🇵🇱
+                  </h3>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="flex w-full flex-col gap-5 md:flex-row">
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">🤝</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Basic Package
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">700
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">For those who want a clear action plan and
+                        complete the main stages independently. </span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- consultation</li>
+                        <li>- case analysis</li>
+                        <li>- review of existing documents</li>
+                        <li>- preparation of a checklist of missing documents</li>
+                        <li>- messenger support during business hours (only before submitting the documents)</li>
+                        <li>- completion and submission of the application</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 2 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💼</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Standard Package *
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">1700
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">An optimal balance of expert support and
+                        independence for a smooth process.</span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- consultation</li>
+                        <li>- case analysis</li>
+                        <li>- review of existing documents</li>
+                        <li>- preparation of a checklist of missing documents</li>
+                        <li>- messenger support during business hours throughout the entire case review period</li>
+                        <li>- completion and submission of the application</li>
+                        <li>- preparation of the document package for submission; communication with the employer, if necessary</li>
+                        <li>- assistance during in-person submission</li>
+                        <li>- submission of additional documents throughout the entire review case </li>
+                        <li>- monitoring the case status until the card is received and informing the client of every
+                          update to the case </li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 3 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💎</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Extended Package **
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">2500
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">For those who prefer to anticipate potential
+                        complications and receive comprehensive support.</span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li class="">- consultation</li>
+                        <li class="">- case analysis</li>
+                        <li class="">- review of existing documents</li>
+                        <li class="">- communication with the employer, if necessary</li>
+                        <li class="">- preparation of a checklist of missing documents</li>
+                        <li class="">- consultations with a dedicated case manager throughout the process</li>
+                        <li class="">- messenger support, including weekends and outside business hours</li>
+                        <li class="">- completion and submission of the application</li>
+                        <li class="">- preparation of the document package for submission</li>
+                        <li class="">- assistance during in-person submission</li>
+                        <li class="">- submission of additional documents throughout the entire
+                          review case</li>
+                        <li class="">- ponaglenie (request to expedite case processing)</li>
+                        <li class="">- free appeal in the event of a refusal</li>
+                        <li class="">- assistance on the day the residence permit is collected</li>
+                        <li class="">- assistance with obtaining US-7 and zaświadczenie
+                          o niezaleganiu w podatkach, PIT-37 online using a trusted profile</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              * The service fee when purchasing the “Standard Package” for each additional family member is 1400 zł.
+              For
+              children under 18 years old - 1000 zł.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Provided that the application is submitted at the same time as the main applicant.</p>
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              ** The service fee when purchasing the “Extended Package” for each additional family member is 2000 zł.
+              For children under 18 - 1300 zł.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Provided that the application is submitted at the same time as the main applicant.</p>
+            </div>
+
+          </section>
+        </div>
+
+        <!-- Permanent residence -->
+        <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+          <div class="w-full">
+            <!-- Header -->
+            <div class="mb-8 flex items-end justify-between">
+              <div>
+                <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                  PERMANENT RESIDENCE / EU LONG-TERM RESIDENT LEGALIZATION
+                </div>
+                <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                  Permanent Residence Permit (Permanent Residence Card, Resident Card) 🇵🇱
+                </h3>
+              </div>
+            </div>
+            <!-- Cards -->
+            <div class="flex w-full flex-col gap-5 md:flex-row">
+              <div
+                class="group bg-[#f9f9f9] w-full min-w-0 flex-1 rounded-xl border border-gray-200 p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">🤝</span>
+                </div>
+                <details class="group open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Basic Package
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">1000
+                      zł
+                    </span>
+                    <span class="block font-medium text-[#243E58]">For those who want a clear action plan and
+                      complete the main stages independently. </span>
+                    <!-- <span class="block"> popular with everyone</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li>- consultation</li>
+                      <li>- case analysis</li>
+                      <li>- review of existing documents</li>
+                      <li>- preparation of a checklist of missing documents</li>
+                      <li>- messenger support during business hours (only before submitting the documents)</li>
+                      <li>- completion and submission of the application</li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Request a consultation →
+                    </a>
+                  </div>
+                </details>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-[#f9f9f9] p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">💼</span>
+                </div>
+                <details class="group bg-[#f9f9f9] open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Standard Package *
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">2500
+                      zł
+                    </span>
+                    <span class="block font-medium text-[#243E58]">An optimal balance of expert support and
+                      independence for a smooth process.</span>
+                    <!-- <span class="block"> popular with everyone</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li>- consultation</li>
+                      <li>- case analysis</li>
+                      <li>- review of existing documents</li>
+                      <li>- preparation of a checklist of missing documents</li>
+                      <li>- messenger support during business hours throughout the entire case review period</li>
+                      <li>- completion and submission of the application</li>
+                      <li>- preparation of the document package for submission; communication with the employer, if necessary</li>
+                      <li>- assistance during in-person submission</li>
+                      <li>- submission of additional documents throughout the entire review case </li>
+                      <li>- monitoring the case status until the card is received and informing the client of every
+                        update to the case </li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Request a consultation →
+                    </a>
+                  </div>
+                </details>
+              </div>
+              <!-- Card 3 -->
+              <div
+                class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-[#f9f9f9] p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">💎</span>
+                </div>
+                <details class="group open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Extended Package **
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg text-lg group-hover:text-[#f9794c] leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">3000
+                      zł</span>
+                    <span class="block font-medium text-[#243E58]">For those who prefer to anticipate potential
+                      complications and receive comprehensive support.</span>
+                    <!-- <span class="block"> popular with everyone</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li class="">- consultation</li>
+                      <li class="">- case analysis</li>
+                      <li class="">- review of existing documents</li>
+                      <li class="">- communication with the employer, if necessary</li>
+                      <li class="">- preparation of a checklist of missing documents</li>
+                      <li class="">- consultations with a dedicated case manager throughout the process</li>
+                      <li class="">- messenger support, including weekends and outside business hours</li>
+                      <li class="">- completion and submission of the application</li>
+                      <li class="">- preparation of the document package for submission</li>
+                      <li class="">- assistance during in-person submission</li>
+                      <li class="">- submission of additional documents throughout the entire
+                        review case</li>
+                      <li class="">- ponaglenie (request to expedite case processing)</li>
+                      <li class="">- free appeal in the event of a refusal</li>
+                      <li class="">- assistance on the day the residence permit is collected</li>
+                      <li class="">- assistance with obtaining US-7 and zaświadczenie
+                        o niezaleganiu w podatkach, PIT-37 online using a trusted profile</li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Request a consultation →
+                    </a>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+          </div>
+
+          <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+            * The service fee when purchasing the “Standard Package” for each additional family member is 2000 zł. For
+            children under 18 years old - 1500 zł.
+          </h3>
+          <div class="text-[15px] leading-relaxed text-[#45464d]">
+            <p>Provided that the application is submitted at the same time as the main applicant.</p>
+          </div>
+
+          <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+            ** The service fee when purchasing the “Extended Package” for each additional family member is 2500 zł.
+            For
+            children under 18 years old - 1500 zł.
+          </h3>
+          <div class="text-[15px] leading-relaxed text-[#45464d]">
+            <p>Provided that the application is submitted at the same time as the main applicant.</p>
+          </div>
+        </section>
+
+        <div class="bg-[#f9f9f9] h-full">
+          <!-- Citizenship -->
+          <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+            <div class="w-full">
+              <!-- Header -->
+              <div class="mb-8 flex items-end justify-between">
+                <div>
+                  <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                    CITIZENSHIP LEGALIZATION
+                  </div>
+                  <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                    Citizenship 🇵🇱
+                  </h3>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="flex w-full flex-col gap-5 md:flex-row">
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">🤝</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Basic Package
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">1000
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">For those who want a clear action plan and
+                        complete the main stages independently. </span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- consultation</li>
+                        <li>- case analysis</li>
+                        <li>- review of existing documents</li>
+                        <li>- preparation of a checklist of missing documents</li>
+                        <li>- messenger support during business hours (only before submitting the documents)</li>
+                        <li>- completion and submission of the application</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 2 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💼</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Standard Package *
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">2500
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">An optimal balance of expert support and
+                        independence for a smooth process.</span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- consultation</li>
+                        <li>- case analysis</li>
+                        <li>- review of existing documents</li>
+                        <li>- preparation of a checklist of missing documents</li>
+                        <li>- messenger support during business hours throughout the entire case review period</li>
+                        <li>- completion and submission of the application</li>
+                        <li>- preparation of the document package for submission; communication with the employer, if necessary</li>
+                        <li>- assistance during in-person submission</li>
+                        <li>- submission of additional documents throughout the entire review case </li>
+                        <li>- monitoring the case status until the card is received and informing the client of every
+                          update to the case </li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                      <div class="bg-[#f9f9f9] h-full"></div>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 3 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💎</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Extended Package **
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">3000
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">For those who prefer to anticipate potential
+                        complications and receive comprehensive support.</span>
+                      <!-- <span class="block"> popular with everyone</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li class="">- consultation</li>
+                        <li class="">- case analysis</li>
+                        <li class="">- review of existing documents</li>
+                        <li class="">- communication with the employer, if necessary</li>
+                        <li class="">- preparation of a checklist of missing documents</li>
+                        <li class="">- consultations with a dedicated case manager throughout the process</li>
+                        <li class="">- messenger support, including weekends and outside business hours</li>
+                        <li class="">- completion and submission of the application</li>
+                        <li class="">- preparation of the document package for submission</li>
+                        <li class="">- assistance during in-person submission</li>
+                        <li class="">- submission of additional documents throughout the entire
+                          review case</li>
+                        <li class="">- ponaglenie (request to expedite case processing)</li>
+                        <li class="">- free appeal in the event of a refusal</li>
+                        <li class="">- assistance on the day the residence permit is collected</li>
+                        <li class="">- assistance with obtaining US-7 and zaświadczenie
+                          o niezaleganiu w podatkach, PIT-37 online using a trusted profile</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Request a consultation →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              * The service fee when purchasing the “Standard Package” for each additional family member is 2000 zł.
+              For
+              children under 18 years old - free of charge.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Provided that the application is submitted at the same time as the main applicant.</p>
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              ** The service fee when purchasing the “Extended Package” for each additional family member is 2500 zł.
+              For children under 18 - free of charge.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Provided that the application is submitted at the same time as the main applicant.</p>
+            </div>
+
+          </section>
+        </div>
+
+        <div class="px-2">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl my-6 p-7 text-sm border border-gray-100">
+            <div class="font-semibold text-[#243E58] mb-3">
+              Additional Services
+            </div>
+
+            <ul class="space-y-2 text-[#45464d]">
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Obtaining a PESEL number</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Setting up a Profil Zaufany</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Setting up a Profil Zaufany with a visit to a verification point</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Meldunek registration (registration of place of residence)</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Preparing responses to a wezwanie (official request) and adding documents to the case file</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">Depending on complexity</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Requesting information about the case status</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Assistance when changing employers or when circumstances
+                  of stay change</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">Depending on complexity</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Assistance with obtaining duplicates of decisions and other documents from the
+                  relevant government office</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Assistance with preparing powers of attorney</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Preparation of applications and official requests to government
+                  authorities</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Sworn translations of documents into and from the Polish
+                  language</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">Depending on the quantity and
+                  complexity</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Transcription of foreign civil status documents in Poland (transkrypcja aktów stanu
+                  cywilnego), such as birth or marriage certificates, where permitted by law</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">Depending on the timeframe</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Assistance with opening a bank account in Poland</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Assistance with obtaining certificates from ZUS and Urząd Skarbowy through available
+                  procedures</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Preparation for submitting an application for a Polish Card</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">1500
+                  zł</span>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts - load in order -->
+  <script src="../../js/config.js"></script>
+  <script src="../../js/router.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/menu.js"></script>
+  <script src="../../js/news.js"></script>
+  <script src="../../js/pages.js"></script>
+  <script src="../../js/form.js"></script>
+</body>
+
+</html>

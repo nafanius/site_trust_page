@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust Site</title>
+  <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
+
+  <!-- SEO & Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trust Site">
+  <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Canonical will be managed by JS for language variants -->
+  <link rel="canonical" href="/">
+
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
+      <a href="/site_trust_page/" class="pl-3 logo pr-8" id="logo-link" data-route="/">
+        <img src="../../assets/1.png" alt="Trust Site" height="28" width="200" style="vertical-align:middle;">
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li class=""><a href="/site_trust_page/about" class="text-lg" data-route="/about">About</a></li>
+          <li class=""><a href="/site_trust_page/news" class="text-lg" data-route="/news">News</a></li>
+          <li class=""><a href="/site_trust_page/contacts" class="text-lg" data-route="/contacts">Contacts</a></li>
+        </ul>
+      </nav>
+
+      <div class="language-switcher" id="language-switcher">
+        <ul class="lang-list text-base font-semibold">
+          <li><a href="/site_trust_page/" class="lang-link active" aria-current="page">EN</a></li>
+          <li><a href="/site_trust_page/ru/" class="lang-link">RU</a></li>
+          <li><a href="/site_trust_page/pl/" class="lang-link">PL</a></li>
+        </ul>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" data-bound="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="w-full min-h-screen">
+    <div id="page-content" class="">
+
+
+      <!-- Router renders here -->
+      <section id="about" class="max-w-[1280px] mx-auto px-3 py-10">
+        <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 items-center">
+          <div class="md:col-span-7">
+            <div class="uppercase tracking-[2px] text-xs font-semibold text-[#f9794c] mb-3"> Открытие &amp; Ведение
+              &amp; Бухгалтерия для вашего бизнеса
+              Польша</div>
+            <h2 class="text-4xl md:text-[42px] leading-none font-semibold tracking-[-1.2px] text-[#243E58] mb-6">
+              Один человек, который знает вашу фирму.
+            </h2>
+            <div class="prose prose-lg text-[#45464d] max-w-prose">
+              <p>В польской фирме всегда есть работа, которую делает «кто-нибудь»:
+                оформить нового сотрудника, продлить документы, забрать справку из
+                ZUS, ответить бухгалтеру, сходить в ужонд. KOVEN берёт это на себя
+                целиком: вы платите фиксированную сумму и получаете
+                административного ассистента без сотрудника в штате.</p>
+              <p class="mt-1">Открываем и сопровождаем фирмы любого профиля — от IT и торговли
+                до салонов и агентств. Для строительных компаний, которые отправляют
+                людей в Германию, Бельгию, Францию и Литву, есть отдельный блок:
+                абонемент на сотрудника и разовые услуги по командировкам..</p>
+            </div>
+          </div>
+          <div class="md:col-span-5">
+            <div class="bg-[#f9f9f9] rounded-xl px-7 py-5 text-sm leading-relaxed border border-gray-100">
+              <div class="font-semibold text-[#243E58] mb-3">Наши услуги:</div>
+              <ul class="space-y-2 text-[#45464d]">
+                <li class="flex items-start gap-2"><span class="text-[#f9794c] pt-1">•</span>
+                  <div>
+                    <a href="/ru/business#start"
+                      class="uppercase font-semibold text-[#055a96] hover:text-[#f9794c] hover:underline inline-flex gap-1">ЗАПУСК</a>
+                    <span class="block text-[#45464d]">
+                      Регистрация Sp. z o.o. или JDG, PESEL, ePUAP, банк, VAT-UE</span>
+                  </div>
+                </li>
+                <li class="flex gap-2"><span class="text-[#f9794c] pt-1">•</span>
+                  <div>
+                    <a href="/ru/business#maintaining"
+                      class="uppercase font-semibold text-[#055a96] hover:text-[#f9794c] hover:underline inline-flex gap-1">Ведение</a>
+                    <span class="block text-[#45464d]">
+                      Два абонемента: ведение вашей фирмы за вас,
+                      пока вы учитесь, и обслуживание ваших
+                      работников</span>
+                  </div>
+                </li>
+                <li class="flex gap-2"><span class="text-[#f9794c] pt-1">•</span>
+                  <div>
+                    <a href="/ru/business#hiring"
+                      class="uppercase font-semibold text-[#055a96] hover:text-[#f9794c] hover:underline inline-flex gap-1">Найм</a>
+                    <span class="block text-[#45464d]">
+                      Разрешения на работу, договоры, BHP,
+                      оформление сотрудника</span>
+                  </div>
+                </li>
+                <li class="flex gap-2"><span class="text-[#f9794c] pt-1">•</span>
+                  <div>
+                    <a href="/ru/business#delegation"
+                      class="uppercase font-semibold text-[#055a96] hover:text-[#f9794c] hover:underline inline-flex gap-1">Делегации</a>
+                    <span class="block text-[#45464d]">
+                      A1, EKUZ, LIMOSA, ZOLL, ZKO3, SIPSI, §48
+                      Freistellung</span>
+                  </div>
+                </li>
+                <li class="flex gap-2"><span class="text-[#f9794c] pt-1">•</span>
+                  <div>
+                    <a href="/ru/business#resolve"
+                      class="uppercase font-semibold text-[#055a96] hover:text-[#f9794c] hover:underline inline-flex gap-1">Решения</a>
+                    <span class="block text-[#45464d]">
+                      Юрист, вид на жительство, лицензии, договоры,
+                      нестандартные вопросы</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="start" class="bg-[#f9f9f9] h-full ">
+        <!-- Запуск -->
+        <section class="max-w-[1280px] mx-auto px-3 pt-10 pb-3">
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <div class="uppercase mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                Запуск
+              </div>
+              <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Регистрация Sp. z o.o.</h3>
+            </div>
+          </div>
+          <!-- Card-1 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div
+              class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+              <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                <span class="text-xl">💼</span>
+              </div>
+              <details class="group bg-white open:border-[#055a96]/40">
+                <summary class="cursor-pointer list-none">
+                  <div class="flex items-center justify-between">
+                    <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                      Стандарт
+                    </h4>
+                    <span
+                      class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                  </div>
+                  <span
+                    class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">1
+                    399 zł</span>
+                  <span class="block font-medium text-[#243E58]">Если вы уже открывали фирмы и знаете, что
+                    делать дальше. </span>
+                </summary>
+                <div class="px-2 py-4 text-sm text-[#45464d]">
+                  <ul class="space-y-1">
+                    <li>- Консультация</li>
+                    <li>- Регистрация spółki в S24</li>
+                    <li>- Подача декларации CRBR</li>
+                    <li>- Подбор бухгалтерского бюро</li>
+                    <li class="text-[#939598] text-xs">* Гос. пошлины оплачиваются отдельно</li>
+                  </ul>
+                  <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                    Заявка на консультацию →
+                  </a>
+                </div>
+              </details>
+            </div>
+            <!-- Card-2 -->
+            <div
+              class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+              <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                <span class="text-xl">💎</span>
+              </div>
+              <details class="group bg-white open:border-[#055a96]/40">
+                <summary class="cursor-pointer list-none">
+                  <div class="flex items-center justify-between">
+                    <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                      Расширенный
+                    </h4>
+                    <span
+                      class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                  </div>
+                  <span
+                    class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">3
+                    399 zł</span>
+                  <span class="block font-medium text-[#243E58]">Фирма под ключ: от PESEL до номера VAT-UE и
+                    профиля на Praca.gov. </span>
+                </summary>
+                <div class="px-2 py-4 text-sm text-[#45464d]">
+                  <ul class="space-y-1">
+                    <li>- Расширенная консультация</li>
+                    <li>- Сопровождение при получении PESEL и ePUAP</li>
+                    <li>- Регистрация spółki в S24, подача CRBR</li>
+                    <li>- Декларации PCC-3, NIP-8, VAT-R (UE) с полным
+                      пакетом документов</li>
+                    <li>- Сопровождение до получения номера VAT-UE</li>
+                    <li>- Сопровождение в банке при открытии
+                      корпоративного счёта</li>
+                    <li>- Подбор виртуального офиса</li>
+                    <li>- Доверенности PEL для доступа в ZUS PUE</li>
+                    <li>- Заявление на доступ к электронному кабинету
+                      налоговой</li>
+                    <li>- Профиль компании на Praca.gov, подбор
+                      бухгалтерского бюро</li>
+                    <li class="text-[#939598] text-xs">* Гос. пошлины включены</li>
+                  </ul>
+                  <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                    Заявка на консультацию →
+                  </a>
+                </div>
+              </details>
+            </div>
+
+          </div>
+        </section>
+        <section class="max-w-[1280px] mx-auto px-3 pb-3">
+          <div class="pb-3">
+            <div class="bg-[#ffffff] max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+              <div class="font-semibold text-[#243E58] mb-3">
+                Регистрация JDG и разовые услуги
+              </div>
+
+              <ul class="space-y-2 text-[#45464d]">
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Регистрация JDG</span> Индивидуальная
+                    деятельность: форма
+                    налогообложения, коды PKD, CEIDG</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">600
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">PESEL и ePUAP</span>Номер и электронная
+                    подпись для учредителя</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">от
+                    200 zł каждый</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Банковский счёт для
+                      фирмы</span> Сопровождение при открытии корпоративного счёта</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Фирменная печать</span></span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">CRBR</span> Информация о бенефициарах
+                    компании</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">PCC-3</span> Декларация по налогу от
+                    гражданско-правовых сделок</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Изменения в KRS / CEIDG</span> Смена адреса,
+                    правления, кодов PKD, капитала</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">по
+                    запросу</span>
+                </li>
+
+              </ul>
+            </div>
+        </section>
+
+      </div>
+      <!-- Ведение -->
+      <section id="maintaining" class="max-w-[1280px] mx-auto p-3 pt-10">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <div class="uppercase mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+              Ведение
+            </div>
+            <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Два разных абонемента: один для вас как
+              владельца фирмы, второй для ваших
+              работников. Можно взять любой из них или оба.</h3>
+          </div>
+        </div>
+        <!-- Card-1 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div
+            class="bg-[#f9f9f9] group w-full min-w-0 flex-1 rounded-xl border border-gray-200 p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+            <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+              <span class="text-xl">💼</span>
+            </div>
+            <details class="group  open:border-[#055a96]/40">
+              <summary class="cursor-pointer list-none">
+                <div class="flex items-center justify-between">
+                  <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                    Старт
+                  </h4>
+                  <span
+                    class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-white group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                </div>
+                <span
+                  class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">200
+                  €</span>
+                <span class="block font-medium text-[#243E58]"><span class="font-bold">Для вас.</span> Если вы только
+                  открыли фирму, не
+                  знаете польский или не понимаете, что делать
+                  дальше. Мы ведём фирму вместо вас, пока вы не
+                  научитесь сами, чтобы вы не боялись стартовать. <span class="block text-xs text-[#939598]">в
+                    месяц</span></span>
+              </summary>
+              <div class="px-2 py-4 text-sm text-[#45464d]">
+                <ul class="space-y-1">
+                  <li>- Объясняем по шагам: какие документы нужны
+                    фирме и что когда сдавать</li>
+                  <li>- Выставляем фактуры за вас и учим делать это
+                    самостоятельно</li>
+                  <li>- Готовим договоры, заявления и бланки</li>
+                  <li>- Общаемся с бухгалтерией от вашего имени и
+                    переводим её вопросы на понятный язык</li>
+                  <li>- Получаем справки из ZUS и Urząd Skarbowy</li>
+                  <li>- Организуем визиты в госучреждения и ведём
+                    переписку с ними</li>
+                  <li>- Ведём электронный архив документов фирмы
+                    с учётом RODO</li>
+                  <li>- Решаем нестандартные административные
+                    вопросы</li>
+                  <li>- Отвечаем на любые вопросы по фирме в вашем
+                    чате</li>
+                </ul>
+                <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                  Заявка на консультацию →
+                </a>
+              </div>
+            </details>
+          </div>
+          <!-- Card-2 -->
+          <div
+            class="group bg-[#f9f9f9] w-full min-w-0 flex-1 rounded-xl border border-gray-200 p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+            <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+              <span class="text-xl">💎</span>
+            </div>
+            <details class="group open:border-[#055a96]/40">
+              <summary class="cursor-pointer list-none">
+                <div class="flex items-center justify-between">
+                  <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                    Команда
+                  </h4>
+                  <span
+                    class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-white group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                </div>
+                <span
+                  class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">80
+                  €</span>
+                <span class="block font-medium text-[#243E58]"><span class="font-bold">Для ваших работников.</span> Для
+                  строительных фирм,
+                  которые нанимают иностранцев и отправляют их
+                  работать в ЕС. Всё по каждому человеку — за одну
+                  фиксированную сумму. <span class="block text-xs text-[#939598]">за работника в месяц</span></span>
+              </summary>
+              <div class="px-2 py-4 text-sm text-[#45464d]">
+                <ul class="space-y-1">
+                  <li>- Трудоустройство в вашу фирму: oświadczenie,
+                    powiadomienie, zezwolenie</li>
+                  <li>- Трудовой договор и zgłoszenie в ZUS</li>
+                  <li>- Регистрация spółki в S24, подача CRBR</li>
+                  <li>- ДA1 + EKUZ</li>
+                  <li>- СLIMOSA, ZOLL, ZKO3, SIPSI</li>
+                  <li>- Командировочные документы</li>
+                  <li>- Договоры и бланки для работников</li>
+                  <li>- База сотрудников и контроль сроков действия
+                    документов</li>
+                  <li>- Своевременные переподачи и продления</li>
+                  <li>- Связь с бухгалтерией и кадровиком по вашим
+                    работникам</li>
+                </ul>
+                <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                  Заявка на консультацию →
+                </a>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section class="max-w-[1280px] mx-auto px-3 pb-3">
+        <div class="pb-3">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+            <div class="font-semibold text-[#243E58] mb-3">
+              Главное в абонементах
+            </div>
+            <p>Новая подача, изменение документа, продление, переписка с ужондом — всё уже внутри, без
+              счётчика за каждое действие. Отдельно оплачиваются только государственные пошлины и услуги
+              вне абонемента: регистрация фирмы, юрист.</p>
+          </div>
+      </section>
+      <div id="hiring" class="bg-[#f9f9f9] h-full ">
+        <!-- Найм работников-->
+        <section class="max-w-[1280px] mx-auto px-3 pt-10">
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <div class="uppercase mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                Найм
+              </div>
+              <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Разрешения на работу и оформление
+                сотрудника в Польше.</h3>
+            </div>
+          </div>
+        </section>
+        <section class="max-w-[1280px] mx-auto px-3">
+          <div class="pb-3">
+            <div class="bg-white max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+              <div class="font-semibold text-[#f9794c]">
+                Входит в абонемент «Команда»
+              </div>
+              <span class="block text-xs text-[#939598]  mb-3">80 € за сотрудника в месяц — подачи, продления и правки
+                без доплат.</span>
+
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-[#45464d]">
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Powiadomienie для граждан Украины
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Zgłoszenie сотрудника в ZUS
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Oświadczenie o powierzeniu pracy
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Уведомление о начале или невыходе на работу
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Zezwolenie na pracę
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Отправка договора в urząd pracy
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Трудовой договор
+                  </span>
+                </li>
+
+                <li class="flex items-start gap-2 min-w-0">
+                  <span class="text-[#f9794c] shrink-0">•</span>
+                  <span class="min-w-0 break-words">
+                    Корректировка и аннуляция заявлений
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="max-w-[1280px] mx-auto px-3">
+          <div class="pb-3">
+            <div class="bg-white max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+              <div class="font-semibold text-[#243E58] mb-3">
+                Без абонемента — разовые цены
+              </div>
+
+              <ul class="space-y-2 text-[#45464d]">
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Powiadomienie</span> Уведомление о
+                    трудоустройстве гражданина Украины (1 день)</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Oświadczenie</span> Заявление о поручении
+                    работы иностранцу.
+                    Гос. оплата — клиент (1–7 дней)</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Zezwolenie na pracę</span> Разрешение на
+                    работу для остальных стран.
+                    Гос. оплата — клиент (до 3 мес.)</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">250
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Трудовой договор</span> Umowa o pracę,
+                    zlecenie или dzieło</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">50
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Срочное zgłoszenie в ZUS</span>
+                    Регистрация в ZUS в день обращения</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">60
+                    zł</span>
+                </li>
+              </ul>
+              <a href="/ru/contacts" class="mt-4 block text-xs font-medium text-[#f9794c] hover:underline">
+                Заявка на консультацию →
+              </a>
+            </div>
+        </section>
+
+        <section class="max-w-[1280px] mx-auto px-3 pb-3">
+          <div class="pb-3">
+            <div class="bg-white max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+              <div class="font-semibold text-[#243E58] mb-3">
+                Дополнительно к любому варианту
+              </div>
+
+              <ul class="space-y-2 text-[#45464d]">
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">BHP</span> Техника безопасности на русском
+                    языке, до 5 человек</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                    zł / чел.</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">BHP</span> От 5 человек</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                    zł / чел.</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Направление на мед.
+                      обследование</span></span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">Банковский счёт для сотрудника</span>
+                    Личный счёт в польском банке</span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                    zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">PESEL</span></span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">от
+                    200 zł</span>
+                </li>
+
+                <li
+                  class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                  <span class="text-[#f9794c]">•</span>
+                  <span class="min-w-0 break-words"><span class="font-bold">ePUAP</span></span>
+                  <span
+                    class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                    zł</span>
+                </li>
+              </ul>
+              <a href="/ru/contacts" class="mt-4 block text-xs font-medium text-[#f9794c] hover:underline">
+                Заявка на консультацию →
+              </a>
+            </div>
+        </section>
+      </div>
+      <!-- Делегации -->
+      <section id="delegation" class="max-w-[1280px] mx-auto px-3 pt-10 pb-3">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <div class="uppercase mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+              Делегации
+            </div>
+            <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Командировки сотрудников в страны ЕС.</h3>
+          </div>
+        </div>
+      </section>
+      <section class="max-w-[1280px] mx-auto px-3">
+        <div class="pb-3">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+
+            <div class="font-semibold text-[#f9794c]">
+              Входит в абонемент «Команда»
+            </div>
+            <span class="block text-xs text-[#939598]  mb-3">80 € за сотрудника в месяц — подачи, продления и правки
+              без доплат.</span>
+
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-[#45464d]">
+
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  A1 + EKUZ
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  ZOLL (Германия)
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  Расчёт и оформление делегаций
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  ZKO3 (Австрия)
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  Аннуляция A1
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  SIPSI (Франция)
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  Корректировка заявления на A1
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  База сотрудников и контроль сроков
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  LIMOSA — аккаунт, декларации, изменения (Бельгия)
+                </span>
+              </li>
+              <li class="flex items-start gap-2 min-w-0">
+                <span class="text-[#f9794c] shrink-0">•</span>
+                <span class="min-w-0 break-words">
+                  Договоры и бланки для командировки
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="max-w-[1280px] mx-auto px-3">
+        <div class="pb-3">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+            <div class="font-semibold text-[#243E58] mb-3">
+              Без абонемента — разовые цены
+            </div>
+            <ul class="space-y-2 text-[#45464d]">
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">A1 + EKUZ</span> УСертификат A1 и
+                  европейская карта до 7 дней медстрахования (до 7 дней)</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">350
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">Аннуляция A1</span></span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">Корректировка заявления на A1</span> Если
+                  сертификат ещё не выдан</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">LIMOSA — аккаунт</span> Бельгия. Создание
+                  аккаунта компании</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">LIMOSA — декларация</span> Бельгия.
+                  Декларация на командировку</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">LIMOSA — изменения</span> Бельгия. Правка
+                  поданной декларации </span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">50
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">ZOLL</span> Германия. Уведомление таможни о
+                  командированных работниках. От 11 человек — 70 zł / чел.</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">85
+                  zł / чел.</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">ZKO3</span> Австрия. Уведомление о
+                  командировке. От 11 человек — 125 zł / чел.</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                  zł / чел.</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">SIPSI</span> Франция. Декларация о
+                  командировании</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">по
+                  запросу</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">§48 Freistellung</span> Германия.
+                  Освобождение от налога для строительных услуг</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">по
+                  запросу</span>
+              </li>
+            </ul>
+            <a href="/ru/contacts" class="mt-4 block text-xs font-medium text-[#f9794c] hover:underline">
+              Заявка на консультацию →
+            </a>
+          </div>
+      </section>
+
+      <section class="max-w-[1280px] mx-auto px-3 pb-3">
+        <div class="pb-3">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+            <div class="font-semibold text-[#243E58] mb-3">
+              Дополнительно к любому варианту
+            </div>
+            <ul class="space-y-2 text-[#45464d]">
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">BHP</span> Техника безопасности на русском
+                  языке, до 5 человек</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł / чел.</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">BHP</span> От 5 человек</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">150
+                  zł / чел.</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">Направление на мед.
+                    обследование</span></span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">Банковский счёт для сотрудника</span> Личный
+                  счёт в польском банке</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">PESEL</span></span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">от
+                  200 zł</span>
+              </li>
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words"><span class="font-bold">ePUAP</span></span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+            </ul>
+            <a href="/ru/contacts" class="mt-4 block text-xs font-medium text-[#f9794c] hover:underline">
+              Заявка на консультацию →
+            </a>
+          </div>
+      </section>
+
+      <div id="resolve" class="bg-[#f9f9f9] h-full ">
+        <!-- Решения -->
+        <section class="max-w-[1280px] mx-auto px-3 pt-10 pb-3">
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <div class="uppercase mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                Решения
+              </div>
+              <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58]">Юрист, легализация, лицензии и всё,
+                что не укладывается в стандартный
+                процесс.</h3>
+            </div>
+          </div>
+          <section class="max-w-[1280px] mx-auto">
+            <div class="pb-3">
+              <div class="bg-white max-w-[1280px] mx-auto rounded-xl px-7 py-5 text-sm border border-gray-100">
+
+                <div class="font-semibold">
+                  Юридические услуги
+                </div>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-[#45464d]">
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Консультации с польским юристом
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Получение лицензий и разрешений
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Лицензия KRAZ (агентство трудоустройства)
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Корпоративные документы
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Представительство и сопровождение переговоров
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Регламенты и заявления
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2 min-w-0">
+                    <span class="text-[#f9794c] shrink-0">•</span>
+                    <span class="min-w-0 break-words">
+                      Нестандартные юридические вопросы
+                    </span>
+                  </li>
+                </ul>
+                <span class="block text-xs text-[#939598] mt-3">Стоимость зависит от задачи и времени юриста. Называем
+                  сумму после того, как поймём объём работы, и не меняем её по
+                  ходу.</span>
+              </div>
+            </div>
+          </section>
+          <section class="max-w-[1280px] mx-auto">
+            <div class="pb-3">
+              <div class="bg-white max-w-[1280px] mx-auto rounded-xl p-7 text-sm border border-gray-100">
+                <div class="font-semibold text-[#243E58] mb-3">
+                  Бухгалтерия через нас
+                </div>
+                <p class="block">Бухгалтерию ведёт проверенное польское бюро, а мы — аккаунт-менеджер между вами:
+                  передаём фактуры и договоры, следим за сроками, ведём базу кадровой документации и
+                  переводим вопросы бухгалтера на понятный язык. Условия — индивидуально под объём фирмы.</p>
+                <div class="font-semibold text-[#243E58] mb-3 mt-3">
+                  Дополнительно
+                </div>
+                <ul class="space-y-2 text-[#45464d]">
+                  <li
+                    class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                    <span class="text-[#f9794c]">•</span>
+                    <span class="min-w-0 break-words"><span class="font-bold">Регистрация авто</span> Постановка
+                      автомобиля на учёт в Польше</span>
+                    <span
+                      class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">по
+                      запросу</span>
+                  </li>
+                </ul>
+          </section>
+      </div>
+
+  </main>
+
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts - load in order -->
+  <script src="../../js/config.js"></script>
+  <script src="../../js/router.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/menu.js"></script>
+  <script src="../../js/news.js"></script>
+  <script src="../../js/pages.js"></script>
+  <script src="../../js/form.js"></script>
+</body>
+
+</html>

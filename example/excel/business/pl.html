@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust Site</title>
+  <meta name="description" content="Multilingual static website powered by Google Sheets CMS">
+
+  <!-- SEO & Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trust Site">
+  <meta property="og:description" content="Multilingual static website powered by Google Sheets CMS">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Canonical will be managed by JS for language variants -->
+  <link rel="canonical" href="/">
+
+  <!--
+    Deployment base detection for GitHub project sites (/my-repo/) and root deployments.
+    Inserts a <base> tag so that relative paths (css/, js/, assets/) resolve correctly
+    even when the current URL has language prefixes like /ru or /pl/news.
+    Must run before any relative asset links.
+  -->
+  <script>
+    (function () {
+      try {
+        var pathname = (window.location.pathname || '/').split('?')[0].split('#')[0];
+        pathname = pathname.replace(/\/index\.html?$/i, '/').replace(/\.html?$/i, '');
+        pathname = pathname.replace(/\/+/g, '/');
+        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+        var segs = pathname.split('/').filter(Boolean);
+        // Known application segments (languages + routes). Anything before the first of these is the deployment base.
+        var known = { en: 1, ru: 1, pl: 1, news: 1, about: 1, contact: 1, contacts: 1, page: 1 };
+
+        var baseIdx = 0;
+        for (var i = 0; i < segs.length; i++) {
+          if (known[segs[i].toLowerCase()]) { baseIdx = i; break; }
+          baseIdx = i + 1;
+        }
+        var baseSegs = segs.slice(0, baseIdx);
+        var base = baseSegs.length ? '/' + baseSegs.join('/') + '/' : '/';
+
+        // Always insert <base> (even for root "/") so that relative asset paths
+        // (css/, js/, assets/) resolve from the site root instead of the current
+        // directory. This fixes 404s for CSS/JS/assets when the URL contains a
+        // language prefix such as /ru/news or /pl/about.
+        var b = document.createElement('base');
+        b.setAttribute('href', base);
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head.firstChild) {
+          head.insertBefore(b, head.firstChild);
+        } else {
+          head.appendChild(b);
+        }
+      } catch (e) { /* never break page load */ }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner sticky top-0 z-50 bg-white border-b border-gray-200 ">
+      <a href="/site_trust_page/" class="pl-3 logo pr-8" id="logo-link" data-route="/">
+        <img src="../../assets/1.png" alt="Trust Site" height="28" width="200" style="vertical-align:middle;">
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li class=""><a href="/site_trust_page/about" class="text-lg" data-route="/about">About</a></li>
+          <li class=""><a href="/site_trust_page/news" class="text-lg" data-route="/news">News</a></li>
+          <li class=""><a href="/site_trust_page/contacts" class="text-lg" data-route="/contacts">Contacts</a></li>
+        </ul>
+      </nav>
+
+      <div class="language-switcher" id="language-switcher">
+        <ul class="lang-list text-base font-semibold">
+          <li><a href="/site_trust_page/" class="lang-link active" aria-current="page">EN</a></li>
+          <li><a href="/site_trust_page/ru/" class="lang-link">RU</a></li>
+          <li><a href="/site_trust_page/pl/" class="lang-link">PL</a></li>
+        </ul>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" data-bound="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="w-full min-h-screen">
+    <div id="page-content" class="">
+      <!-- Router renders here -->
+
+
+      <!-- services -->
+      <section>
+        <div class="bg-[#f9f9f9] h-full">
+          <!-- Zezwolenie na pobyt czasowy -->
+          <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+            <div class="w-full">
+              <!-- Header -->
+              <div class="mb-8 flex items-end justify-between">
+                <div>
+                  <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                    LEGALIZACJA POBYTU CZASOWEGO
+                  </div>
+                  <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                    ZEZWOLENIE NA POBYT CZASOWY (Karta pobytu czasowego) 🇵🇱
+                  </h3>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="flex w-full flex-col gap-5 md:flex-row">
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">🤝</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet podstawowy
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">700
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Dla osób, które chcą otrzymać jasny plan działania
+                        i
+                        samodzielnie przejść przez główne etapy. </span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- konsultacja</li>
+                        <li>- analiza sprawy</li>
+                        <li>- weryfikacja posiadanych dokumentów</li>
+                        <li>- przygotowanie listy brakujących dokumentów</li>
+                        <li>- kontakt przez komunikatory w godzinach pracy (wyłącznie przed złożeniem dokumentów)</li>
+                        <li>- wypełnienie i wysłanie wniosku</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 2 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💼</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet standardowy *
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">1700
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Optymalna równowaga między profesjonalnym wsparciem
+                        a
+                        samodzielnością, zapewniająca sprawne przejście przez cały proces.</span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- konsultacja</li>
+                        <li>- analiza sprawy</li>
+                        <li>- weryfikacja posiadanych dokumentów</li>
+                        <li>- przygotowanie listy brakujących dokumentów</li>
+                        <li>- kontakt przez komunikatory w godzinach pracy przez cały okres rozpatrywania sprawy</li>
+                        <li>- wypełnienie i wysłanie wniosku</li>
+                        <li>- przygotowanie kompletu dokumentów do złożenia, kontakt z pracodawcą w razie potrzeby</li>
+                        <li>- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                        <li>- uzupełnianie dokumentów przez cały okres rozpatrywania sprawy </li>
+                        <li>- monitorowanie statusu sprawy do momentu otrzymania karty oraz informowanie klienta o
+                          każdej
+                          aktualizacji w sprawie </li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 3 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💎</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet rozszerzony **
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">2500
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Dla osób, które wolą uwzględnić możliwe
+                        niuanse i uzyskać kompleksowe wsparcie.</span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li class="">- konsultacja</li>
+                        <li class="">- analiza sprawy</li>
+                        <li class="">- weryfikacja posiadanych dokumentów</li>
+                        <li class="">- kontakt z pracodawcą w razie potrzeby</li>
+                        <li class="">- przygotowanie listy brakujących dokumentów</li>
+                        <li class="">- konsultacje z osobistym opiekunem przez cały proces</li>
+                        <li class="">- kontakt przez komunikatory, również w weekendy i poza godzinami pracy</li>
+                        <li class="">- wypełnienie i wysłanie wniosku</li>
+                        <li class="">- przygotowanie kompletu dokumentów do złożenia</li>
+                        <li class="">- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                        <li class="">- uzupełnianie dokumentów przez cały okres
+                          rozpatrywania sprawy</li>
+                        <li class="">- ponaglenie (przyspieszenie rozpatrywania sprawy)</li>
+                        <li class="">- bezpłatne odwołanie w przypadku odmowy</li>
+                        <li class="">- towarzyszenie w dniu odbioru karty pobytu</li>
+                        <li class="">- pomoc w uzyskaniu zaświadczeń US-7, zaświadczenia
+                          o niezaleganiu w podatkach oraz PIT-37 online za pomocą profilu zaufanego</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              * Cena usługi przy zakupie pakietu „Standardowego” dla każdego kolejnego członka rodziny wynosi 1400 zł.
+              Dla
+              dzieci poniżej 18. roku życia – 1000 zł.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              ** Cena usługi przy zakupie pakietu „Rozszerzonego” dla każdego kolejnego członka rodziny wynosi 2000 zł.
+              Dla dzieci poniżej 18. roku życia – 1300 zł.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+            </div>
+
+          </section>
+        </div>
+
+        <!-- Pobyt stały -->
+        <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+          <div class="w-full">
+            <!-- Header -->
+            <div class="mb-8 flex items-end justify-between">
+              <div>
+                <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                  LEGALIZACJA POBYTU STAŁEGO I REZYDENTA
+                </div>
+                <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                  POBYT STAŁY (Karta stałego pobytu, karta rezydenta) 🇵🇱
+                </h3>
+              </div>
+            </div>
+            <!-- Cards -->
+            <div class="flex w-full flex-col gap-5 md:flex-row">
+              <div
+                class="group bg-[#f9f9f9] w-full min-w-0 flex-1 rounded-xl border border-gray-200 p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">🤝</span>
+                </div>
+                <details class="group open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Pakiet podstawowy
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">1000
+                      zł
+                    </span>
+                    <span class="block font-medium text-[#243E58]">Dla osób, które chcą otrzymać jasny plan działania i
+                      samodzielnie przejść przez główne etapy. </span>
+                    <!-- <span class="block"> podoba się wszystkim</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li>- konsultacja</li>
+                      <li>- analiza sprawy</li>
+                      <li>- weryfikacja posiadanych dokumentów</li>
+                      <li>- przygotowanie listy brakujących dokumentów</li>
+                      <li>- kontakt przez komunikatory w godzinach pracy (wyłącznie przed złożeniem dokumentów)</li>
+                      <li>- wypełnienie i wysłanie wniosku</li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Umów konsultację →
+                    </a>
+                  </div>
+                </details>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-[#f9f9f9] p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">💼</span>
+                </div>
+                <details class="group bg-[#f9f9f9] open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Pakiet standardowy *
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">2500
+                      zł
+                    </span>
+                    <span class="block font-medium text-[#243E58]">Optymalna równowaga między profesjonalnym wsparciem a
+                      samodzielnością, zapewniająca sprawne przejście przez cały proces.</span>
+                    <!-- <span class="block"> podoba się wszystkim</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li>- konsultacja</li>
+                      <li>- analiza sprawy</li>
+                      <li>- weryfikacja posiadanych dokumentów</li>
+                      <li>- przygotowanie listy brakujących dokumentów</li>
+                      <li>- kontakt przez komunikatory w godzinach pracy przez cały okres rozpatrywania sprawy</li>
+                      <li>- wypełnienie i wysłanie wniosku</li>
+                      <li>- przygotowanie kompletu dokumentów do złożenia, kontakt z pracodawcą w razie potrzeby</li>
+                      <li>- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                      <li>- uzupełnianie dokumentów przez cały okres rozpatrywania sprawy </li>
+                      <li>- monitorowanie statusu sprawy do momentu otrzymania karty oraz informowanie klienta o każdej
+                        aktualizacji w sprawie </li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Umów konsultację →
+                    </a>
+                  </div>
+                </details>
+              </div>
+              <!-- Card 3 -->
+              <div
+                class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-[#f9f9f9] p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                  <span class="text-xl">💎</span>
+                </div>
+                <details class="group open:border-[#055a96]/40">
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center justify-between">
+                      <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                        Pakiet rozszerzony **
+                      </h4>
+                      <span
+                        class="accordion-toggle p-1.5 border border-gray-600 bg-white rounded-lg text-lg group-hover:text-[#f9794c] leading-none transition group-open:rotate-45">＋</span>
+                    </div>
+                    <span
+                      class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">3000
+                      zł</span>
+                    <span class="block font-medium text-[#243E58]">Dla osób, które wolą uwzględnić możliwe
+                      niuanse i uzyskać kompleksowe wsparcie.</span>
+                    <!-- <span class="block"> podoba się wszystkim</span> -->
+                  </summary>
+                  <div class="px-2 py-4 text-sm text-[#45464d]">
+                    <ul class="space-y-1">
+                      <li class="">- konsultacja</li>
+                      <li class="">- analiza sprawy</li>
+                      <li class="">- weryfikacja posiadanych dokumentów</li>
+                      <li class="">- kontakt z pracodawcą w razie potrzeby</li>
+                      <li class="">- przygotowanie listy brakujących dokumentów</li>
+                      <li class="">- konsultacje z osobistym opiekunem przez cały proces</li>
+                      <li class="">- kontakt przez komunikatory, również w weekendy i poza godzinami pracy</li>
+                      <li class="">- wypełnienie i wysłanie wniosku</li>
+                      <li class="">- przygotowanie kompletu dokumentów do złożenia</li>
+                      <li class="">- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                      <li class="">- uzupełnianie dokumentów przez cały okres
+                        rozpatrywania sprawy</li>
+                      <li class="">- ponaglenie (przyspieszenie rozpatrywania sprawy)</li>
+                      <li class="">- bezpłatne odwołanie w przypadku odmowy</li>
+                      <li class="">- towarzyszenie w dniu odbioru karty pobytu</li>
+                      <li class="">- pomoc w uzyskaniu zaświadczeń US-7, zaświadczenia
+                        o niezaleganiu w podatkach, PIT-37 online za pomocą profilu zaufanego</li>
+                    </ul>
+                    <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                      Umów konsultację →
+                    </a>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+          </div>
+
+          <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+            * Cena usługi przy zakupie pakietu „Standardowego” dla każdego kolejnego członka rodziny wynosi 2000 zł. Dla
+            dzieci poniżej 18. roku życia – 1500 zł.
+          </h3>
+          <div class="text-[15px] leading-relaxed text-[#45464d]">
+            <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+          </div>
+
+          <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+            ** Cena usługi przy zakupie pakietu „Rozszerzonego” dla każdego kolejnego członka rodziny wynosi 2500 zł.
+            Dla
+            dzieci poniżej 18. roku życia – 1500 zł.
+          </h3>
+          <div class="text-[15px] leading-relaxed text-[#45464d]">
+            <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+          </div>
+        </section>
+
+        <div class="bg-[#f9f9f9] h-full">
+          <!-- Obywatelstwo -->
+          <section id="services" class="max-w-[1280px] mx-auto px-3 py-10">
+            <div class="w-full">
+              <!-- Header -->
+              <div class="mb-8 flex items-end justify-between">
+                <div>
+                  <div class="mb-2 text-xs font-semibold tracking-[1.5px] text-[#f9794c]">
+                    LEGALIZACJA POBYTU – OBYWATELSTWO
+                  </div>
+                  <h3 class="text-3xl font-semibold tracking-[-1px] text-[#243E58] md:text-4xl">
+                    Obywatelstwo 🇵🇱
+                  </h3>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="flex w-full flex-col gap-5 md:flex-row">
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">🤝</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-1 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet podstawowy
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">1000
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Dla osób, które chcą otrzymać jasny plan działania
+                        i
+                        samodzielnie przejść przez główne etapy. </span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- konsultacja</li>
+                        <li>- analiza sprawy</li>
+                        <li>- weryfikacja posiadanych dokumentów</li>
+                        <li>- przygotowanie listy brakujących dokumentów</li>
+                        <li>- kontakt przez komunikatory w godzinach pracy (wyłącznie przed złożeniem dokumentów)</li>
+                        <li>- wypełnienie i wysłanie wniosku</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 2 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💼</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet standardowy *
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c]  font-bold">2500
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Optymalna równowaga między profesjonalnym wsparciem
+                        a
+                        samodzielnością, zapewniająca sprawne przejście przez cały proces.</span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li>- konsultacja</li>
+                        <li>- analiza sprawy</li>
+                        <li>- weryfikacja posiadanych dokumentów</li>
+                        <li>- przygotowanie listy brakujących dokumentów</li>
+                        <li>- kontakt przez komunikatory w godzinach pracy przez cały okres rozpatrywania sprawy</li>
+                        <li>- wypełnienie i wysłanie wniosku</li>
+                        <li>- przygotowanie kompletu dokumentów do złożenia, kontakt z pracodawcą w razie potrzeby</li>
+                        <li>- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                        <li>- uzupełnianie dokumentów przez cały okres rozpatrywania sprawy </li>
+                        <li>- monitorowanie statusu sprawy do momentu otrzymania karty oraz informowanie klienta o
+                          każdej
+                          aktualizacji w sprawie </li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                      <div class="bg-[#f9f9f9] h-full"></div>
+                    </div>
+                  </details>
+                </div>
+                <!-- Card 3 -->
+                <div
+                  class="group w-full min-w-0 flex-1 rounded-xl border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-[#055a96]/30 hover:shadow-sm">
+                  <div class="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-[#055a96]/10">
+                    <span class="text-xl">💎</span>
+                  </div>
+                  <details class="group bg-white open:border-[#055a96]/40">
+                    <summary class="cursor-pointer list-none">
+                      <div class="flex items-center justify-between">
+                        <h4 class="mb-2 text-xl font-semibold tracking-[-0.3px] text-[#243E58]">
+                          Pakiet rozszerzony **
+                        </h4>
+                        <span
+                          class="accordion-toggle p-1.5 border border-gray-600 rounded-lg bg-[#f9f9f9] group-hover:text-[#f9794c] text-lg leading-none transition group-open:rotate-45">＋</span>
+                      </div>
+                      <span
+                        class="mb-1 block text-xl text-[#939598] tracking-[-0.3px] group-hover:text-[#f9794c] font-bold">3000
+                        zł</span>
+                      <span class="block font-medium text-[#243E58]">Dla osób, które wolą uwzględnić możliwe
+                        niuanse i uzyskać kompleksowe wsparcie.</span>
+                      <!-- <span class="block"> podoba się wszystkim</span> -->
+                    </summary>
+                    <div class="px-2 py-4 text-sm text-[#45464d]">
+                      <ul class="space-y-1">
+                        <li class="">- konsultacja</li>
+                        <li class="">- analiza sprawy</li>
+                        <li class="">- weryfikacja posiadanych dokumentów</li>
+                        <li class="">- kontakt z pracodawcą w razie potrzeby</li>
+                        <li class="">- przygotowanie listy brakujących dokumentów</li>
+                        <li class="">- konsultacje z osobistym opiekunem przez cały proces</li>
+                        <li class="">- kontakt przez komunikatory, również w weekendy i poza godzinami pracy</li>
+                        <li class="">- wypełnienie i wysłanie wniosku</li>
+                        <li class="">- przygotowanie kompletu dokumentów do złożenia</li>
+                        <li class="">- towarzyszenie podczas osobistego złożenia dokumentów</li>
+                        <li class="">- uzupełnianie dokumentów przez cały okres
+                          rozpatrywania sprawy</li>
+                        <li class="">- ponaglenie (przyspieszenie rozpatrywania sprawy)</li>
+                        <li class="">- bezpłatne odwołanie w przypadku odmowy</li>
+                        <li class="">- towarzyszenie w dniu odbioru karty pobytu</li>
+                        <li class="">- pomoc w uzyskaniu zaświadczeń US-7, zaświadczenia
+                          o niezaleganiu w podatkach oraz PIT-37 online za pomocą profilu zaufanego</li>
+                      </ul>
+                      <a href="/ru/contacts" class="mt-4 block text-sm font-medium text-[#f9794c] hover:underline">
+                        Umów konsultację →
+                      </a>
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              * Cena usługi przy zakupie pakietu „Standardowego” dla każdego kolejnego członka rodziny wynosi 2000 zł.
+              Dla
+              dzieci poniżej 18. roku życia – bezpłatnie.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+            </div>
+
+            <h3 class="text-lg font-semibold tracking-[-1.2px] text-[#243E58] leading-tight mt-3">
+              ** Cena usługi przy zakupie pakietu „Rozszerzonego” dla każdego kolejnego członka rodziny wynosi 2500 zł.
+              Dla dzieci poniżej 18. roku życia – bezpłatnie.
+            </h3>
+            <div class="text-[15px] leading-relaxed text-[#45464d]">
+              <p>Pod warunkiem jednoczesnego złożenia wniosku z głównym wnioskodawcą.</p>
+            </div>
+
+          </section>
+        </div>
+
+        <div class="px-2">
+          <div class="bg-[#f9f9f9] max-w-[1280px] mx-auto rounded-xl my-6 p-7 text-sm border border-gray-100">
+            <div class="font-semibold text-[#243E58] mb-3">
+              Usługi dodatkowe
+            </div>
+
+            <ul class="space-y-2 text-[#45464d]">
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Uzyskanie numeru PESEL</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Założenie Profilu Zaufanego</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Założenie Profilu Zaufanego z wizytą w punkcie potwierdzającym</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Zameldowanie (rejestracja miejsca zamieszkania)</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Przygotowanie odpowiedzi na wezwanie oraz uzupełnienie dokumentów w
+                  sprawie</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">W zależności od stopnia
+                  skomplikowania</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Uzyskanie informacji o statusie sprawy</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Wsparcie w przypadku zmiany pracodawcy lub zmiany okoliczności
+                  pobytu</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">W zależności od stopnia
+                  skomplikowania</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Pomoc w uzyskaniu duplikatów decyzji i innych dokumentów z
+                  urzędu</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Pomoc w sporządzeniu pełnomocnictw</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Przygotowanie wniosków i oficjalnych pism do organów
+                  państwowych</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">300–500
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Tłumaczenia przysięgłe dokumentów na język polski i z języka
+                  polskiego</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">W zależności od liczby dokumentów
+                  i
+                  stopnia skomplikowania</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Transkrypcja zagranicznych dokumentów w Polsce (transkrypcja aktów
+                  stanu
+                  cywilnego), np. aktów urodzenia lub małżeństwa, jeśli przepisy prawa na to pozwalają</span>
+                <span class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold">W zależności od terminu
+                  realizacji</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Pomoc w otwarciu rachunku bankowego w Polsce</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">200
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Pomoc w uzyskaniu zaświadczeń z ZUS i Urzędu Skarbowego w ramach
+                  dostępnych
+                  procedur</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">100
+                  zł</span>
+              </li>
+
+              <li
+                class="grid grid-cols-[10px_minmax(0,1fr)] sm:grid-cols-[10px_minmax(0,1fr)_auto] gap-x-2 items-start">
+                <span class="text-[#f9794c]">•</span>
+                <span class="min-w-0 break-words">Przygotowanie do złożenia dokumentów w sprawie Karty Polaka</span>
+                <span
+                  class="col-start-2 sm:col-start-3 text-[#f9794c] font-semibold whitespace-normal sm:whitespace-nowrap">1500
+                  zł</span>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="px-3 site-footer border-t py-5 text-xs text-[#939598]">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-y-1">
+      <p>&copy; <span id="footer-year"></span> Trust In Poland Legal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts - load in order -->
+  <script src="../../js/config.js"></script>
+  <script src="../../js/router.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/menu.js"></script>
+  <script src="../../js/news.js"></script>
+  <script src="../../js/pages.js"></script>
+  <script src="../../js/form.js"></script>
+</body>
+
+</html>
