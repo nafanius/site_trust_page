@@ -137,18 +137,20 @@ const Pages = (() => {
       ogImage.setAttribute('content', domainName + '/assets/1.png');
     }
 
-    langSlug = I18n.localizedUrl(page.slug, currentLang);
-    if (langSlug.endsWith('home')) {
-      langSlug = langSlug.slice(0, -4);
-    }
-    const canonicalLink = `${domainName}${langSlug}`;
-    let LinkCan = document.querySelector('link[name="canonical"]');
-    if (LinkCan) {
-      LinkCan.setAttribute('href', canonicalLink);
-    }
-    let ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', canonicalLink);
+    if (page.slug) {
+      langSlug = I18n.localizedUrl(page.slug, currentLang);
+      if (langSlug.endsWith('home')) {
+        langSlug = langSlug.slice(0, -4);
+      }
+      const canonicalLink = `${domainName}${langSlug}`;
+      let LinkCan = document.querySelector('link[name="canonical"]');
+      if (LinkCan) {
+        LinkCan.setAttribute('href', canonicalLink);
+      }
+      let ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) {
+        ogUrl.setAttribute('content', canonicalLink);
+      }
     }
   }
 
