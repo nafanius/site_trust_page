@@ -164,6 +164,7 @@ const I18n = (() => {
   return {
     configureFromSettings,
     getCurrentLanguage,
+    setCurrentLanguage,
     getAvailableLanguages,
     getFallbackLanguage,
     localizedUrl,
