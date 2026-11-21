@@ -137,20 +137,18 @@ const Pages = (() => {
       ogImage.setAttribute('content', domainName + '/assets/1.png');
     }
 
-    if (page.slug) {
-      langSlug = I18n.localizedUrl(page.slug, currentLang);
-      if (langSlug.endsWith('home')) {
-        langSlug = langSlug.slice(0, -4);
-      }
-      const canonicalLink = `${domainName}${langSlug}`;
-      let LinkCan = document.querySelector('link[name="canonical"]');
-      if (LinkCan) {
-        LinkCan.setAttribute('href', canonicalLink);
-      }
-      let ogUrl = document.querySelector('meta[property="og:url"]');
-      if (ogUrl) {
-        ogUrl.setAttribute('content', canonicalLink);
-      }
+    langSlug = I18n.localizedUrl(page.slug, currentLang);
+    if (langSlug.endsWith('home')) {
+      langSlug = langSlug.slice(0, -4);
+    }
+    const canonicalLink = `${domainName}${langSlug}`;
+    let LinkCan = document.querySelector('link[name="canonical"]');
+    if (LinkCan) {
+      LinkCan.setAttribute('href', canonicalLink);
+    }
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', canonicalLink);
     }
 
   }
@@ -244,46 +242,6 @@ const Pages = (() => {
     if (email) contactDetails.push(`<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>`);
     if (phone) contactDetails.push(`<p><strong>Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>`);
     if (address) contactDetails.push(`<p><strong>Address:</strong> ${escapeHtml(address)}</p>`);
-
-    // return `
-    //   <article class="page-template contact">
-    //     <header class="page-header">
-    //       <h1>${escapeHtml(page.title || 'Contact Us')}</h1>
-    //       ${lead ? `<p class="page-lead">${escapeHtml(lead)}</p>` : ''}
-    //     </header>
-
-    //     <div class="contact-grid">
-    //       <section class="contact-info">
-    //         <h2>${escapeHtml(infoTitle)}</h2>
-    //         <div class="page-body">
-    //           ${body}
-    //         </div>
-
-    //         ${contactDetails.length ? `<div class="contact-details">${contactDetails.join('')}</div>` : ''}
-    //       </section>
-
-    //       <section class="contact-form">
-    //         <h2>${escapeHtml(formTitle)}</h2>
-    //         <form id="contact-form" onsubmit="event.preventDefault(); window.Pages.sendForm();">
-    //           <div class="form-group">
-    //             <label for="name">Name</label>
-    //             <input type="text" id="name" name="name" required>
-    //           </div>
-    //           <div class="form-group">
-    //             <label for="phone">Phone</label>
-    //             <input type="phone" id="phone" name="phone" required>
-    //           </div>
-    //           <div class="form-group">
-    //             <label for="message">Message</label>
-    //             <textarea id="message" name="message" rows="5" required></textarea>
-    //           </div>
-    //           <button type="submit" class="btn btn-primary">${escapeHtml(submitLabel)}</button>
-    //         </form>
-    //         ${formNote ? `<p class="form-note">${escapeHtml(formNote)}</p>` : ''}
-    //       </section>
-    //     </div>
-    //   </article>
-    // `;
   }
 
   function renderRichTemplate(page, slug) {
@@ -320,45 +278,6 @@ const Pages = (() => {
       </article>
     `;
   }
-
-  // async function sendForm() {
-  //   const form = document.querySelector("#contact-form");
-  //   const FORM_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_URL)
-  //     ? CONFIG.API_URL
-  //     : '';
-
-
-
-  //   const data = {
-  //     name: form.name.value,
-  //     phone: form.phone.value,
-  //     message: form.message.value
-  //   };
-
-  //   await fetch(FORM_URL, {
-  //     method: "POST",
-  //     mode: "no-cors",
-  //     body: JSON.stringify(data)
-  //   });
-  //   // await fetch(FORM_URL, {
-  //   //   method: "POST",
-  //   //   mode: "no-cors",
-  //   //   headers: { "Content-Type": "application/json" },
-  //   //   body: JSON.stringify(data)
-  //   // });
-  //   // await fetch(
-  //   //   FORM_URL,
-  //   //   {
-  //   //     method: "POST",
-  //   //     body: JSON.stringify(data)
-  //   //   }
-  //   // );
-
-  //   form.reset();
-
-  //   alert("Заявка отправлена!");
-
-  // }
 
   function escapeHtml(str) {
     if (!str) return '';
